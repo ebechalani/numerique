@@ -151,6 +151,42 @@ export function blocEnTexte(bloc: Bloc): string {
       return joindre([`Quiz — ${bloc.consigne}`, items]);
     }
 
+    case "qcm": {
+      const questions = bloc.questions
+        .map(
+          (question) =>
+            `- ${question.question}\n  Options : ${question.options.join(" / ")}\n  Bonne réponse : ${question.options[question.bonne]}\n  Explication : ${question.explication}`,
+        )
+        .join("\n\n");
+      return joindre([`QCM — ${bloc.consigne}`, questions]);
+    }
+
+    case "exercice": {
+      const duree = bloc.duree ? ` (${bloc.duree})` : "";
+      const etapes = bloc.etapes
+        ?.map((etape, index) => `${index + 1}. ${etape}`)
+        .join("\n");
+      const champs = bloc.champs
+        .map((champ) => {
+          const aide = champ.aide ? ` — ${champ.aide}` : "";
+          const options =
+            champ.type === "choix" ? ` (choix : ${champ.options.join(" / ")})` : "";
+          return `- ${champ.libelle}${aide}${options}`;
+        })
+        .join("\n");
+      const retour = joindre([
+        `${bloc.retour.titre ?? "Retour de la formation"} : ${bloc.retour.texte}`,
+        bloc.retour.points?.map((point) => `- ${point}`).join("\n"),
+      ]);
+      return joindre([
+        `Exercice — ${bloc.titre}${duree}`,
+        bloc.consigne,
+        etapes,
+        `À consigner :\n${champs}`,
+        retour,
+      ]);
+    }
+
     case "casPratiques": {
       const cas = bloc.cas
         .map((unCas) => {

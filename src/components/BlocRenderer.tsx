@@ -28,7 +28,10 @@ import BibliothequeRequetes from "@/components/interactif/BibliothequeRequetes";
 import CasPratiques from "@/components/interactif/CasPratiques";
 import Checklist from "@/components/interactif/Checklist";
 import ConstructeurRequete from "@/components/interactif/ConstructeurRequete";
+import Exercice from "@/components/interactif/Exercice";
+import Qcm from "@/components/interactif/Qcm";
 import Quiz from "@/components/interactif/Quiz";
+import { ancreExercice } from "@/lib/exercices";
 
 function rendreBloc(bloc: Bloc) {
   switch (bloc.type) {
@@ -57,10 +60,14 @@ function rendreBloc(bloc: Bloc) {
     /* --- blocs interactifs (composants client) --- */
     case "quiz":
       return <Quiz bloc={bloc} />;
+    case "qcm":
+      return <Qcm bloc={bloc} />;
     case "casPratiques":
       return <CasPratiques bloc={bloc} />;
     case "checklist":
       return <Checklist bloc={bloc} />;
+    case "exercice":
+      return <Exercice bloc={bloc} />;
     case "constructeurRequete":
       return <ConstructeurRequete />;
     case "bibliothequeRequetes":
@@ -79,6 +86,20 @@ function rendreBloc(bloc: Bloc) {
   }
 }
 
+/** Identifiant d’un bloc répondable, cible des liens du bilan du module. */
+function ancreDe(bloc: Bloc): string | null {
+  switch (bloc.type) {
+    case "quiz":
+    case "qcm":
+    case "casPratiques":
+    case "checklist":
+    case "exercice":
+      return ancreExercice(bloc.id);
+    default:
+      return null;
+  }
+}
+
 export function Blocs({
   blocs,
   montrerNotesAnimateur = false,
@@ -88,12 +109,20 @@ export function Blocs({
 }) {
   return (
     <div className="space-y-8">
-      {blocs.map((bloc, i) =>
-        bloc.type === "notesAnimateur" && !montrerNotesAnimateur ? null : (
-          // Les blocs sont statiques : l’index est une clé stable.
+      {blocs.map((bloc, i) => {
+        if (bloc.type === "notesAnimateur" && !montrerNotesAnimateur) {
+          return null;
+        }
+        const ancre = ancreDe(bloc);
+        // Les blocs sont statiques : l’index est une clé stable.
+        return ancre ? (
+          <div key={i} id={ancre} className="scroll-mt-28">
+            {rendreBloc(bloc)}
+          </div>
+        ) : (
           <Fragment key={i}>{rendreBloc(bloc)}</Fragment>
-        ),
-      )}
+        );
+      })}
     </div>
   );
 }

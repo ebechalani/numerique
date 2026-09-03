@@ -12,9 +12,12 @@ diaporama, la fiche outils et le déroulé animateur.
 
 - **Suivre la formation** : sept modules, une barre de progression enregistrée
   dans le navigateur, navigation module précédent / suivant.
-- **Répondre aux questions** : vrai/faux, cas pratiques classés selon le feu
-  tricolore de la charte, listes de vérification, constructeur de requêtes.
-  Les réponses interactives restent locales au navigateur.
+- **Faire les exercices directement sur le site** : vrai/faux et QCM
+  corrigés, cas pratiques classés selon le feu tricolore de la charte,
+  listes de vérification, constructeur de requêtes, et des exercices guidés
+  où l’enseignant consigne ce qu’il obtient dans NotebookLM ou Copilot puis
+  découvre le retour de la formation. Chaque module ouvre sur le bilan de ses
+  exercices. Les réponses restent locales au navigateur.
 - **Répondre aux questionnaires de la séance** : sondage d’entrée, enquête de
   satisfaction et trame de restitution des ateliers, collectés sur le site
   (anonymes, sans application externe).

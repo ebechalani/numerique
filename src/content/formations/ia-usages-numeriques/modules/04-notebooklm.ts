@@ -57,6 +57,54 @@ export const atelierNotebookLM: Module = {
       texte:
         "Mes sources → NotebookLM ; créer de zéro → Copilot. Et dans les deux cas : jamais de données personnelles d’élèves — ni ici ni ailleurs.",
     },
+    {
+      type: "qcm",
+      id: "qcm-quel-outil",
+      consigne:
+        "Quel outil ? Pour chaque besoin, choisissez l’outil adapté — ou aucun des deux.",
+      questions: [
+        {
+          question:
+            "Générer un quiz et des flashcards à partir du chapitre que j’ai déposé.",
+          options: ["NotebookLM", "Copilot", "Aucun des deux"],
+          bonne: 0,
+          explication:
+            "Mes sources → NotebookLM : il travaille sur mes documents et cite les passages utilisés.",
+        },
+        {
+          question:
+            "Rédiger de zéro une banque de dix exercices progressifs sur une notion, avec corrigé.",
+          options: ["NotebookLM", "Copilot", "Aucun des deux"],
+          bonne: 1,
+          explication:
+            "Créer de zéro → Copilot. Et je vérifie l’exactitude des corrigés : il peut inventer.",
+        },
+        {
+          question:
+            "Obtenir un résumé audio d’un chapitre pour la pré-lecture ou la révision.",
+          options: ["NotebookLM", "Copilot", "Aucun des deux"],
+          bonne: 0,
+          explication:
+            "C’est une fonction de NotebookLM, à partir de la source déposée. À écouter intégralement avant toute diffusion.",
+        },
+        {
+          question:
+            "Construire une grille d’évaluation critériée : quatre critères, trois niveaux.",
+          options: ["NotebookLM", "Copilot", "Aucun des deux"],
+          bonne: 1,
+          explication:
+            "Créer de zéro → Copilot, avec le compte établissement Microsoft 365.",
+        },
+        {
+          question:
+            "Rédiger des appréciations à partir de la liste des noms et des notes de la classe.",
+          options: ["NotebookLM", "Copilot", "Aucun des deux"],
+          bonne: 2,
+          explication:
+            "Jamais de données personnelles d’élèves, ni ici ni ailleurs. Avec des données anonymisées — « élève A », « élève B » — Copilot peut aider à formuler.",
+        },
+      ],
+    },
 
     { type: "titre", texte: "Étape 0 — Créer son premier carnet" },
     {
@@ -85,6 +133,39 @@ export const atelierNotebookLM: Module = {
       titre: "Ce qu’il faut savoir",
       texte:
         "Google indique que sources, requêtes et réponses ne servent pas à entraîner ses modèles. Mais ce compte est personnel, donc hors contrat de l’établissement : supports de cours uniquement, jamais de document nominatif. Aucune donnée d’élève, même ici.",
+    },
+    {
+      type: "exercice",
+      id: "premier-carnet",
+      titre: "Votre premier carnet",
+      consigne:
+        "Faites les trois étapes ci-dessus dans NotebookLM, puis notez ce que vous obtenez.",
+      duree: "6 min",
+      champs: [
+        {
+          id: "source",
+          type: "texte",
+          libelle: "Le chapitre déposé en source",
+          aide: "Titre ou thème — un PDF de cours, sans aucune donnée d’élève.",
+        },
+        {
+          id: "resume",
+          type: "texte-long",
+          libelle: "Le résumé en cinq points obtenu — ou ce qui a coincé",
+          lignes: 4,
+        },
+        {
+          id: "citation",
+          type: "choix",
+          libelle: "Avez-vous cliqué sur un numéro de citation ?",
+          options: ["Oui, le passage source s’est surligné", "Pas encore"],
+        },
+      ],
+      retour: {
+        titre: "Le repère de l’atelier",
+        texte:
+          "À 1:15, tout le monde doit avoir un carnet avec une source et une première réponse citée. Le clic sur un numéro de citation, qui surligne le passage source, est le geste à retenir : c’est lui qui permet de vérifier.",
+      },
     },
 
     { type: "titre", texte: "Étape 1 — Une bonne requête = cinq briques" },
@@ -132,24 +213,98 @@ export const atelierNotebookLM: Module = {
         "La génération du résumé audio (exercice 3) prend plusieurs minutes : lancez-la dès maintenant, vous l’écouterez à la fin de l’atelier.",
     },
     {
-      type: "etapes",
-      etapes: [
+      type: "exercice",
+      id: "exercice-guide-etude",
+      titre: "Exercice 1 — Guide d’étude",
+      consigne:
+        "Dans le Studio, générez un guide d’étude (ou un rapport) sur votre chapitre. Lisez-le de façon critique : niveau, exactitude, ce qui manque.",
+      champs: [
         {
-          titre: "Guide d’étude",
-          texte:
-            "Dans le Studio, générez un guide d’étude (ou un rapport) sur votre chapitre. Lisez-le de façon critique : niveau, exactitude, ce qui manque. Ce qu’on observe : fidèle à la source, mais parfois trop long ou trop scolaire — on coupe, on adapte.",
+          id: "niveau",
+          type: "choix",
+          libelle: "Le niveau",
+          options: ["Adapté à ma classe", "Trop haut", "Trop bas"],
         },
         {
-          titre: "Quiz et flashcards",
-          texte:
-            "Générez un quiz sur le chapitre ; vérifiez chaque item (une seule bonne réponse, formulation, niveau). Puis générez des flashcards. Ce qu’on observe : des items parfois ambigus ou hors niveau — la relecture est indispensable, même avec des sources.",
+          id: "erreur",
+          type: "texte-long",
+          libelle: "Une erreur ou une approximation repérée — ou « aucune »",
+          lignes: 2,
         },
         {
-          titre: "Résumé audio",
-          texte:
-            "Lancez un résumé audio en français. La génération prend plusieurs minutes : lancez-le maintenant, écoutez-le à la fin de l’atelier. Ce qu’on observe : pour qui, en classe ? Élèves à besoins particuliers, révision, pré-lecture d’un chapitre. À écouter intégralement avant toute diffusion.",
+          id: "manque",
+          type: "texte-long",
+          libelle: "Ce qui manque par rapport à votre cours",
+          lignes: 2,
         },
       ],
+      retour: {
+        titre: "Ce qu’on observe",
+        texte:
+          "Fidèle à la source, mais parfois trop long ou trop scolaire — on coupe, on adapte.",
+      },
+    },
+    {
+      type: "exercice",
+      id: "exercice-quiz-flashcards",
+      titre: "Exercice 2 — Quiz et flashcards",
+      consigne:
+        "Générez un quiz sur le chapitre ; vérifiez chaque item : une seule bonne réponse, formulation, niveau. Puis générez des flashcards.",
+      champs: [
+        {
+          id: "items",
+          type: "texte",
+          libelle: "Nombre d’items vérifiés",
+        },
+        {
+          id: "probleme",
+          type: "texte-long",
+          libelle: "Un item ambigu ou hors niveau, et comment vous le corrigez",
+          lignes: 3,
+        },
+      ],
+      retour: {
+        titre: "Ce qu’on observe",
+        texte:
+          "Des items parfois ambigus ou hors niveau — la relecture est indispensable, même avec des sources.",
+      },
+    },
+    {
+      type: "exercice",
+      id: "exercice-resume-audio",
+      titre: "Exercice 3 — Résumé audio",
+      consigne:
+        "Lancez un résumé audio en français. La génération prend plusieurs minutes : lancez-le maintenant, écoutez-le à la fin de l’atelier.",
+      champs: [
+        {
+          id: "lance",
+          type: "choix",
+          libelle: "Où en êtes-vous ?",
+          options: ["Lancé, génération en cours", "Écouté", "Pas encore lancé"],
+        },
+        {
+          id: "usage",
+          type: "choix",
+          libelle: "Pour qui, dans votre classe ?",
+          options: [
+            "Élèves à besoins particuliers",
+            "Révision",
+            "Pré-lecture d’un chapitre",
+            "Je ne l’utiliserais pas",
+          ],
+        },
+        {
+          id: "vigilance",
+          type: "texte",
+          libelle: "Un point à vérifier avant toute diffusion",
+          facultatif: true,
+        },
+      ],
+      retour: {
+        titre: "Ce qu’on observe",
+        texte:
+          "Pour qui, en classe ? Élèves à besoins particuliers, révision, pré-lecture d’un chapitre. À écouter intégralement avant toute diffusion.",
+      },
     },
 
     {
