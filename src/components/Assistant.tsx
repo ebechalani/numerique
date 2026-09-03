@@ -369,9 +369,11 @@ export default function Assistant() {
             )}
 
             {erreur ? (
+              /* Échec d’envoi : encre sur voile. Le feu tricolore de la charte
+                 (vert / ambre / rouge) ne sert jamais à un état de formulaire. */
               <div
                 role="status"
-                className="space-y-2 rounded-md border border-ambre-trait bg-ambre-voile p-3 text-sm text-encre"
+                className="space-y-2 rounded-md border border-encre-clair bg-voile p-3 text-sm text-encre"
               >
                 <p>{erreur}</p>
                 {peutReessayer ? (

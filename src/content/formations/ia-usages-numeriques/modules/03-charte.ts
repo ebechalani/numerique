@@ -109,7 +109,7 @@ export const charte: Module = {
       ton: "attention",
       titre: "La colonne du milieu n’existe pas par défaut",
       texte:
-        "Un usage n’est « encadré » que si l’enseignant l’a explicitement autorisé, et l’usage est alors mentionné dans le travail rendu. Sans autorisation annoncée, on retombe dans la colonne rouge.",
+        "Un usage n’est « encadré » que si l’enseignant l’a explicitement autorisé, et l’usage est alors mentionné dans le travail rendu. Sans autorisation annoncée, l’usage n’est pas couvert — et dans un travail évalué, c’est une fraude, comme un plagiat.",
     },
 
     { type: "titre", texte: "Pour nous, enseignants" },

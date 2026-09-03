@@ -102,6 +102,12 @@ export const restitutionCloture: Module = {
         },
       ],
     },
+    { type: "titre", texte: "Avant de quitter la salle" },
+    {
+      type: "paragraphe",
+      texte:
+        "Deux minutes pour l’enquête de satisfaction, quatre questions, sur le site : /formations/ia-usages-numeriques/participer/satisfaction — QR code projeté. Les réponses sont anonymes : ni nom, ni adresse, ni identifiant. Elles servent à améliorer la session et à choisir les ateliers de l’année.",
+    },
     { type: "titre", texte: "La suite" },
     {
       type: "cartes",
@@ -135,12 +141,12 @@ export const restitutionCloture: Module = {
       ton: "info",
       titre: "Rester en contact",
       texte:
-        "Eddy Bachaalany, référent numérique — eddy.bachaalany@lycee-montaigne.edu.lb. La fiche outils vous est envoyée en version numérique après la session. L’espace partagé Teams / OneNote reste ouvert : déposez vos ressources, vos requêtes et vos carnets.",
+        "Eddy Bachaalany, référent numérique — eddy.bachaalany@lycee-montaigne.edu.lb. La fiche outils vous est envoyée en version numérique après la session. Le mur des contributions reste consultable : /formations/ia-usages-numeriques/participer/restitution/contributions — les ressources, les requêtes et les vigilances de tous les groupes y sont rassemblées.",
     },
     {
       type: "notesAnimateur",
       texte:
-        "1:45 — 10 minutes de restitution, puis 5 minutes de clôture (diapositives 23 à 25). Chrono projeté, une minute par groupe, sans débordement. Noter au tableau les vigilances communes : elles deviennent la check-list collective. Pour la clôture : les trois phrases (à adapter à sa matière), la suite du plan de formation, puis l’enquête de satisfaction — QR code projeté, 4 questions (annexe B), 2 minutes, avant de quitter la salle. Rappeler la date du prochain atelier. Envoyer la fiche outils et le lien vers l’espace partagé le jour même.",
+        "1:45 — 10 minutes de restitution, puis 5 minutes de clôture (diapositives 23 à 25). Chrono projeté, une minute par groupe, sans débordement. Noter au tableau les vigilances communes : elles deviennent la check-list collective. Pour la clôture : les trois phrases (à adapter à sa matière), la suite du plan de formation, puis l’enquête de satisfaction sur le site — projeter le QR code de la page satisfaction affiché par le tableau de bord, 4 questions (annexe B), 2 minutes, avant de quitter la salle. Attendre que le compteur de réponses se stabilise avant de fermer la session dans le tableau de bord. Rappeler la date du prochain atelier. Envoyer la fiche outils et le lien du mur des contributions le jour même.",
     },
   ],
 };

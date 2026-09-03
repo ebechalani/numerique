@@ -121,7 +121,7 @@ export const pourquoi: Module = {
     {
       type: "notesAnimateur",
       texte:
-        "0:05 — 10 min. Commencer par afficher les résultats du sondage (bascule vers Forms) : commenter en 1 minute. Puis les trois constats. Message : ne pas en parler, c’est laisser le sujet aux réseaux sociaux. Rappeler le cadre national du 14 juin 2025 : usage autonome des élèves uniquement à partir de la 4e, parcours Pix IA obligatoires en 4e et 2nde dès cette rentrée. Présenter les quatre objectifs en 1 minute, en insistant sur le concret : tout le monde manipule, tout le monde repart avec un carnet sur un de ses chapitres. Programme en 30 secondes. En cas de retard dans la suite de la session, réduire l’atelier disciplinaire à 20 minutes plutôt que de supprimer la restitution.",
+        "0:05 — 10 min. Commencer par afficher les résultats du sondage (bascule vers l’onglet du tableau de bord animateur, /formations/ia-usages-numeriques/animateur) : commenter en 1 minute. Puis les trois constats. Message : ne pas en parler, c’est laisser le sujet aux réseaux sociaux. Rappeler le cadre national du 14 juin 2025 : usage autonome des élèves uniquement à partir de la 4e, parcours Pix IA obligatoires en 4e et 2nde dès cette rentrée. Présenter les quatre objectifs en 1 minute, en insistant sur le concret : tout le monde manipule, tout le monde repart avec un carnet sur un de ses chapitres. Programme en 30 secondes. En cas de retard dans la suite de la session, réduire l’atelier disciplinaire à 20 minutes plutôt que de supprimer la restitution.",
     },
   ],
 };

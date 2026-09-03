@@ -37,7 +37,7 @@ export const deroule: SectionDeroule[] = [
           ],
           [
             "Outils utilisés",
-            "NotebookLM (que Google renomme « Gemini Notebook »), avec un compte Google personnel — outil principal des ateliers : travailler sur ses propres supports de cours (résumés, quiz, flashcards, cartes mentales, résumés audio). Microsoft Copilot Chat avec le compte établissement — outil d’appoint pour la génération libre (exercices, grilles, reformulations). Microsoft Forms (sondage d’entrée, enquête de satisfaction) · Teams ou OneNote (espace partagé de restitution).",
+            "NotebookLM (que Google renomme « Gemini Notebook »), avec un compte Google personnel — outil principal des ateliers : travailler sur ses propres supports de cours (résumés, quiz, flashcards, cartes mentales, résumés audio). Microsoft Copilot Chat avec le compte établissement — outil d’appoint pour la génération libre (exercices, grilles, reformulations). Le sondage d’entrée, la trame de restitution et l’enquête de satisfaction se remplissent sur le site de la formation (pages « participer ») : aucune application externe, aucun compte supplémentaire.",
           ],
           [
             "Objectifs",
@@ -76,14 +76,19 @@ export const deroule: SectionDeroule[] = [
               "Vérifier avec l’administrateur Microsoft 365 que Copilot Chat est actif pour les comptes enseignants ; tester avec un compte enseignant standard.",
           },
           {
-            titre: "Formulaires",
+            titre: "Collecte des réponses",
             texte:
-              "Créer dans Microsoft Forms le sondage d’entrée (3 questions) et l’enquête de satisfaction (4 questions) — textes en annexes A et B ; générer les QR codes et les insérer dans le diaporama (diapositives 2 et 25).",
+              "Les trois formulaires (sondage d’entrée, trame de restitution, enquête de satisfaction) sont déjà écrits dans le site : il n’y a rien à créer, seulement à activer la collecte. Renseigner deux variables d’environnement — DATABASE_URL, la chaîne de connexion Postgres qui reçoit les réponses, et CODE_ANIMATEUR, le code d’accès au tableau de bord, à changer à chaque session. Sur Vercel : Project Settings → Environment Variables ; en local, dans .env.local. Puis appliquer le schéma une fois (npm run db:init). Sans DATABASE_URL, les pages de réponse annoncent « collecte non configurée » et la session se tient à main levée.",
           },
           {
-            titre: "Espace partagé",
+            titre: "Ouvrir la session",
             texte:
-              "Créer un canal Teams ou un bloc-notes OneNote « Formation IA — rentrée 2026 » avec une page par discipline et la trame de restitution.",
+              "Ouvrir le tableau de bord animateur (/formations/ia-usages-numeriques/animateur), saisir le code, créer la session du jour — un libellé suffit, par exemple « Pré-rentrée 2026 ». Tant qu’aucune session n’est ouverte, les formulaires n’acceptent pas de réponse ; les dépôts d’une session close restent consultables. Une seule session couvre le sondage, la restitution et l’enquête : il n’y a plus de canal Teams ni de bloc-notes OneNote à préparer.",
+          },
+          {
+            titre: "QR codes",
+            texte:
+              "Le tableau de bord affiche les QR codes des trois pages (sondage, restitution, satisfaction) une fois la session ouverte. Les projeter au moment voulu, ou les capturer pour les insérer dans le diaporama (diapositives 2 et 25). Écrire aussi l’adresse au tableau, pour ceux qui n’ont pas de téléphone à portée.",
           },
           {
             titre: "Textes de démonstration",
@@ -110,7 +115,7 @@ export const deroule: SectionDeroule[] = [
       {
         type: "liste",
         items: [
-          "Ouvrir : le diaporama, le carnet NotebookLM de démonstration (connecté), Copilot avec le compte établissement, les deux formulaires, l’espace partagé.",
+          "Ouvrir : le diaporama, le carnet NotebookLM de démonstration (connecté), Copilot avec le compte établissement, le tableau de bord animateur (code saisi, session du jour ouverte) et le mur des contributions.",
           "Disposer la salle en îlots de 3-4 (par discipline ou niveau) ; distribuer la fiche outils.",
         ],
       },
@@ -135,15 +140,15 @@ export const deroule: SectionDeroule[] = [
             "0:00",
             "5 min",
             "Accueil et sondage flash",
-            "Les participants répondent au sondage Forms (QR code projeté) pendant l’installation : « Utilisez-vous l’IA ? Pour quoi ? Et vos élèves ? Votre principale question aujourd’hui ? »",
-            "Diapo 2 · Forms",
+            "Les participants répondent au sondage du site (QR code projeté) pendant l’installation : « Utilisez-vous l’IA ? Pour quoi ? Et vos élèves ? Votre principale question aujourd’hui ? »",
+            "Diapo 2 · Page sondage",
           ],
           [
             "0:05",
             "10 min",
             "Pourquoi on en parle",
-            "Afficher les résultats du sondage en direct. Trois constats : les élèves l’utilisent déjà ; un cadre national existe (juin 2025) ; l’établissement a une charte. Présenter les objectifs et le programme.",
-            "Diapos 3-5",
+            "Afficher les résultats du sondage en direct depuis le tableau de bord. Trois constats : les élèves l’utilisent déjà ; un cadre national existe (juin 2025) ; l’établissement a une charte. Présenter les objectifs et le programme.",
+            "Diapos 3-5 · Tableau de bord",
           ],
           [
             "0:15",
@@ -177,22 +182,22 @@ export const deroule: SectionDeroule[] = [
             "1:15",
             "30 min",
             "Atelier par discipline",
-            "Groupes de 3-4. Choisir un cas d’usage (NotebookLM ou Copilot selon la tâche), produire une ressource, la vérifier, renseigner la trame de restitution dans l’espace partagé. L’animateur circule.",
-            "Diapo 22 · NotebookLM / Copilot · Teams",
+            "Groupes de 3-4. Choisir un cas d’usage (NotebookLM ou Copilot selon la tâche), produire une ressource, la vérifier, déposer la trame de restitution sur le site. L’animateur circule.",
+            "Diapo 22 · NotebookLM / Copilot · Page restitution",
           ],
           [
             "1:45",
             "10 min",
             "Restitution éclair",
-            "1 minute par groupe : ce que nous avons produit, ce qu’il a fallu corriger, une vigilance.",
-            "Diapo 23",
+            "1 minute par groupe : ce que nous avons produit, ce qu’il a fallu corriger, une vigilance. Projeter le mur des contributions : le groupe qui parle a son dépôt sous les yeux.",
+            "Diapo 23 · Mur des contributions",
           ],
           [
             "1:55",
             "5 min",
             "Clôture",
-            "Les trois phrases à dire aux élèves la première semaine ; la suite (ateliers, Pix+Édu IA, café numérique) ; enquête de satisfaction (QR code).",
-            "Diapos 24-25 · Forms",
+            "Les trois phrases à dire aux élèves la première semaine ; la suite (ateliers, Pix+Édu IA, café numérique) ; enquête de satisfaction sur le site (QR code projeté).",
+            "Diapos 24-25 · Page satisfaction",
           ],
         ],
       },
@@ -217,7 +222,7 @@ export const deroule: SectionDeroule[] = [
           {
             titre: "Version 1 heure",
             texte:
-              "Sondage (3 min) · Pourquoi + comprendre (15 min, une démonstration et la contre-démonstration NotebookLM) · Cadre + 3 cas pratiques (15 min) · Atelier guidé NotebookLM, exercices 1 et 2 (22 min) · Clôture (5 min). L’atelier disciplinaire devient un « devoir de rentrée » à partager dans l’espace commun.",
+              "Sondage (3 min) · Pourquoi + comprendre (15 min, une démonstration et la contre-démonstration NotebookLM) · Cadre + 3 cas pratiques (15 min) · Atelier guidé NotebookLM, exercices 1 et 2 (22 min) · Clôture (5 min). L’atelier disciplinaire devient un « devoir de rentrée » à déposer sur la page de restitution du site, la session restant ouverte quelques jours.",
           },
           {
             titre: "Version demi-journée (3 heures)",
@@ -238,7 +243,12 @@ export const deroule: SectionDeroule[] = [
     slug: "annexes",
     titre: "Annexes",
     blocs: [
-      { type: "titre", texte: "Annexe A — Sondage d’entrée (Microsoft Forms)" },
+      { type: "titre", texte: "Annexe A — Sondage d’entrée" },
+      {
+        type: "paragraphe",
+        texte:
+          "Se remplit sur le site : /formations/ia-usages-numeriques/participer/sondage — 5 minutes, pendant l’installation. Anonyme : ni nom, ni adresse, ni identifiant. Les résultats s’affichent dans le tableau de bord animateur, prêts à projeter à 0:05.",
+      },
       {
         type: "liste",
         ordonnee: true,
@@ -251,7 +261,12 @@ export const deroule: SectionDeroule[] = [
       },
       {
         type: "titre",
-        texte: "Annexe B — Enquête de satisfaction (Microsoft Forms)",
+        texte: "Annexe B — Enquête de satisfaction",
+      },
+      {
+        type: "paragraphe",
+        texte:
+          "Se remplit sur le site : /formations/ia-usages-numeriques/participer/satisfaction — 2 minutes, avant de quitter la salle. Anonyme, comme le sondage d’entrée. Les moyennes et les réponses libres s’affichent dans le tableau de bord animateur.",
       },
       {
         type: "liste",
@@ -291,6 +306,11 @@ export const deroule: SectionDeroule[] = [
           "un chapitre de votre cours au format PDF (exporté depuis Word), sans aucune donnée d’élève ;",
           "vos identifiants Microsoft 365 de l’établissement.",
         ],
+      },
+      {
+        type: "paragraphe",
+        texte:
+          "À votre arrivée, je projetterai le lien d’un court sondage anonyme — trois questions et une question ouverte, deux minutes. Il se remplit directement sur le site de la formation : rien à installer, aucun compte à créer, et aucune information permettant de vous identifier n’est demandée. Ses résultats ouvrent la séance.",
       },
       {
         type: "paragraphe",

@@ -37,7 +37,14 @@ export const avantDeCommencer: Module = {
     {
       type: "paragraphe",
       texte:
-        "Le sondage se remplit dans Microsoft Forms pendant l’installation, en scannant le QR code projeté (un lien court est également prévu). Les résultats sont affichés et commentés juste après, au début de la séquence suivante.",
+        "Le sondage se remplit sur ce site pendant l’installation, à la page « Sondage d’entrée » : /formations/ia-usages-numeriques/participer/sondage. Scannez le QR code projeté, ou saisissez l’adresse — aucune application à installer, aucun compte à créer. Les résultats sont affichés et commentés juste après, au début de la séquence suivante.",
+    },
+    {
+      type: "encadre",
+      ton: "info",
+      titre: "Réponse anonyme",
+      texte:
+        "Le questionnaire ne demande ni nom, ni adresse, ni identifiant : rien ne permet de savoir qui a répondu quoi. Seuls les totaux sont projetés.",
     },
     {
       type: "cartes",
@@ -94,7 +101,7 @@ export const avantDeCommencer: Module = {
         {
           titre: "Vos identifiants Microsoft 365 de l’établissement",
           texte:
-            "Ils servent à Copilot Chat, aux formulaires et à l’espace partagé Teams / OneNote de la restitution.",
+            "Ils servent à Copilot Chat, l’outil d’appoint de l’atelier. Le sondage, la restitution et l’enquête de satisfaction se remplissent sur ce site : rien d’autre à ouvrir.",
         },
       ],
     },
@@ -102,7 +109,7 @@ export const avantDeCommencer: Module = {
     {
       type: "notesAnimateur",
       texte:
-        "0:00 — 5 min. Accueil. Pendant l’installation, projeter directement la diapositive du sondage et laisser les participants répondre. Prévoir un lien court en plus du QR code, pour ceux qui n’ont pas de téléphone à portée. Les résultats seront affichés à la diapositive suivante : ouvrir l’onglet « Réponses » de Forms. Intention de la séquence : installer la session sur les usages réels des participants plutôt que sur des généralités, et obtenir des données à afficher immédiatement. Annoncer : 2 heures, très pratique, chacun repart avec un carnet NotebookLM sur un de ses chapitres et une ressource prête pour sa classe. Ton : ni technophile ni catastrophiste — des outils, des règles, des pratiques de classe.",
+        "0:00 — 5 min. Accueil. Pendant l’installation, projeter la diapositive du sondage avec le QR code affiché par le tableau de bord animateur, et laisser les participants répondre. Écrire aussi l’adresse au tableau, pour ceux qui n’ont pas de téléphone à portée. Les résultats seront affichés à la diapositive suivante : garder le tableau de bord ouvert dans un onglet (/formations/ia-usages-numeriques/animateur). Intention de la séquence : installer la session sur les usages réels des participants plutôt que sur des généralités, et obtenir des données à afficher immédiatement. Annoncer : 2 heures, très pratique, chacun repart avec un carnet NotebookLM sur un de ses chapitres et une ressource prête pour sa classe. Ton : ni technophile ni catastrophiste — des outils, des règles, des pratiques de classe.",
     },
   ],
 };
