@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { REFERENT, SIGNATURE } from "@/content/site";
 import { formations } from "@/lib/formations";
 
 export const metadata: Metadata = {
-  description:
-    "Le catalogue des formations du référent numérique du Lycée Montaigne — Beit Chabab, Liban.",
+  description: `Le catalogue des formations d’${SIGNATURE} du Lycée Montaigne — Beit Chabab, Liban.`,
 };
 
 /* ------------------------------------------------------------------ */
@@ -87,6 +87,26 @@ export default function Accueil() {
         <p className="mt-4 text-lg leading-relaxed text-graphite sm:text-xl">
           L’espace de formation du référent numérique : suivre les formations,
           retrouver les ressources, poser ses questions.
+        </p>
+        <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-graphite">
+          <span
+            aria-hidden="true"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-encre font-serif text-sm text-papier"
+          >
+            EB
+          </span>
+          <span>
+            Animé par{" "}
+            <span className="font-medium text-encre">{REFERENT.nom}</span>,{" "}
+            {REFERENT.role}
+            <Point />{" "}
+            <a
+              href={`mailto:${REFERENT.courriel}`}
+              className="text-accent underline decoration-trait-fort underline-offset-2 transition-colors hover:text-accent-fort"
+            >
+              {REFERENT.courriel}
+            </a>
+          </span>
         </p>
       </header>
 

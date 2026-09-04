@@ -24,6 +24,8 @@ interface EntreeRessource {
 interface Props {
   formationSlug: string;
   formationTitre: string;
+  /** « Eddy Bachaalany, référent numérique » — affiché sous le titre. */
+  formateur?: string;
   modules: EntreeModule[];
   ressources: EntreeRessource[];
   /** Slug du module ou de la ressource affichée. */
@@ -162,6 +164,7 @@ function Coche() {
 export default function NavModules({
   formationSlug,
   formationTitre,
+  formateur,
   modules,
   ressources,
   actif,
@@ -184,6 +187,9 @@ export default function NavModules({
       >
         {formationTitre}
       </Link>
+      {formateur ? (
+        <p className="mt-1 text-xs text-estompe">Animée par {formateur}</p>
+      ) : null}
 
       <div className="mt-3">
         <BarreProgression formationSlug={formationSlug} slugs={slugs} />

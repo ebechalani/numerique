@@ -73,6 +73,7 @@ export default async function PageRessource({ params }: Props) {
           <NavModules
             formationSlug={formation.slug}
             formationTitre={formation.titre}
+            formateur={`${formation.formateur.nom}, ${formation.formateur.role.toLowerCase()}`}
             modules={formation.modules}
             ressources={formation.ressources}
             actif={ressource.slug}
