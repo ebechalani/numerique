@@ -58,8 +58,8 @@ export const dynamic = "force-dynamic";
 const MESSAGE_COLLECTE_ABSENTE =
   "Collecte non configurée : la variable d’environnement DATABASE_URL est " +
   "absente. Les questionnaires ne sont pas enregistrés et le tableau de bord " +
-  "reste vide. Renseignez la variable, puis appliquez le schéma avec " +
-  "« npm run db:init ».";
+  "reste vide. Renseignez la variable et redéployez : les tables sont créées " +
+  "automatiquement.";
 
 /** Résultats vides — même forme qu’une séance sans réponse, donc affichables. */
 function resultatsVides(): Resultats {

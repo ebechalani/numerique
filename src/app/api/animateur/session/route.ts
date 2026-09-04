@@ -54,8 +54,8 @@ const MAX_CARACTERES_LIBELLE = 120;
 
 const MESSAGE_COLLECTE_ABSENTE =
   "Collecte non configurée : la variable d’environnement DATABASE_URL est " +
-  "absente, aucune session ne peut être ouverte. Renseignez la variable, puis " +
-  "appliquez le schéma avec « npm run db:init ».";
+  "absente, aucune session ne peut être ouverte. Renseignez la variable et " +
+  "redéployez : les tables sont créées automatiquement.";
 
 function erreur(code: string, message: string, statut: number): Response {
   return Response.json(

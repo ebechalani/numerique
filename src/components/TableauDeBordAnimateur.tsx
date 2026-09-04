@@ -1027,8 +1027,8 @@ export default function TableauDeBordAnimateur({
     donnees?.message ??
     "Collecte non configurée : la variable d’environnement DATABASE_URL est " +
       "absente. Les questionnaires ne sont pas enregistrés et le tableau de " +
-      "bord reste vide. Renseignez la variable, puis appliquez le schéma avec " +
-      "« npm run db:init ».";
+      "bord reste vide. Renseignez la variable et redéployez : les tables " +
+      "sont créées automatiquement.";
 
   const restitutionsParDiscipline = useMemo(() => {
     const groupes = new Map<string, Restitution[]>();

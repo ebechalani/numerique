@@ -26,6 +26,9 @@
  * concaténée dans du SQL.
  */
 
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
 import { Pool, type QueryResultRow } from "pg";
 
 import * as sourceQuestionnaires from "@/content/formations/ia-usages-numeriques/ressources/questionnaires";
@@ -108,21 +111,31 @@ export type NomQuestionnaire = "sondage" | "satisfaction";
  * et l'état « collecte non configurée ».
  */
 export function collecteConfiguree(): boolean {
-  return Boolean(process.env.DATABASE_URL);
+  return Boolean(urlBase());
+}
+
+/**
+ * Chaîne de connexion. `DATABASE_URL` d'abord ; à défaut `POSTGRES_URL`, nom
+ * que certaines intégrations Vercel injectent à la place.
+ */
+function urlBase(): string | undefined {
+  return process.env.DATABASE_URL || process.env.POSTGRES_URL || undefined;
 }
 
 const MESSAGE_NON_CONFIGURE =
   "Collecte non configurée : la variable d'environnement DATABASE_URL est absente. " +
   "La renseigner dans .env.local (en local) ou dans les variables du projet " +
-  "(en production), puis appliquer le schéma avec « npm run db:init ».";
+  "(en production) ; les tables sont créées automatiquement au premier accès.";
 
 /**
- * Le pool est conservé sur `globalThis` : en développement, le rechargement à
- * chaud réévalue les modules à chaque édition, et un pool par évaluation
- * finirait par épuiser les connexions autorisées par l'hébergeur.
+ * Le pool et la promesse de schéma sont conservés sur `globalThis` : en
+ * développement, le rechargement à chaud réévalue les modules à chaque édition,
+ * et un pool par évaluation finirait par épuiser les connexions autorisées par
+ * l'hébergeur.
  */
 const espaceGlobal = globalThis as typeof globalThis & {
   __poolFormation?: Pool;
+  __schemaFormation?: Promise<void>;
 };
 
 /** Une base locale n'a pas de certificat TLS : inutile (et bloquant) d'exiger SSL. */
@@ -146,7 +159,7 @@ function urlLocale(url: string): boolean {
 
 /** Pool partagé. Créé à la première requête réelle, jamais au chargement. */
 function connexion(): Pool {
-  const url = process.env.DATABASE_URL;
+  const url = urlBase();
   if (!url) throw new Error(MESSAGE_NON_CONFIGURE);
 
   if (!espaceGlobal.__poolFormation) {
@@ -174,11 +187,59 @@ function connexion(): Pool {
   return espaceGlobal.__poolFormation;
 }
 
+/* ------------------------------------------------------------------ */
+/* Schéma                                                              */
+/* ------------------------------------------------------------------ */
+
+/** Le fichier de schéma, embarqué dans le déploiement (voir next.config.ts). */
+const CHEMIN_SCHEMA = path.join(process.cwd(), "db", "schema.sql");
+
+/**
+ * Verrou consultatif pris le temps d'appliquer le schéma : deux instances
+ * démarrant en même temps ne créent pas les tables en parallèle.
+ */
+const VERROU_SCHEMA = 7412026;
+
+/**
+ * Applique db/schema.sql une fois par processus, avant la première requête.
+ *
+ * Le schéma n'emploie que des « create … if not exists » : le rejouer sur une
+ * base déjà en service ne change rien. Ainsi, renseigner DATABASE_URL suffit ;
+ * aucune commande à lancer à la main. En cas d'échec, la promesse est oubliée
+ * pour que l'appel suivant retente.
+ */
+function garantirSchema(): Promise<void> {
+  if (!espaceGlobal.__schemaFormation) {
+    espaceGlobal.__schemaFormation = (async () => {
+      let schema: string;
+      try {
+        schema = await readFile(CHEMIN_SCHEMA, "utf8");
+      } catch (erreur) {
+        throw new Error(
+          `Schéma introuvable (${CHEMIN_SCHEMA}) : ${
+            erreur instanceof Error ? erreur.message : String(erreur)
+          }`,
+        );
+      }
+      // Plusieurs instructions dans une seule requête simple : Postgres les
+      // exécute dans une transaction implicite, et le verrou tient jusqu'au bout.
+      await connexion().query(
+        `select pg_advisory_xact_lock(${VERROU_SCHEMA});\n${schema}`,
+      );
+    })().catch((erreur: unknown) => {
+      espaceGlobal.__schemaFormation = undefined;
+      throw erreur;
+    });
+  }
+  return espaceGlobal.__schemaFormation;
+}
+
 /** Exécute une requête paramétrée et renvoie les lignes. */
 async function interroger<L extends QueryResultRow>(
   texte: string,
   valeurs: unknown[] = [],
 ): Promise<L[]> {
+  await garantirSchema();
   const resultat = await connexion().query<L>(texte, valeurs);
   return resultat.rows;
 }

@@ -43,7 +43,7 @@ Autres commandes :
 npm run lint      # ESLint
 npm run build     # compilation de production
 npm run start     # sert la version compilée
-npm run db:init   # applique db/schema.sql à DATABASE_URL (rejouable)
+npm run db:init   # applique db/schema.sql à la main (facultatif, rejouable)
 ```
 
 ## Configuration
@@ -66,9 +66,10 @@ Le projet est une application Next.js standard, prévue pour Vercel :
 1. Importer le dépôt dans Vercel.
 2. Renseigner les variables ci-dessus dans *Project Settings → Environment
    Variables*. Pour Postgres, l’onglet *Storage* crée la base et injecte
-   `DATABASE_URL` automatiquement.
-3. Appliquer le schéma une fois, depuis un poste ayant `DATABASE_URL` dans
-   `.env.local` : `npm run db:init`.
+   `DATABASE_URL` automatiquement (`POSTGRES_URL` est accepté aussi).
+3. Redéployer. Les tables sont créées par le site au premier accès à la base :
+   aucune commande à lancer. `npm run db:init` reste disponible pour appliquer
+   le schéma à la main, par exemple sur une base locale.
 
 ## Organisation du code
 
