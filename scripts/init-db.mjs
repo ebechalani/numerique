@@ -82,7 +82,7 @@ dire(
     : "  Aucun fichier .env.local trouvé — variables prises dans l'environnement.",
 );
 
-const url = process.env.DATABASE_URL;
+const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 if (!url) {
   console.error();
   console.error("  DATABASE_URL est absente : impossible d'initialiser la base.");

@@ -2,9 +2,10 @@
 -- Plateforme de formation — Lycée Montaigne, Beit Chabab
 -- Schéma de la collecte des réponses (remplace Microsoft Forms et Teams/OneNote).
 --
--- Trois tables seulement, appliquées par `npm run db:init`. Le script est
+-- Trois tables seulement, appliquées par le site lui-même au premier accès à
+-- la base (src/lib/db.ts), ou à la main par `npm run db:init`. Le fichier est
 -- idempotent : chaque instruction est écrite en « create ... if not exists »,
--- on peut donc la rejouer sans risque sur une base déjà en service.
+-- on peut donc le rejouer sans risque sur une base déjà en service.
 --
 -- Anonymat : aucune colonne nominative. Les questionnaires d'entrée et de
 -- satisfaction n'ont jamais comporté de champ d'identité (annexes A et B du
