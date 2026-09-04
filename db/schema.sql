@@ -61,6 +61,15 @@ create table if not exists formation_restitution (
   envoye_le timestamptz not null default now()
 );
 
+-- Réglages du site définis depuis le site lui-même, une ligne par clé. Sert au
+-- code d'accès animateur quand il n'est pas fourni par l'environnement : la
+-- valeur stockée est une empreinte SHA-256, jamais le code en clair.
+create table if not exists formation_reglage (
+  cle text primary key,
+  valeur text not null,
+  modifie_le timestamptz not null default now()
+);
+
 -- ---------------------------------------------------------------------------
 -- Index
 --
@@ -91,6 +100,8 @@ comment on table formation_reponse is
   'Réponses anonymes aux questionnaires d''entrée et de satisfaction (jsonb).';
 comment on table formation_restitution is
   'Trame de restitution de l''atelier disciplinaire, une ligne par groupe.';
+comment on table formation_reglage is
+  'Réglages définis depuis le site (empreinte du code animateur, etc.).';
 
 comment on column formation_session.libelle is
   'Nom lisible de la session, ex. « Pré-rentrée 2026 — groupe du matin ».';

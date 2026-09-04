@@ -35,6 +35,7 @@
  *     autorisé / encadré / interdit.
  */
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { KeyboardEvent as EvenementClavier, ReactNode } from "react";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
@@ -1317,6 +1318,18 @@ export default function TableauDeBordAnimateur({
           Fermer la collecte empêche l’enregistrement de nouvelles réponses ; les
           résultats déjà reçus, eux, restent consultables.
         </p>
+
+        {projection ? null : (
+          <p className="mt-3 text-sm text-graphite">
+            <Link
+              href={`/formations/${formation}/animateur/code`}
+              className="text-accent underline underline-offset-4 transition-colors hover:text-accent-fort"
+            >
+              Changer le code d’accès animateur
+            </Link>
+            <span className="text-estompe"> · à faire à chaque séance</span>
+          </p>
+        )}
 
         {seance ? (
           <div className="mt-6 rounded-[--radius-carte] border border-trait bg-craie p-5 sm:p-6">

@@ -27,10 +27,11 @@ import { notFound } from "next/navigation";
 import QRCode from "qrcode";
 
 import ConnexionAnimateur from "@/components/ConnexionAnimateur";
+import DefinirCodeAnimateur from "@/components/DefinirCodeAnimateur";
 import TableauDeBordAnimateur, {
   type LienFormulaire,
 } from "@/components/TableauDeBordAnimateur";
-import { animateurAutorise, codeAnimateurConfigure } from "@/lib/animateur";
+import { animateurAutorise, secretAnimateur } from "@/lib/animateur";
 import { collecteConfiguree } from "@/lib/db";
 import { getFormation } from "@/lib/formations";
 
@@ -137,9 +138,10 @@ async function qrCodeDe(url: string): Promise<string | null> {
 /* ------------------------------------------------------------------ */
 
 /**
- * Sans CODE_ANIMATEUR, il n’y a aucun secret à comparer : le tableau de bord
- * reste fermé, et proposer un champ de saisie serait un leurre. On explique
- * donc la marche à suivre plutôt que d’afficher un verrou que rien n’ouvre.
+ * Ni code dans l’environnement, ni base où en enregistrer un : il n’y a aucun
+ * secret à comparer, le tableau de bord reste fermé, et proposer un champ de
+ * saisie serait un leurre. On explique la marche à suivre — relier la base,
+ * puis revenir choisir le code ici même.
  */
 function CodeAbsent() {
   return (
@@ -148,42 +150,34 @@ function CodeAbsent() {
         <p className="text-sm text-accent">Espace animateur</p>
 
         <h1 className="mt-3 font-serif text-2xl leading-tight text-encre">
-          Aucun code d’accès n’est défini
+          Le site n’est pas encore relié à sa base de données
         </h1>
 
         <p className="mt-4 leading-relaxed text-graphite">
-          Le tableau de bord affiche les réponses de la salle : il ne s’ouvre
-          qu’avec un code, et aucun code n’est configuré sur ce site. Il reste
-          donc fermé — c’est le comportement voulu, pas une panne.
+          Le tableau de bord affiche les réponses de la salle. Pour cela, le
+          site a besoin d’une base de données, où les réponses et votre code
+          d’accès sont conservés. Elle n’est pas encore reliée : le tableau
+          reste fermé, et les formulaires n’enregistrent rien.
         </p>
 
-        <h2 className="mt-8 font-serif text-lg text-encre">Comment l’ouvrir</h2>
+        <h2 className="mt-8 font-serif text-lg text-encre">Relier la base</h2>
 
         <ol className="mt-3 space-y-3 text-sm leading-relaxed text-graphite">
           <li>
-            <span className="font-medium text-encre">1. Choisir un code.</span>{" "}
-            Une phrase courte, connue de l’animateur seul, changée à chaque
-            session.
+            <span className="font-medium text-encre">1. Sur Vercel,</span>{" "}
+            ouvrez le projet, onglet <span className="font-medium text-encre">Storage</span>,
+            puis <span className="font-medium text-encre">Create Database</span>,
+            type Postgres. Reliez-la au projet quand Vercel le propose.
           </li>
           <li>
-            <span className="font-medium text-encre">
-              2. Le déclarer dans l’environnement
-            </span>{" "}
-            sous le nom{" "}
-            <code className="rounded bg-voile px-1.5 py-0.5 font-mono text-[0.8125rem] text-encre">
-              CODE_ANIMATEUR
-            </code>{" "}
-            : dans le fichier{" "}
-            <code className="rounded bg-voile px-1.5 py-0.5 font-mono text-[0.8125rem] text-encre">
-              .env.local
-            </code>{" "}
-            en local, dans les variables du projet en production.
+            <span className="font-medium text-encre">2. Redéployez</span> le
+            site : onglet Deployments, menu du dernier déploiement, Redeploy.
+            Les variables ne sont lues qu’au démarrage.
           </li>
           <li>
-            <span className="font-medium text-encre">
-              3. Redémarrer le site,
-            </span>{" "}
-            puis revenir sur cette page : le champ de saisie apparaîtra.
+            <span className="font-medium text-encre">3. Revenez sur cette page :</span>{" "}
+            elle vous proposera de choisir votre code d’accès. Les tables de la
+            base se créent toutes seules.
           </li>
         </ol>
 
@@ -212,7 +206,16 @@ export default async function PageAnimateur({ params }: Props) {
     calculé — encore moins rendu — pour un visiteur qui n’a pas le code.
   */
   if (!(await animateurAutorise())) {
-    return codeAnimateurConfigure() ? <ConnexionAnimateur /> : <CodeAbsent />;
+    if (await secretAnimateur()) return <ConnexionAnimateur />;
+    // Aucun code nulle part : on le fait choisir ici si la base est reliée.
+    return collecteConfiguree() ? (
+      <DefinirCodeAnimateur
+        mode="creation"
+        lienRetour={`/formations/${formation.slug}/animateur`}
+      />
+    ) : (
+      <CodeAbsent />
+    );
   }
 
   const origine = await origineDuSite();

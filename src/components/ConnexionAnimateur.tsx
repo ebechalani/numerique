@@ -226,9 +226,10 @@ export default function ConnexionAnimateur() {
         </form>
 
         <p className="mt-5 text-xs leading-relaxed text-estompe">
-          Le code est celui de la variable d’environnement CODE_ANIMATEUR. Il
-          n’est pas conservé dans le navigateur : l’accès tient douze heures,
-          puis il faut le saisir à nouveau.
+          Le code est celui choisi par l’animateur — depuis le site, ou dans la
+          variable d’environnement CODE_ANIMATEUR. Il n’est pas conservé dans le
+          navigateur : l’accès tient douze heures, puis il faut le saisir à
+          nouveau.
         </p>
       </div>
     </div>
