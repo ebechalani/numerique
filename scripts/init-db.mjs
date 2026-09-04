@@ -82,7 +82,22 @@ dire(
     : "  Aucun fichier .env.local trouvé — variables prises dans l'environnement.",
 );
 
-const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+// Même règle que le site (src/lib/db.ts) : DATABASE_URL, puis POSTGRES_URL,
+// puis toute variable *_URL dont la valeur est une URL Postgres.
+const URL_POSTGRES = /^postgres(ql)?:\/\//i;
+const url =
+  [process.env.DATABASE_URL, process.env.POSTGRES_URL].find(
+    (valeur) => valeur && URL_POSTGRES.test(valeur),
+  ) ??
+  Object.entries(process.env)
+    .filter(
+      ([nom, valeur]) =>
+        nom.endsWith("_URL") &&
+        !nom.includes("UNPOOLED") &&
+        typeof valeur === "string" &&
+        URL_POSTGRES.test(valeur),
+    )
+    .sort(([a], [b]) => a.localeCompare(b))[0]?.[1];
 if (!url) {
   console.error();
   console.error("  DATABASE_URL est absente : impossible d'initialiser la base.");
