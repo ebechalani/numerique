@@ -3,6 +3,8 @@
  * de la règle non négociable de la charte.
  * Composant serveur — aucun état, aucune interactivité.
  */
+import { ETABLISSEMENT, REFERENT, SIGNATURE } from "@/content/site";
+
 export default function PiedDePage() {
   return (
     <footer className="sans-impression mt-16 border-t border-trait bg-voile">
@@ -10,24 +12,25 @@ export default function PiedDePage() {
         <section>
           <h2 className="font-serif text-sm text-encre">L’établissement</h2>
           <p className="mt-2 text-sm leading-relaxed text-graphite">
-            Lycée Montaigne — Beit Chabab
+            {ETABLISSEMENT.nom} — {ETABLISSEMENT.lieu}
             <span aria-hidden="true" className="mx-1.5 text-trait-fort">
               ·
             </span>
-            Liban
+            {ETABLISSEMENT.pays}
           </p>
         </section>
 
         <section>
-          <h2 className="font-serif text-sm text-encre">Référent numérique</h2>
+          <h2 className="font-serif text-sm text-encre">Le site est animé par</h2>
           <p className="mt-2 text-sm leading-relaxed text-graphite">
-            Eddy Bachaalany, référent numérique
+            <span className="font-medium text-encre">{REFERENT.nom}</span>,{" "}
+            {REFERENT.role}
             <br />
             <a
-              href="mailto:eddy.bachaalany@lycee-montaigne.edu.lb"
+              href={`mailto:${REFERENT.courriel}`}
               className="break-words text-accent underline decoration-trait-fort underline-offset-2 transition-colors hover:text-accent-fort"
             >
-              eddy.bachaalany@lycee-montaigne.edu.lb
+              {REFERENT.courriel}
             </a>
           </p>
         </section>
@@ -41,6 +44,12 @@ export default function PiedDePage() {
             le compte.
           </p>
         </section>
+      </div>
+      <div className="border-t border-trait">
+        <p className="mx-auto max-w-6xl px-4 py-4 text-xs text-estompe sm:px-6">
+          © {new Date().getFullYear()} {SIGNATURE} — {ETABLISSEMENT.nom},{" "}
+          {ETABLISSEMENT.lieu}.
+        </p>
       </div>
     </footer>
   );

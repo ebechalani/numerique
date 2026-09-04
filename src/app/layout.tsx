@@ -6,6 +6,7 @@ import "./globals.css";
 import Assistant from "@/components/Assistant";
 import EnTete from "@/components/EnTete";
 import PiedDePage from "@/components/PiedDePage";
+import { REFERENT, SIGNATURE } from "@/content/site";
 
 /**
  * Métadonnées par défaut du site.
@@ -17,8 +18,9 @@ export const metadata: Metadata = {
     default: "Numérique · Lycée Montaigne",
     template: "%s · Numérique — Lycée Montaigne",
   },
-  description:
-    "L’espace de formation du référent numérique du Lycée Montaigne (Beit Chabab, Liban) : suivre les formations, retrouver les ressources, poser ses questions.",
+  description: `L’espace de formation d’${SIGNATURE} du Lycée Montaigne (Beit Chabab, Liban) : suivre les formations, retrouver les ressources, poser ses questions.`,
+  authors: [{ name: REFERENT.nom }],
+  creator: REFERENT.nom,
 };
 
 /**

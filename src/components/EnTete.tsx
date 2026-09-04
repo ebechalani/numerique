@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { REFERENT, SIGNATURE } from "@/content/site";
+
 /** Adresse de contact du référent numérique. */
-const COURRIEL = "eddy.bachaalany@lycee-montaigne.edu.lb";
+const COURRIEL = REFERENT.courriel;
 
 /** Identifiant du panneau mobile, référencé par aria-controls. */
 const ID_PANNEAU = "menu-principal";
@@ -39,6 +41,9 @@ export default function EnTete() {
             ·
           </span>{" "}
           <span className="text-encre-clair">Lycée Montaigne</span>
+          <span className="mt-0.5 block font-sans text-[0.7rem] leading-none tracking-wide text-estompe sm:text-xs">
+            {SIGNATURE}
+          </span>
         </Link>
 
         {/* Navigation desktop */}
@@ -55,6 +60,7 @@ export default function EnTete() {
           <a
             href={`mailto:${COURRIEL}`}
             className="text-graphite transition-colors hover:text-accent"
+            title={`Écrire à ${REFERENT.nom}`}
           >
             Contact
           </a>
@@ -120,7 +126,9 @@ export default function EnTete() {
             className="py-3 text-encre transition-colors hover:text-accent"
           >
             Contact{" "}
-            <span className="block text-xs text-estompe">{COURRIEL}</span>
+            <span className="block text-xs text-estompe">
+              {REFERENT.nom} · {COURRIEL}
+            </span>
           </a>
         </nav>
       </div>
