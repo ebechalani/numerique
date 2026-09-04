@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import BarreProgression from "@/components/BarreProgression";
+import { exercicesDuModule } from "@/lib/exercices";
 import { formations, getFormation } from "@/lib/formations";
 
 interface Props {
@@ -327,7 +328,9 @@ export default async function PageFormation({ params }: Props) {
         </div>
 
         <ul className="mt-6 space-y-4">
-          {formation.modules.map((module) => (
+          {formation.modules.map((module) => {
+            const nbExercices = exercicesDuModule(module.blocs).length;
+            return (
             <li key={module.slug}>
               <Link
                 href={`/formations/${formation.slug}/${module.slug}`}
@@ -348,6 +351,11 @@ export default async function PageFormation({ params }: Props) {
                     <span className="text-xs whitespace-nowrap text-estompe tabular-nums">
                       {module.duree} min
                     </span>
+                    {nbExercices > 0 ? (
+                      <span className="text-xs whitespace-nowrap text-estompe tabular-nums">
+                        · {nbExercices} exercice{nbExercices > 1 ? "s" : ""}
+                      </span>
+                    ) : null}
                   </span>
                   <span className="mt-0.5 block text-sm text-accent">
                     {module.sousTitre}
@@ -360,7 +368,8 @@ export default async function PageFormation({ params }: Props) {
                 <Fleche className="mt-2 text-estompe transition-transform group-hover:translate-x-0.5 group-hover:text-accent" />
               </Link>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </section>
 

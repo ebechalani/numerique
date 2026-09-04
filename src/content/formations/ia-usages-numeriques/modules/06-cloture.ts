@@ -102,6 +102,42 @@ export const restitutionCloture: Module = {
         },
       ],
     },
+    {
+      type: "exercice",
+      id: "trois-phrases",
+      titre: "Vos trois phrases, dans vos mots",
+      consigne:
+        "Reprenez chacune des trois phrases et adaptez-la à votre matière et à vos classes. Copiez-les ensuite : elles vous serviront dès la première semaine.",
+      duree: "3 min",
+      champs: [
+        {
+          id: "phrase-cadre",
+          type: "texte-long",
+          libelle: "1. Le cadre, travail par travail",
+          aide: "Modèle : « Dans ma matière, pour chaque travail, je vous dirai si l’IA est interdite, autorisée avec déclaration, ou libre. »",
+          lignes: 2,
+        },
+        {
+          id: "phrase-fraude",
+          type: "texte-long",
+          libelle: "2. L’usage non déclaré est une fraude",
+          aide: "Modèle : « Utiliser une IA sans autorisation dans un travail noté, c’est une fraude — comme un plagiat. »",
+          lignes: 2,
+        },
+        {
+          id: "phrase-responsables",
+          type: "texte-long",
+          libelle: "3. Vous restez responsables",
+          aide: "Modèle : « Une IA peut se tromper et vous ne devez jamais lui donner d’informations personnelles : vous restez responsables de ce que vous rendez. »",
+          lignes: 2,
+        },
+      ],
+      retour: {
+        titre: "L’essentiel",
+        texte:
+          "Les mots peuvent changer d’une matière à l’autre, pas la règle : chaque élève doit entendre la même règle dans toutes les disciplines.",
+      },
+    },
     { type: "titre", texte: "Avant de quitter la salle" },
     {
       type: "paragraphe",

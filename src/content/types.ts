@@ -68,6 +68,48 @@ export interface LigneRequete {
   outil: "notebooklm" | "copilot" | "les-deux";
 }
 
+/** Une question à choix unique, avec son corrigé. */
+export interface QuestionQcm {
+  question: string;
+  options: string[];
+  /** Rang de la bonne option dans `options`. */
+  bonne: number;
+  /** Explication affichée après la réponse. */
+  explication: string;
+}
+
+/**
+ * Un champ d'exercice guidé : ce que l'enseignant écrit ou choisit après avoir
+ * manipulé l'outil. Les réponses restent dans son navigateur.
+ */
+export type ChampExercice =
+  | {
+      id: string;
+      libelle: string;
+      aide?: string;
+      type: "texte" | "texte-long";
+      /** Hauteur de la zone de texte, en lignes. */
+      lignes?: number;
+      /** Un champ facultatif ne bloque pas la validation. */
+      facultatif?: boolean;
+    }
+  | {
+      id: string;
+      libelle: string;
+      aide?: string;
+      type: "choix";
+      options: string[];
+      facultatif?: boolean;
+    };
+
+/** Retour affiché une fois l'exercice validé : ce qu'on observe en séance. */
+export interface RetourExercice {
+  /** Ex. « Ce qu'on observe ». */
+  titre?: string;
+  texte: string;
+  points?: string[];
+}
+
 export type Bloc =
   | { type: "titre"; texte: string }
   | { type: "paragraphe"; texte: string }
@@ -82,7 +124,31 @@ export type Bloc =
   | { type: "requete"; titre?: string; texte: string; commentaire?: string }
   /* --- blocs interactifs (rendus côté client) --- */
   | { type: "quiz"; id: string; consigne: string; items: ItemQuiz[] }
+  | { type: "qcm"; id: string; consigne: string; questions: QuestionQcm[] }
   | { type: "casPratiques"; id: string; consigne: string; cas: CasPratique[] }
+  /**
+   * Exercice guidé : une manipulation à faire dans l'outil, des champs où
+   * consigner ce qu'on obtient, un retour révélé à la validation.
+   */
+  | {
+      type: "exercice";
+      id: string;
+      titre: string;
+      consigne: string;
+      /** Ex. « 5 min ». */
+      duree?: string;
+      /** Ce qu'il faut faire dans l'outil, avant de répondre. */
+      etapes?: string[];
+      champs: ChampExercice[];
+      retour: RetourExercice;
+      /**
+       * Recopie les réponses dans le brouillon de la trame de restitution :
+       * les champs de même identifiant y sont pré-remplis.
+       */
+      alimenteRestitution?: boolean;
+      /** Lien proposé une fois l'exercice validé. */
+      suite?: { href: string; libelle: string };
+    }
   | { type: "checklist"; id: string; consigne?: string; items: ItemChecklist[] }
   | { type: "constructeurRequete" }
   | { type: "bibliothequeRequetes"; consigne?: string; lignes: LigneRequete[] }

@@ -83,11 +83,82 @@ export const atelierDiscipline: Module = {
         ],
       ],
     },
+    { type: "titre", texte: "À vous : votre atelier, pas à pas" },
+    {
+      type: "exercice",
+      id: "atelier-discipline",
+      titre: "Votre atelier, pas à pas",
+      consigne:
+        "Remplissez au fil de l’atelier : choisir, produire, vérifier. À la validation, vos réponses sont reprises dans la trame de restitution — il ne restera qu’à les relire, ajouter les membres du groupe et déposer.",
+      duree: "30 min",
+      alimenteRestitution: true,
+      suite: {
+        href: "/formations/ia-usages-numeriques/participer/restitution",
+        libelle: "Déposer la trame de restitution",
+      },
+      champs: [
+        {
+          id: "cas",
+          type: "choix",
+          libelle: "Le cas d’usage choisi",
+          options: [
+            "Guide de révision d’un chapitre (NotebookLM)",
+            "Résumé audio ou vidéo pour la classe (NotebookLM)",
+            "Carte mentale de synthèse (NotebookLM)",
+            "Différenciation (NotebookLM ou Copilot)",
+            "Banque d’exercices ou grille d’évaluation (Copilot)",
+            "Consigne « IA-robuste » (Copilot)",
+          ],
+        },
+        { id: "discipline", type: "texte", libelle: "Discipline" },
+        { id: "niveau", type: "texte", libelle: "Niveau ou classe" },
+        {
+          id: "outil",
+          type: "choix",
+          libelle: "L’outil utilisé",
+          options: ["NotebookLM", "Copilot", "Les deux"],
+        },
+        {
+          id: "requete",
+          type: "texte-long",
+          libelle: "La requête utilisée",
+          aide: "Cinq briques : rôle, contexte, tâche, format, contraintes. Sans aucune donnée personnelle.",
+          lignes: 4,
+        },
+        {
+          id: "ressource",
+          type: "texte-long",
+          libelle: "La ressource produite",
+          aide: "Deux ou trois phrases, ou le lien de partage du carnet.",
+          lignes: 3,
+        },
+        {
+          id: "corrections",
+          type: "texte-long",
+          libelle: "Ce qu’il a fallu corriger ou compléter",
+          aide: "Erreurs de contenu, niveau inadapté, formulation, ce qui manquait.",
+          lignes: 3,
+        },
+        {
+          id: "vigilance",
+          type: "texte-long",
+          libelle: "Une vigilance à partager avec les collègues",
+          aide: "Une seule, la plus utile — elle rejoint la check-list collective de la restitution.",
+          lignes: 2,
+        },
+      ],
+      retour: {
+        titre: "Avant de déposer",
+        texte:
+          "Une ressource réellement utilisable en classe à la rentrée — pas une démonstration. Relisez la production point par point, et vérifiez que rien de personnel ne figure dans ce que vous déposez : ni nom, ni note, ni copie d’élève.",
+      },
+    },
+
     { type: "titre", texte: "La trame de restitution" },
     {
       type: "paragraphe",
       texte:
-        "Un dépôt par groupe, sur le site : /formations/ia-usages-numeriques/participer/restitution. Cinq lignes à renseigner avant la restitution.",
+        "Un dépôt par groupe, sur le site : /formations/ia-usages-numeriques/participer/restitution. Cinq lignes à renseigner avant la restitution — déjà pré-remplies si vous avez validé l’exercice ci-dessus dans ce navigateur.",
     },
     {
       type: "liste",

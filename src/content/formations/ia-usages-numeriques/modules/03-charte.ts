@@ -190,6 +190,50 @@ export const charte: Module = {
       ],
     },
 
+    { type: "titre", texte: "À vous : annoncez le régime de votre prochain travail" },
+    {
+      type: "exercice",
+      id: "regime-travail",
+      titre: "Le régime IA d’un travail que vous allez donner",
+      consigne:
+        "Choisissez un travail des premières semaines et écrivez la consigne IA que vos élèves entendront. C’est la dernière de nos obligations : pour chaque travail, préciser le régime.",
+      duree: "3 min",
+      champs: [
+        {
+          id: "travail",
+          type: "texte",
+          libelle: "Le travail",
+          aide: "Ex. : devoir maison de rédaction, exposé, exercices d’entraînement.",
+        },
+        {
+          id: "regime",
+          type: "choix",
+          libelle: "Le régime IA",
+          options: [
+            "IA interdite",
+            "IA autorisée avec déclaration",
+            "IA libre",
+          ],
+        },
+        {
+          id: "consigne",
+          type: "texte-long",
+          libelle: "La phrase que vous direz aux élèves",
+          lignes: 3,
+        },
+      ],
+      retour: {
+        titre: "Ce que la charte attend de nous",
+        texte:
+          "Pour chaque travail, je précise aux élèves : IA interdite, autorisée avec déclaration, ou libre. Une consigne claire évite la plupart des situations de fraude.",
+        points: [
+          "Un usage n’est « encadré » que si vous l’avez explicitement autorisé — et il est alors mentionné dans le travail rendu.",
+          "Sans autorisation annoncée, l’usage n’est pas couvert ; dans un travail évalué, c’est une fraude, comme un plagiat.",
+          "Pas d’usage autonome avant la 4e.",
+        ],
+      },
+    },
+
     {
       type: "notesAnimateur",
       texte:

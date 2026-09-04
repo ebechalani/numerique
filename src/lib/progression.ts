@@ -96,6 +96,22 @@ function ecrireInstantane<T>(cle: string, valeur: T): void {
   prevenirAbonnes();
 }
 
+/**
+ * Lecture sans mémorisation : la copie en mémoire si elle existe, sinon le
+ * stockage brut, sinon `undefined`. Ne pose rien dans `memoire`, pour ne pas
+ * imposer un défaut à un composant qui lira la même clé avec le sien.
+ */
+function lireBrut(cle: string): unknown {
+  if (typeof window === "undefined") return undefined;
+  if (memoire.has(cle)) return memoire.get(cle);
+  try {
+    const brut = window.localStorage.getItem(PREFIXE + cle);
+    return brut === null ? undefined : JSON.parse(brut);
+  } catch {
+    return undefined;
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Hydratation                                                         */
 /* ------------------------------------------------------------------ */
@@ -154,6 +170,33 @@ export function useEtatLocal<T>(
   );
 
   return [valeur, definir];
+}
+
+/* ------------------------------------------------------------------ */
+/* useInstantaneDerive                                                 */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Valeur dérivée de plusieurs clés à la fois — un bilan, un compteur.
+ *
+ * Le dérivé doit être une valeur primitive : useSyncExternalStore compare les
+ * instantanés par identité, et seule une primitive reste égale à elle-même
+ * d’un calcul à l’autre. Avant hydratation, le dérivé est calculé sur des
+ * valeurs absentes, comme sur le serveur.
+ */
+export function useInstantaneDerive<T extends string | number | boolean>(
+  cles: string[],
+  deriver: (valeurs: unknown[]) => T,
+): T {
+  const lire = useCallback(
+    () => deriver(cles.map((cle) => lireBrut(cle))),
+    [cles, deriver],
+  );
+  const lireAvantHydratation = useCallback(
+    () => deriver(cles.map(() => undefined)),
+    [cles, deriver],
+  );
+  return useSyncExternalStore(sabonner, lire, lireAvantHydratation);
 }
 
 /* ------------------------------------------------------------------ */

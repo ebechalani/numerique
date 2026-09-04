@@ -16,7 +16,14 @@
 
 import Link from "next/link";
 import type { FormEvent } from "react";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import {
   EtiquetteChamp,
@@ -24,7 +31,12 @@ import {
   MessageErreur,
   OptionCliquable,
 } from "@/components/formulaires/Champs";
+import { CLE_BROUILLON_RESTITUTION } from "@/components/interactif/Exercice";
 import type { ChampRestitution } from "@/content/types";
+import { useEtatLocal } from "@/lib/progression";
+
+/** Référence stable pour le hook de stockage. */
+const AUCUN_BROUILLON: Record<string, string> = {};
 
 interface Proprietes {
   champs: ChampRestitution[];
@@ -288,6 +300,37 @@ export default function FormulaireRestitution({
     if (etat === "succes") titreSucces.current?.focus();
   }, [etat]);
 
+  /*
+   * Reprise des réponses de l’exercice « Votre atelier, pas à pas » (module 5),
+   * conservées dans le navigateur sous les mêmes identifiants de champ. Elles
+   * servent de valeurs de départ ; ce que l’enseignant saisit ici prime. Après
+   * un dépôt, la contribution suivante repart à vide.
+   */
+  const [brouillon] = useEtatLocal<Record<string, string>>(
+    CLE_BROUILLON_RESTITUTION,
+    AUCUN_BROUILLON,
+  );
+  const [brouillonIgnore, setBrouillonIgnore] = useState(false);
+
+  const reprises = useMemo(() => {
+    const valeurs: Record<string, string> = {};
+    if (brouillonIgnore || typeof brouillon !== "object" || brouillon === null) {
+      return valeurs;
+    }
+    for (const champ of champs) {
+      const valeur = (brouillon as Record<string, unknown>)[champ.id];
+      if (typeof valeur === "string" && valeur.trim().length > 0) {
+        valeurs[champ.id] = valeur;
+      }
+    }
+    return valeurs;
+  }, [brouillon, brouillonIgnore, champs]);
+
+  const reprisDeLAtelier = Object.keys(reprises).length > 0;
+
+  /** Valeurs affichées et envoyées : le brouillon repris, recouvert par la saisie. */
+  const valeurs: Record<string, string> = { ...reprises, ...saisies };
+
   const definirSaisie = useCallback((id: string, valeur: string) => {
     setSaisies((precedentes) => ({ ...precedentes, [id]: valeur }));
     setErreurs((precedentes) => {
@@ -318,9 +361,10 @@ export default function FormulaireRestitution({
     const membres = champs.filter(estChampMembres);
     const conserves: Record<string, string> = {};
     for (const champ of membres) {
-      const valeur = saisies[champ.id];
+      const valeur = valeurs[champ.id];
       if (valeur !== undefined) conserves[champ.id] = valeur;
     }
+    setBrouillonIgnore(true);
     setSaisies(conserves);
     setErreurs({});
     setEchec(null);
@@ -333,7 +377,7 @@ export default function FormulaireRestitution({
 
     const manquants = champs.filter(
       (champ) =>
-        champ.obligatoire && (saisies[champ.id] ?? "").trim().length === 0,
+        champ.obligatoire && (valeurs[champ.id] ?? "").trim().length === 0,
     );
 
     if (manquants.length > 0) {
@@ -353,7 +397,7 @@ export default function FormulaireRestitution({
     // Seuls les champs déclarés partent au serveur, texte élagué, vides écartés.
     const charge: Record<string, string> = {};
     for (const champ of champs) {
-      const valeur = (saisies[champ.id] ?? "").trim();
+      const valeur = (valeurs[champ.id] ?? "").trim();
       if (valeur.length > 0) charge[champ.id] = valeur;
     }
 
@@ -459,6 +503,16 @@ export default function FormulaireRestitution({
       aria-label="Trame de restitution"
       className="space-y-6"
     >
+      {reprisDeLAtelier ? (
+        <p
+          role="status"
+          className="rounded-lg border border-accent bg-accent-voile p-4 text-sm text-encre-clair"
+        >
+          Vos réponses de l’exercice « Votre atelier, pas à pas » ont été
+          reprises. Relisez-les, complétez les membres du groupe, puis déposez.
+        </p>
+      ) : null}
+
       {fautives.length > 0 ? (
         <div
           role="alert"
@@ -503,7 +557,7 @@ export default function FormulaireRestitution({
               <div className="min-w-0 flex-1">
                 <ChampTrame
                   champ={champ}
-                  valeur={saisies[champ.id] ?? ""}
+                  valeur={valeurs[champ.id] ?? ""}
                   onChange={(valeur) => definirSaisie(champ.id, valeur)}
                   erreur={erreurs[champ.id]}
                   id={idChamp(champ.id)}

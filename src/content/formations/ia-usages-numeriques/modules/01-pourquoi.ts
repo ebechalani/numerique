@@ -54,6 +54,87 @@ export const pourquoi: Module = {
         "Ni technophile ni catastrophiste. On parle d’outils, de règles et de pratiques de classe.",
     },
 
+    { type: "titre", texte: "Vérifiez les trois constats" },
+    {
+      type: "qcm",
+      id: "qcm-constats",
+      consigne:
+        "Trois questions, une par constat. Répondez avant d’afficher le corrigé.",
+      questions: [
+        {
+          question:
+            "À partir de quelle classe le cadre national permet-il un usage autonome de l’IA par les élèves ?",
+          options: ["La 6e", "La 5e", "La 4e", "La 2nde"],
+          bonne: 2,
+          explication:
+            "Le cadre d’usage publié par le ministère le 14 juin 2025 réserve l’usage autonome aux élèves à partir de la 4e.",
+        },
+        {
+          question:
+            "Dans quelles classes les parcours Pix IA sont-ils obligatoires dès cette rentrée ?",
+          options: [
+            "En 6e et en 3e",
+            "En 4e et en 2nde",
+            "En 3e et en terminale",
+            "Dans toutes les classes",
+          ],
+          bonne: 1,
+          explication:
+            "Les parcours Pix IA sont obligatoires en 4e et en 2nde dès cette rentrée.",
+        },
+        {
+          question:
+            "Quand la charte IA de l’établissement est-elle présentée aux élèves ?",
+          options: [
+            "La première semaine",
+            "Avant les vacances d’automne",
+            "En novembre",
+            "À la demande des familles",
+          ],
+          bonne: 0,
+          explication:
+            "Elle est présentée aux élèves la première semaine, et chacun doit pouvoir l’expliquer et l’appliquer dans ses consignes.",
+        },
+      ],
+    },
+    {
+      type: "exercice",
+      id: "constat-classes",
+      titre: "Et dans vos classes ?",
+      consigne:
+        "Le premier constat vous concerne directement. Prenez une minute pour le rapporter à votre propre expérience.",
+      duree: "2 min",
+      champs: [
+        {
+          id: "usage",
+          type: "texte-long",
+          libelle:
+            "Un usage de l’IA que vous avez observé, ou soupçonné, chez vos élèves",
+          aide: "Sans nom d’élève : « un élève de 3e », « une classe de 2nde ».",
+          lignes: 3,
+        },
+        {
+          id: "reaction",
+          type: "choix",
+          libelle: "Qu’avez-vous fait ?",
+          options: [
+            "J’en ai parlé en classe",
+            "Je n’ai rien dit",
+            "Je ne savais pas comment l’aborder",
+          ],
+        },
+      ],
+      retour: {
+        titre: "Ce que la formation en dit",
+        texte:
+          "Vos élèves l’utilisent déjà, souvent seuls, sans méthode ni repères. Ne pas en parler, c’est laisser le sujet aux réseaux sociaux.",
+        points: [
+          "La charte de l’établissement sera présentée aux élèves la première semaine.",
+          "Le module 6 vous donne trois phrases à leur dire, à adapter à votre matière.",
+        ],
+      },
+    },
+
     { type: "titre", texte: "À la fin de la session, vous saurez…" },
     {
       type: "cartes",

@@ -14,9 +14,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import BilanExercices from "@/components/BilanExercices";
 import { Blocs } from "@/components/BlocRenderer";
 import BoutonModuleTermine from "@/components/BoutonModuleTermine";
 import NavModules from "@/components/NavModules";
+import { exercicesDuModule } from "@/lib/exercices";
 import { formations, getModule } from "@/lib/formations";
 
 interface Props {
@@ -86,6 +88,7 @@ export default async function PageModule({ params }: Props) {
   if (!situe) notFound();
 
   const { formation, module, precedent, suivant } = situe;
+  const exercices = exercicesDuModule(module.blocs);
 
   /* En fin de formation, le « suivant » ramène à la page de la formation. */
   const lienSuivant = suivant
@@ -178,6 +181,13 @@ export default async function PageModule({ params }: Props) {
                 </p>
               </div>
             </header>
+
+            {/* Ce qu’il y a à faire, et où on en est */}
+            {exercices.length > 0 ? (
+              <div className="sans-impression mt-8">
+                <BilanExercices items={exercices} />
+              </div>
+            ) : null}
 
             {/* Corps du module */}
             <div className="prose-formation mt-10">

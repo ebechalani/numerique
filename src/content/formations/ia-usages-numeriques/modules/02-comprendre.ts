@@ -110,6 +110,45 @@ export const comprendre: Module = {
       commentaire:
         "À faire suivre d’une phrase longue, puis comptons ensemble : l’erreur est fréquente.",
     },
+    {
+      type: "exercice",
+      id: "demo-copilot",
+      titre: "Rejouez une démonstration",
+      consigne:
+        "Copiez l’une des trois requêtes ci-dessus dans Copilot Chat, avec votre compte établissement. Lisez la réponse, puis vérifiez-la vous-même.",
+      duree: "5 min",
+      champs: [
+        {
+          id: "requete",
+          type: "choix",
+          libelle: "La requête rejouée",
+          options: ["La citation", "Le local", "Le comptage"],
+        },
+        {
+          id: "reponse",
+          type: "texte-long",
+          libelle: "Ce que l’outil a répondu, en deux lignes",
+          aide: "Le point précis que vous avez vérifié : le chapitre cité, un détail de l’histoire du lycée, le nombre trouvé.",
+          lignes: 3,
+        },
+        {
+          id: "verdict",
+          type: "choix",
+          libelle: "Après vérification, la réponse était…",
+          options: ["Exacte", "Partiellement exacte", "Fausse"],
+        },
+      ],
+      retour: {
+        titre: "Ce qu’on observe en séance",
+        texte:
+          "Du plausible, pas du vrai : l’outil produit la suite de mots la plus probable, avec la même assurance qu’il ait raison ou tort.",
+        points: [
+          "La citation : chapitre ou formulation souvent approximatifs ou inventés.",
+          "Le local : des détails plausibles mais faux — et la salle connaît la vérité.",
+          "Le comptage : l’erreur est fréquente, surtout sur une phrase longue.",
+        ],
+      },
+    },
 
     { type: "titre", texte: "… sauf si on l’ancre : la contre-démonstration" },
     {
@@ -133,11 +172,53 @@ export const comprendre: Module = {
       ],
     },
     {
-      type: "encadre",
-      ton: "info",
-      titre: "Ce qu’il faut en retenir",
-      texte:
-        "Plausible n’est pas vrai. Sans source, on vérifie tout ; avec ses sources, l’IA montre d’où elle parle — on vérifie quand même, mais on sait où regarder.",
+      type: "exercice",
+      id: "contre-demo-notebooklm",
+      titre: "Ancrée sur vos sources, la même IA change de comportement",
+      consigne:
+        "À faire dans un carnet NotebookLM qui contient un chapitre en source. Si vous n’avez pas encore de carnet, revenez-y après le module 4.",
+      duree: "3 min",
+      champs: [
+        {
+          id: "question-chapitre",
+          type: "texte",
+          libelle: "Votre question précise sur le chapitre",
+        },
+        {
+          id: "citations",
+          type: "choix",
+          libelle: "La réponse renvoyait-elle à des passages du chapitre ?",
+          options: [
+            "Oui — les numéros de citation surlignent le passage",
+            "Non",
+            "Pas encore testé",
+          ],
+        },
+        {
+          id: "question-hors",
+          type: "texte",
+          libelle: "Votre question hors du chapitre",
+        },
+        {
+          id: "refus",
+          type: "choix",
+          libelle: "Qu’a fait l’outil ?",
+          options: [
+            "Il a indiqué que les sources ne contiennent pas l’information",
+            "Il a répondu quand même",
+            "Pas encore testé",
+          ],
+        },
+      ],
+      retour: {
+        titre: "Ce qu’il faut en retenir",
+        texte:
+          "Plausible n’est pas vrai. Sans source, on vérifie tout ; avec ses sources, l’IA montre d’où elle parle — on vérifie quand même, mais on sait où regarder.",
+        points: [
+          "Cliquer sur un numéro de citation surligne le passage source : c’est le geste à retenir.",
+          "Hors de ses sources, NotebookLM le dit — il ne comble pas le vide.",
+        ],
+      },
     },
 
     { type: "titre", texte: "Vrai ou faux ?" },
