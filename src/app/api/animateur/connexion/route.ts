@@ -21,10 +21,10 @@ import { cookies } from "next/headers";
 import {
   COOKIE_ANIMATEUR,
   ENTETES_SANS_CACHE,
-  codeAnimateurConfigure,
-  egalTempsConstant,
+  codeCorrespond,
   empreinte,
   optionsCookieAnimateur,
+  secretAnimateur,
   valeurCookieAttendue,
 } from "@/lib/animateur";
 
@@ -142,18 +142,17 @@ export async function POST(requete: Request): Promise<Response> {
     );
   }
 
-  const attendu = process.env.CODE_ANIMATEUR;
+  const secret = await secretAnimateur();
 
-  // Aucun code configuré : le tableau de bord est fermé pour tout le monde, et
-  // le dire ici est utile — c’est l’animateur qui lit ce message, et la
-  // correction se fait dans les variables d’environnement.
-  if (!codeAnimateurConfigure() || !attendu) {
+  // Aucun code défini : le tableau de bord est fermé pour tout le monde, et
+  // le dire ici est utile — c’est l’animateur qui lit ce message. La page
+  // animateur lui propose de choisir un code dès que la base est reliée.
+  if (!secret) {
     return erreur(
       "code-non-configure",
-      "Aucun code d’accès n’est configuré sur ce site : le tableau de bord " +
-        "reste fermé. Renseignez la variable d’environnement CODE_ANIMATEUR " +
-        "(fichier .env.local en local, variables du projet en production), " +
-        "puis redémarrez le site.",
+      "Aucun code d’accès n’est défini sur ce site : le tableau de bord reste " +
+        "fermé. Rechargez la page animateur pour en choisir un, une fois la " +
+        "base de données reliée.",
       503,
     );
   }
@@ -172,7 +171,7 @@ export async function POST(requete: Request): Promise<Response> {
 
   // Le code saisi est comparé après avoir été rogné : un espace collé par un
   // copier-coller ne doit pas faire échouer une saisie par ailleurs correcte.
-  if (!egalTempsConstant(brut.trim(), attendu.trim())) {
+  if (!codeCorrespond(brut, secret)) {
     return erreur(
       "code-refuse",
       "Code d’accès incorrect. Vérifiez la saisie, ou demandez le code au " +
@@ -185,7 +184,11 @@ export async function POST(requete: Request): Promise<Response> {
   tentatives.delete(cle);
 
   const boite = await cookies();
-  boite.set(COOKIE_ANIMATEUR, valeurCookieAttendue(attendu), optionsCookieAnimateur());
+  boite.set(
+    COOKIE_ANIMATEUR,
+    valeurCookieAttendue(secret.secret),
+    optionsCookieAnimateur(),
+  );
 
   return Response.json(
     { ok: true, message: "Accès animateur ouvert pour douze heures." },

@@ -4,8 +4,9 @@
  * Le site est en accès libre : les enseignants répondent aux questionnaires
  * sans se connecter, et c’est voulu (aucun identifiant, donc aucune trace
  * nominative). Seul le tableau de bord — qui projette les résultats de la salle
- * et ouvre ou ferme les sessions — demande un code, celui de la variable
- * d’environnement `CODE_ANIMATEUR`.
+ * et ouvre ou ferme les sessions — demande un code : celui de la variable
+ * d’environnement `CODE_ANIMATEUR` si elle existe, sinon celui que l’animateur
+ * a choisi depuis le site, dont seule l’empreinte est enregistrée en base.
  *
  * Trois choix de conception, tous délibérés.
  *
@@ -34,6 +35,8 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 
 import { cookies } from "next/headers";
+
+import { collecteConfiguree, lireReglage } from "@/lib/db";
 
 /* ------------------------------------------------------------------ */
 /* Constantes                                                          */
@@ -126,15 +129,59 @@ export function optionsCookieAnimateur(): OptionsCookieAnimateur {
 /* Contrat public                                                      */
 /* ------------------------------------------------------------------ */
 
+/** Clé, dans les réglages du site, de l’empreinte du code animateur. */
+export const REGLAGE_CODE_ANIMATEUR = "code-animateur";
+
 /**
- * Un code d’accès est-il configuré sur ce déploiement ?
+ * Le secret contre lequel on vérifie le code saisi.
  *
- * Ne lit qu’une variable d’environnement : utilisable partout, ne lève jamais.
- * Sert à distinguer « code absent » (le tableau de bord est inutilisable, il
- * faut le dire à l’animateur) de « code faux » (refus banal d’une saisie).
+ * Deux origines possibles, dans cet ordre :
+ *  - la variable d’environnement `CODE_ANIMATEUR` : le secret est le code ;
+ *  - à défaut, le réglage enregistré depuis le site : le secret est
+ *    l’empreinte SHA-256 du code, jamais le code lui-même.
+ *
+ * Dans les deux cas, c’est `secret` qui sert à dériver la valeur du cookie :
+ * changer le code, d’un côté comme de l’autre, invalide tous les accès posés.
  */
+export interface SecretAnimateur {
+  origine: "environnement" | "base";
+  secret: string;
+}
+
+/** Un code d’accès est-il fourni par l’environnement ? Synchrone, ne lève jamais. */
 export function codeAnimateurConfigure(): boolean {
-  return Boolean(process.env.CODE_ANIMATEUR);
+  return Boolean(process.env.CODE_ANIMATEUR?.trim());
+}
+
+/** Empreinte stockée pour un code choisi depuis le site. */
+export function empreinteDuCode(code: string): string {
+  return empreinte(code.trim());
+}
+
+/**
+ * Le secret en vigueur, ou null si aucun code n’est défini nulle part.
+ * Une base injoignable compte comme « aucun code » : le tableau reste fermé.
+ */
+export async function secretAnimateur(): Promise<SecretAnimateur | null> {
+  const env = process.env.CODE_ANIMATEUR?.trim();
+  if (env) return { origine: "environnement", secret: env };
+
+  if (!collecteConfiguree()) return null;
+  try {
+    const stocke = await lireReglage(REGLAGE_CODE_ANIMATEUR);
+    return stocke ? { origine: "base", secret: stocke } : null;
+  } catch (souci) {
+    console.error("[animateur] lecture du code enregistré impossible :", souci);
+    return null;
+  }
+}
+
+/** Le code saisi correspond-il au secret ? Comparaison en temps constant. */
+export function codeCorrespond(saisi: string, secret: SecretAnimateur): boolean {
+  const propre = saisi.trim();
+  return secret.origine === "environnement"
+    ? egalTempsConstant(propre, secret.secret)
+    : egalTempsConstant(empreinte(propre), secret.secret);
 }
 
 /**
@@ -152,16 +199,16 @@ export function codeAnimateurConfigure(): boolean {
  * même pour un animateur connecté.
  */
 export async function animateurAutorise(): Promise<boolean> {
-  const code = process.env.CODE_ANIMATEUR;
+  const secret = await secretAnimateur();
 
-  // Pas de code configuré : personne n’entre. Voir le point 1 de l’en-tête.
-  if (!code) return false;
+  // Pas de code défini : personne n’entre. Voir le point 1 de l’en-tête.
+  if (!secret) return false;
 
   const boite = await cookies();
   const valeur = boite.get(COOKIE_ANIMATEUR)?.value;
   if (!valeur) return false;
 
-  return egalTempsConstant(valeur, valeurCookieAttendue(code));
+  return egalTempsConstant(valeur, valeurCookieAttendue(secret.secret));
 }
 
 /** Réponse 401 commune aux routes protégées. */

@@ -23,7 +23,8 @@ diaporama, la fiche outils et le déroulé animateur.
   (anonymes, sans application externe).
 - **Tableau de bord animateur** : résultats agrégés en direct, mode
   projection, QR codes vers les questionnaires, ouverture et fermeture des
-  séances.
+  séances. Protégé par un code que l’animateur choisit depuis le site, une
+  fois la base reliée, et change à chaque séance.
 - **Assistant IA** : répond aux questions des enseignants uniquement à partir
   du contenu de la formation, et cite le module ou la ressource source.
 - **Ressources** : fiche outils, bibliothèque de requêtes, questions
@@ -55,7 +56,7 @@ normalement ; seule la fonction concernée est désactivée et la page l’annon
 | ------------------- | -------------------------------------------------------- |
 | `ANTHROPIC_API_KEY` | l’assistant IA                                           |
 | `DATABASE_URL`      | la collecte des réponses (Postgres)                      |
-| `CODE_ANIMATEUR`    | l’accès au tableau de bord animateur                     |
+| `CODE_ANIMATEUR`    | un code animateur fixe (sinon il se choisit depuis le site) |
 
 Le détail de chaque variable est commenté dans `.env.example`.
 

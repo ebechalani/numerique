@@ -386,6 +386,30 @@ export async function basculerSession(
 }
 
 /* ------------------------------------------------------------------ */
+/* Réglages                                                            */
+/* ------------------------------------------------------------------ */
+
+/** Valeur d'un réglage défini depuis le site, ou null s'il n'existe pas. */
+export async function lireReglage(cle: string): Promise<string | null> {
+  const lignes = await interroger<{ valeur: string }>(
+    `select valeur from formation_reglage where cle = $1`,
+    [cle],
+  );
+  return lignes[0]?.valeur ?? null;
+}
+
+/** Crée ou remplace un réglage. */
+export async function ecrireReglage(cle: string, valeur: string): Promise<void> {
+  await interroger(
+    `insert into formation_reglage (cle, valeur)
+          values ($1, $2)
+     on conflict (cle) do update
+            set valeur = excluded.valeur, modifie_le = now()`,
+    [cle, valeur],
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Écriture des réponses                                               */
 /* ------------------------------------------------------------------ */
 
