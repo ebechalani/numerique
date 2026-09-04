@@ -114,12 +114,32 @@ export function collecteConfiguree(): boolean {
   return Boolean(urlBase());
 }
 
+/** Une chaîne de connexion Postgres se reconnaît à son schéma. */
+const URL_POSTGRES = /^postgres(ql)?:\/\//i;
+
 /**
- * Chaîne de connexion. `DATABASE_URL` d'abord ; à défaut `POSTGRES_URL`, nom
- * que certaines intégrations Vercel injectent à la place.
+ * Chaîne de connexion.
+ *
+ * `DATABASE_URL` d'abord, puis `POSTGRES_URL` ; à défaut, la première variable
+ * d'environnement dont la valeur est une URL Postgres. Les intégrations Vercel
+ * laissent choisir un préfixe (`STORAGE_URL`, `NEON_URL`…) : quel que soit le
+ * nom retenu, la base est trouvée sans rien reconfigurer.
  */
-function urlBase(): string | undefined {
-  return process.env.DATABASE_URL || process.env.POSTGRES_URL || undefined;
+export function urlBase(): string | undefined {
+  const prioritaires = [process.env.DATABASE_URL, process.env.POSTGRES_URL];
+  for (const valeur of prioritaires) {
+    if (valeur && URL_POSTGRES.test(valeur)) return valeur;
+  }
+  const candidates = Object.entries(process.env)
+    .filter(
+      ([nom, valeur]) =>
+        nom.endsWith("_URL") &&
+        !nom.includes("UNPOOLED") &&
+        typeof valeur === "string" &&
+        URL_POSTGRES.test(valeur),
+    )
+    .sort(([a], [b]) => a.localeCompare(b));
+  return candidates[0]?.[1];
 }
 
 const MESSAGE_NON_CONFIGURE =

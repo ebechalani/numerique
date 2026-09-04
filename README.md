@@ -66,7 +66,8 @@ Le projet est une application Next.js standard, prévue pour Vercel :
 1. Importer le dépôt dans Vercel.
 2. Renseigner les variables ci-dessus dans *Project Settings → Environment
    Variables*. Pour Postgres, l’onglet *Storage* crée la base et injecte
-   `DATABASE_URL` automatiquement (`POSTGRES_URL` est accepté aussi).
+   `DATABASE_URL` automatiquement. Si un autre préfixe a été choisi
+   (`STORAGE_URL`, `POSTGRES_URL`…), la variable est reconnue quand même.
 3. Redéployer. Les tables sont créées par le site au premier accès à la base :
    aucune commande à lancer. `npm run db:init` reste disponible pour appliquer
    le schéma à la main, par exemple sur une base locale.
