@@ -57,6 +57,12 @@ export default function EnTete() {
           >
             Les formations
           </Link>
+          <Link
+            href="/outils/redacteur-de-prompt"
+            className="text-graphite transition-colors hover:text-accent"
+          >
+            Rédacteur de prompt
+          </Link>
           <a
             href={`mailto:${COURRIEL}`}
             className="text-graphite transition-colors hover:text-accent"
@@ -120,6 +126,13 @@ export default function EnTete() {
             className="border-b border-trait py-3 text-encre transition-colors hover:text-accent"
           >
             Les formations
+          </Link>
+          <Link
+            href="/outils/redacteur-de-prompt"
+            className="border-b border-trait py-3 text-encre transition-colors hover:text-accent"
+          >
+            Rédacteur de prompt{" "}
+            <span className="block text-xs text-estompe">Méthode ACTIF</span>
           </Link>
           <a
             href={`mailto:${COURRIEL}`}

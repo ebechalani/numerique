@@ -154,6 +154,53 @@ export default function Accueil() {
         </ul>
       </section>
 
+      {/* Outils */}
+      <section aria-labelledby="titre-outils" className="mt-12 sm:mt-16">
+        <h2
+          id="titre-outils"
+          className="text-xs font-medium tracking-wide text-estompe uppercase"
+        >
+          Les outils
+        </h2>
+        <ul className="mt-4">
+          <li>
+            <Link
+              href="/outils/redacteur-de-prompt"
+              className="group flex items-start gap-5 rounded-lg border border-trait bg-craie p-6 transition-colors hover:border-accent hover:bg-accent-voile"
+            >
+              <span
+                aria-hidden="true"
+                className="hidden shrink-0 items-center gap-1 sm:flex"
+              >
+                {["A", "C", "T", "I", "F"].map((lettre) => (
+                  <span
+                    key={lettre}
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-encre font-serif text-xs font-semibold text-papier"
+                  >
+                    {lettre}
+                  </span>
+                ))}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="text-sm text-accent">Méthode ACTIF</span>
+                <span className="mt-1 block font-serif text-2xl leading-tight text-encre">
+                  Rédacteur de prompt
+                </span>
+                <span className="mt-2 block max-w-3xl leading-relaxed text-graphite">
+                  Cinq étapes — Acteur, Contexte, Tâche, Intention, Format — et
+                  trois prompts prêts à coller dans ChatGPT, Copilot ou
+                  NotebookLM.
+                </span>
+                <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent">
+                  Ouvrir le rédacteur
+                  <Fleche className="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </span>
+            </Link>
+          </li>
+        </ul>
+      </section>
+
       {/* Mode d’emploi */}
       <section aria-labelledby="titre-usage" className="mt-14 sm:mt-20">
         <h2
