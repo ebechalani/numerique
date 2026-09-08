@@ -34,6 +34,7 @@ import {
   basculerSession,
   collecteConfiguree,
   creerSession,
+  detailErreurBase,
   listerSessions,
   type SessionFormation,
 } from "@/lib/db";
@@ -280,7 +281,7 @@ export async function POST(requete: Request): Promise<Response> {
     return erreur(
       "operation-impossible",
       "L’opération sur la séance a échoué. La base est peut-être injoignable ; " +
-        "réessayez dans un instant.",
+        `réessayez dans un instant. Détail : ${detailErreurBase(souci)}`,
       500,
     );
   }

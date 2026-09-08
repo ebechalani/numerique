@@ -26,13 +26,11 @@
  * concaténée dans du SQL.
  */
 
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-
 import { Pool, type QueryResultRow } from "pg";
 
 import * as sourceQuestionnaires from "@/content/formations/ia-usages-numeriques/ressources/questionnaires";
 import type { Question, Questionnaire } from "@/content/types";
+import { SCHEMA_SQL } from "@/lib/schema.generated";
 
 /* ------------------------------------------------------------------ */
 /* Contrat public                                                      */
@@ -126,9 +124,15 @@ const URL_POSTGRES = /^postgres(ql)?:\/\//i;
  * nom retenu, la base est trouvée sans rien reconfigurer.
  */
 export function urlBase(): string | undefined {
-  const prioritaires = [process.env.DATABASE_URL, process.env.POSTGRES_URL];
-  for (const valeur of prioritaires) {
-    if (valeur && URL_POSTGRES.test(valeur)) return valeur;
+  return sourceUrlBase()?.valeur;
+}
+
+/** La variable retenue, avec son nom : sert au diagnostic. */
+export function sourceUrlBase(): { nom: string; valeur: string } | undefined {
+  const prioritaires = ["DATABASE_URL", "POSTGRES_URL"];
+  for (const nom of prioritaires) {
+    const valeur = process.env[nom];
+    if (valeur && URL_POSTGRES.test(valeur)) return { nom, valeur };
   }
   const candidates = Object.entries(process.env)
     .filter(
@@ -139,7 +143,39 @@ export function urlBase(): string | undefined {
         URL_POSTGRES.test(valeur),
     )
     .sort(([a], [b]) => a.localeCompare(b));
-  return candidates[0]?.[1];
+  const premiere = candidates[0];
+  return premiere ? { nom: premiere[0], valeur: premiere[1] as string } : undefined;
+}
+
+/**
+ * Noms des variables d'environnement se terminant par _URL, sans leur valeur :
+ * de quoi voir, depuis le tableau de bord, ce que l'hébergeur a réellement
+ * injecté quand la base semble absente.
+ */
+export function nomsVariablesUrl(): string[] {
+  return Object.keys(process.env)
+    .filter((nom) => nom.endsWith("_URL"))
+    .sort();
+}
+
+/**
+ * Détail d'une erreur de base, présentable à l'animateur : code Postgres et
+ * message, sans jamais la chaîne de connexion (un mot de passe pourrait s'y
+ * trouver). Tronqué pour rester lisible.
+ */
+export function detailErreurBase(souci: unknown): string {
+  const objet = (souci ?? {}) as { code?: unknown; message?: unknown };
+  const code = typeof objet.code === "string" ? objet.code : "";
+  let message =
+    typeof objet.message === "string"
+      ? objet.message
+      : souci instanceof Error
+        ? souci.message
+        : String(souci);
+  // Une URL avec identifiants n'a rien à faire dans un message d'écran.
+  message = message.replace(/postgres(ql)?:\/\/[^\s'"]+/gi, "postgresql://…");
+  const texte = [code, message].filter(Boolean).join(" — ").trim();
+  return texte.length > 240 ? `${texte.slice(0, 237)}…` : texte;
 }
 
 const MESSAGE_NON_CONFIGURE =
@@ -211,9 +247,6 @@ function connexion(): Pool {
 /* Schéma                                                              */
 /* ------------------------------------------------------------------ */
 
-/** Le fichier de schéma, embarqué dans le déploiement (voir next.config.ts). */
-const CHEMIN_SCHEMA = path.join(process.cwd(), "db", "schema.sql");
-
 /**
  * Verrou consultatif pris le temps d'appliquer le schéma : deux instances
  * démarrant en même temps ne créent pas les tables en parallèle.
@@ -221,7 +254,8 @@ const CHEMIN_SCHEMA = path.join(process.cwd(), "db", "schema.sql");
 const VERROU_SCHEMA = 7412026;
 
 /**
- * Applique db/schema.sql une fois par processus, avant la première requête.
+ * Applique le schéma (db/schema.sql, embarqué dans le code par
+ * scripts/embed-schema.mjs) une fois par processus, avant la première requête.
  *
  * Le schéma n'emploie que des « create … if not exists » : le rejouer sur une
  * base déjà en service ne change rien. Ainsi, renseigner DATABASE_URL suffit ;
@@ -231,20 +265,10 @@ const VERROU_SCHEMA = 7412026;
 function garantirSchema(): Promise<void> {
   if (!espaceGlobal.__schemaFormation) {
     espaceGlobal.__schemaFormation = (async () => {
-      let schema: string;
-      try {
-        schema = await readFile(CHEMIN_SCHEMA, "utf8");
-      } catch (erreur) {
-        throw new Error(
-          `Schéma introuvable (${CHEMIN_SCHEMA}) : ${
-            erreur instanceof Error ? erreur.message : String(erreur)
-          }`,
-        );
-      }
       // Plusieurs instructions dans une seule requête simple : Postgres les
       // exécute dans une transaction implicite, et le verrou tient jusqu'au bout.
       await connexion().query(
-        `select pg_advisory_xact_lock(${VERROU_SCHEMA});\n${schema}`,
+        `select pg_advisory_xact_lock(${VERROU_SCHEMA});\n${SCHEMA_SQL}`,
       );
     })().catch((erreur: unknown) => {
       espaceGlobal.__schemaFormation = undefined;
@@ -252,6 +276,80 @@ function garantirSchema(): Promise<void> {
     });
   }
   return espaceGlobal.__schemaFormation;
+}
+
+/* ------------------------------------------------------------------ */
+/* Diagnostic                                                          */
+/* ------------------------------------------------------------------ */
+
+export interface DiagnosticBase {
+  /** Nom de la variable d'environnement retenue, ou null. */
+  variable: string | null;
+  /** Toutes les variables *_URL présentes (noms seulement). */
+  variablesUrl: string[];
+  /** Hôte de la base, sans identifiants — pour reconnaître le fournisseur. */
+  hote: string | null;
+  connexion: { ok: true; version: string } | { ok: false; erreur: string };
+  schema:
+    | { ok: true; tables: string[] }
+    | { ok: false; erreur: string }
+    | null;
+}
+
+/** État réel de la base, tel que le tableau de bord peut l'afficher. */
+export async function diagnostiquerBase(): Promise<DiagnosticBase> {
+  const source = sourceUrlBase();
+  const variablesUrl = nomsVariablesUrl();
+
+  let hote: string | null = null;
+  if (source) {
+    try {
+      hote = new URL(source.valeur).hostname || null;
+    } catch {
+      hote = null;
+    }
+  }
+
+  if (!source) {
+    return {
+      variable: null,
+      variablesUrl,
+      hote,
+      connexion: { ok: false, erreur: "Aucune chaîne de connexion Postgres trouvée." },
+      schema: null,
+    };
+  }
+
+  let connexionEtat: DiagnosticBase["connexion"];
+  try {
+    const resultat = await connexion().query<{ version: string }>(
+      "select version() as version",
+    );
+    connexionEtat = { ok: true, version: resultat.rows[0]?.version ?? "" };
+  } catch (souci) {
+    return {
+      variable: source.nom,
+      variablesUrl,
+      hote,
+      connexion: { ok: false, erreur: detailErreurBase(souci) },
+      schema: null,
+    };
+  }
+
+  let schemaEtat: DiagnosticBase["schema"];
+  try {
+    await garantirSchema();
+    const lignes = await connexion().query<{ table_name: string }>(
+      `select table_name from information_schema.tables
+        where table_schema = current_schema() and table_name like 'formation_%'
+        order by table_name`,
+    );
+    schemaEtat = { ok: true, tables: lignes.rows.map((l) => l.table_name) };
+  } catch (souci) {
+    schemaEtat = { ok: false, erreur: detailErreurBase(souci) };
+  }
+
+  return { variable: source.nom, variablesUrl, hote, connexion: connexionEtat, schema: schemaEtat };
 }
 
 /** Exécute une requête paramétrée et renvoie les lignes. */
