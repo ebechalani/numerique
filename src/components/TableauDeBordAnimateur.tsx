@@ -40,6 +40,7 @@ import { useRouter } from "next/navigation";
 import type { KeyboardEvent as EvenementClavier, ReactNode } from "react";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 
+import DiagnosticBase from "@/components/DiagnosticBase";
 import BoutonCopier from "@/components/ui/BoutonCopier";
 import BarresRepartition from "@/components/viz/BarresRepartition";
 import TuileStat from "@/components/viz/TuileStat";
@@ -1405,6 +1406,25 @@ export default function TableauDeBordAnimateur({
             se mélangent jamais à celles d’un autre.
           </p>
 
+          {!collecteActive ? (
+            <div
+              role="alert"
+              className="mt-4 rounded-lg border border-ambre-trait bg-ambre-voile p-4 text-sm leading-relaxed text-encre"
+            >
+              <p className="font-semibold">
+                Impossible d’ouvrir une séance : le site n’est pas relié à sa
+                base de données.
+              </p>
+              <p className="mt-1.5 text-encre-clair">
+                Les séances et les réponses y sont conservées. Sur Vercel :
+                onglet <span className="font-medium">Storage</span>, créer ou
+                relier une base Postgres au projet, puis{" "}
+                <span className="font-medium">Deployments → Redeploy</span>.
+                Revenez ensuite ici : les tables se créent toutes seules.
+              </p>
+            </div>
+          ) : null}
+
           <div className="mt-4 flex flex-wrap items-end gap-3">
             <div className="min-w-0 flex-1 basis-64">
               <label
@@ -1447,6 +1467,8 @@ export default function TableauDeBordAnimateur({
               {messageAction}
             </p>
           ) : null}
+
+          <DiagnosticBase ouvert={!collecteActive} />
         </div>
 
         {/* Séances passées */}

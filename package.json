@@ -5,10 +5,12 @@
   "description": "Plateforme de formation — Lycée Montaigne, Beit Chabab",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/embed-schema.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:init": "node scripts/init-db.mjs"
+    "db:init": "node scripts/init-db.mjs",
+    "db:embed": "node scripts/embed-schema.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.70.0",
