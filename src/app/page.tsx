@@ -198,6 +198,44 @@ export default function Accueil() {
               </span>
             </Link>
           </li>
+
+          <li className="mt-4">
+            <Link
+              href="/reglement-interieur"
+              className="group flex items-start gap-5 rounded-lg border border-trait bg-craie p-6 transition-colors hover:border-accent hover:bg-accent-voile"
+            >
+              <span
+                aria-hidden="true"
+                className="hidden shrink-0 items-center gap-1 sm:flex"
+              >
+                {["▲", "◆", "●", "■"].map((symbole) => (
+                  <span
+                    key={symbole}
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-encre font-mono text-xs text-papier"
+                  >
+                    {symbole}
+                  </span>
+                ))}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="text-sm text-accent">
+                  Règlement intérieur 2026-2027
+                </span>
+                <span className="mt-1 block font-serif text-2xl leading-tight text-encre">
+                  Le règlement, et un QCM à composer
+                </span>
+                <span className="mt-2 block max-w-3xl leading-relaxed text-graphite">
+                  Le texte article par article, un questionnaire prêt à
+                  projeter, et de quoi composer le vôtre pour votre classe —
+                  chaque réponse cite l’article qui la fonde.
+                </span>
+                <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent">
+                  Ouvrir la section
+                  <Fleche className="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </span>
+            </Link>
+          </li>
         </ul>
       </section>
 

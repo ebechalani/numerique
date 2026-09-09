@@ -63,6 +63,12 @@ export default function EnTete() {
           >
             Rédacteur de prompt
           </Link>
+          <Link
+            href="/reglement-interieur"
+            className="text-graphite transition-colors hover:text-accent"
+          >
+            Règlement intérieur
+          </Link>
           <a
             href={`mailto:${COURRIEL}`}
             className="text-graphite transition-colors hover:text-accent"
@@ -133,6 +139,15 @@ export default function EnTete() {
           >
             Rédacteur de prompt{" "}
             <span className="block text-xs text-estompe">Méthode ACTIF</span>
+          </Link>
+          <Link
+            href="/reglement-interieur"
+            className="border-b border-trait py-3 text-encre transition-colors hover:text-accent"
+          >
+            Règlement intérieur{" "}
+            <span className="block text-xs text-estompe">
+              Le texte, et un QCM à composer
+            </span>
           </Link>
           <a
             href={`mailto:${COURRIEL}`}
