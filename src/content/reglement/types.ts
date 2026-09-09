@@ -63,6 +63,12 @@ export interface QuestionReglement {
   articles: string[];
   /** La phrase du règlement qui prouve la bonne réponse, mot pour mot. */
   citation: string;
+  /**
+   * Réserve de lecture, quand le texte ne tranche pas tout à fait : elle
+   * s'affiche dans le corrigé, sous la citation. Mieux vaut la dire que
+   * laisser croire au lecteur que la règle est plus nette qu'elle ne l'est.
+   */
+  reserve?: string;
   public: PublicQuestion;
   difficulte: Difficulte;
 }

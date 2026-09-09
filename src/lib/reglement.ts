@@ -249,6 +249,8 @@ export interface QuestionJouable {
   explication?: string;
   articles: string[];
   citation?: string;
+  /** Ce que le texte ne tranche pas tout à fait, dit dans le corrigé. */
+  reserve?: string;
   /** Étiquette de thème, absente pour une question écrite par l'enseignant. */
   theme?: string;
 }
@@ -261,6 +263,7 @@ export function versJouable(question: QuestionReglement): QuestionJouable {
     explication: question.explication,
     articles: question.articles,
     citation: question.citation,
+    reserve: question.reserve,
     theme: question.theme,
   };
 }

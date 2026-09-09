@@ -79,10 +79,12 @@ export const QUESTIONS_PARENTS: QuestionReglement[] = [
     options: ["Vrai", "Faux"],
     bonne: 0,
     explication:
-      "Au retour, l’élève présente une justification de sa famille, et un certificat médical dès que l’absence dépasse deux jours.",
+      "Au-delà de deux jours, l’élève ne revient pas les mains vides : le règlement demande une justification de la famille et/ou un certificat médical.",
     articles: ["4.2.1"],
     citation:
       "A son retour, l’élève devra présenter une justification de sa famille et/ou un certificat médical pour une absence qui dépasserait les 2 jours.",
+    reserve:
+      "Le règlement écrit « et/ou » : à la lettre, il n’impose donc pas le certificat dans tous les cas. En pratique, la vie scolaire le demande au-delà de deux jours. Vérifiez auprès d’elle avant d’en faire une règle absolue devant une classe.",
     public: "parents",
     difficulte: "moyenne",
   },
@@ -120,7 +122,7 @@ export const QUESTIONS_PARENTS: QuestionReglement[] = [
     ],
     bonne: 0,
     explication:
-      "L’interdiction couvre toute l’enceinte, espaces extérieurs compris, pendant tout le temps scolaire. Seul un professeur peut autoriser un usage ponctuel, pour une activité précise.",
+      "L’interdiction couvre toute l’enceinte, espaces extérieurs compris, pendant tout le temps scolaire. Seul un professeur peut autoriser un usage ponctuel, pour une activité précise. La direction peut par ailleurs accorder à un lycéen une dérogation individuelle, encadrée et révocable.",
     articles: ["4.7.1"],
     citation:
       "L’usage des téléphones portables et de tout appareil personnel connecté (montres, écouteurs, tablettes, etc.) est strictement interdit dans l’enceinte de l’établissement, y compris dans les espaces extérieurs, pendant tout le temps scolaire.",
@@ -201,7 +203,7 @@ export const QUESTIONS_PARENTS: QuestionReglement[] = [
     ],
     bonne: 2,
     explication:
-      "Les usages de l’intelligence artificielle sont encadrés par une charte annexée au règlement, qui a la même valeur que lui. La diffusion d’un deepfake relève des sanctions les plus lourdes.",
+      "Les usages de l’intelligence artificielle sont encadrés par une charte annexée au règlement, qui a la même valeur que lui. Face à un deepfake, la direction peut réunir un conseil de discipline, refuser la réinscription, ou les deux.",
     articles: ["4.7.2"],
     citation:
       "En cas de diffusion de deepfake ou d’enregistrement portant atteinte à un membre de la communauté ou à l’établissement, la direction pourra réunir un conseil de discipline et/ou refuser la réinscription de l’élève à la rentrée suivante.",
@@ -314,7 +316,7 @@ export const QUESTIONS_PARENTS: QuestionReglement[] = [
     ],
     bonne: 0,
     explication:
-      "Trois étapes dans l’ordre : l’enseignant autorise, la vie scolaire remet un billet, l’infirmière examine et décide. C’est elle qui contacte les parents.",
+      "L’ordre compte : l’enseignant autorise, la vie scolaire remet un billet, l’infirmière examine et décide du retour en classe ou du départ. C’est elle qui contacte les parents, dans tous les cas.",
     articles: ["3.2.1"],
     citation:
       "L’élève ressent un malaise et en informe son enseignant. L’enseignant autorise l’élève à se rendre à la vie scolaire. La vie scolaire remet un billet de passage à l’élève pour l’infirmerie (lycée) ou renseigne le carnet de vie scolaire (collège).",
@@ -370,7 +372,7 @@ export const QUESTIONS_PARENTS: QuestionReglement[] = [
     ],
     bonne: 3,
     explication:
-      "La gourde est même recommandée. Les boissons énergisantes, les médicaments gardés sur soi et le téléphone allumé sont interdits.",
+      "La gourde est même recommandée. Les boissons énergisantes, les médicaments gardés sur soi — sauf projet personnalisé de scolarisation — et le téléphone allumé sont interdits.",
     articles: ["4.4", "4.7", "3.2"],
     citation:
       "L’élève veillera également à se munir d’une gourde ou d’une bouteille d’eau.",

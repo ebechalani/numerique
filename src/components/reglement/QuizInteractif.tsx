@@ -517,6 +517,15 @@ export default function QuizInteractif({
                         « {question.citation} »
                       </blockquote>
                     ) : null}
+
+                    {question.reserve ? (
+                      <p className="mt-2 rounded-md border border-ambre-trait bg-ambre-voile px-3 py-2 text-sm leading-relaxed text-encre-clair">
+                        <span className="font-medium text-encre">
+                          Ce que le texte ne tranche pas :{" "}
+                        </span>
+                        {question.reserve}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </li>
@@ -694,6 +703,20 @@ export default function QuizInteractif({
                 « {courante.citation} »
               </blockquote>
             ) : null}
+            {courante.reserve ? (
+              <p
+                className={[
+                  "mt-3 rounded-md border border-ambre-trait bg-ambre-voile px-3 py-2 leading-relaxed text-encre-clair",
+                  projection ? "text-base" : "text-sm",
+                ].join(" ")}
+              >
+                <span className="font-medium text-encre">
+                  Ce que le texte ne tranche pas :{" "}
+                </span>
+                {courante.reserve}
+              </p>
+            ) : null}
+
             <p className="mt-3">
               <Articles articles={courante.articles} gros={projection} />
             </p>
