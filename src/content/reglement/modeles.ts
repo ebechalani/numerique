@@ -12,9 +12,9 @@ export const MODELES: ModeleQuiz[] = [
     titre: "Es-tu un expert du règlement intérieur ?",
     sousTitre: "Édition parents · 20 questions",
     intro:
-      "Le questionnaire projeté en réunion de parents : seize questions à choix unique et quatre vrai ou faux, sur les points du règlement qui reviennent le plus souvent. Le corrigé s’affiche à la fin, comme en salle.",
+      "Le questionnaire projeté en réunion de parents : seize questions à choix unique et quatre vrai ou faux, sur les points du règlement qui reviennent le plus souvent. La bonne réponse et son explication s’affichent dès qu’on a répondu ; le bouton « Corrigé » en haut permet de les garder pour la fin, comme en salle.",
     public: "parents",
-    correction: "fin",
+    correction: "immediat",
     questions: QUESTIONS_PARENTS.map((question) => question.id),
   },
 ];

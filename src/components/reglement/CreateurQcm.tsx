@@ -55,7 +55,7 @@ interface Brouillon {
 
 const BROUILLON_INITIAL: Brouillon = {
   titre: "",
-  correction: "fin",
+  correction: "immediat",
   choisies: [],
   perso: [],
 };
@@ -65,7 +65,7 @@ function brouillonSur(brut: unknown, idsConnus: Set<string>): Brouillon {
   const objet = (brut ?? {}) as Partial<Brouillon>;
   return {
     titre: typeof objet.titre === "string" ? objet.titre.slice(0, 120) : "",
-    correction: objet.correction === "immediat" ? "immediat" : "fin",
+    correction: objet.correction === "fin" ? "fin" : "immediat",
     choisies: Array.isArray(objet.choisies)
       ? objet.choisies
           .filter((id): id is string => typeof id === "string")
@@ -537,8 +537,8 @@ export default function CreateurQcm({
             <div className="mt-1.5 grid grid-cols-2 gap-2">
               {(
                 [
+                  ["immediat", "À chaque question", "on apprend en répondant"],
                   ["fin", "À la fin", "comme en réunion"],
-                  ["immediat", "À chaque réponse", "travail individuel"],
                 ] as const
               ).map(([valeur, libelle, precision]) => (
                 <label
@@ -723,7 +723,7 @@ export default function CreateurQcm({
           <>
             <p className="mt-2 text-sm leading-relaxed text-encre-clair">
               {total} question{total > 1 ? "s" : ""}, corrigé{" "}
-              {brouillon.correction === "fin" ? "à la fin" : "à chaque réponse"}.
+              {brouillon.correction === "fin" ? "à la fin" : "à chaque question"}.
               Le questionnaire tient entier dans cette adresse : rien n’est
               enregistré sur le site, il n’y a donc rien à supprimer après la
               séance.

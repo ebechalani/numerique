@@ -106,7 +106,7 @@ export default async function PageQuizCompose({ searchParams }: Props) {
           titre={quiz.t ?? "Questionnaire sur le règlement intérieur"}
           sousTitre={`${questions.length} question${questions.length > 1 ? "s" : ""}`}
           questions={questions}
-          correction={quiz.m ?? "fin"}
+          correction={quiz.m ?? "immediat"}
           cle={cleQuiz(charge ?? "")}
         />
       </div>
