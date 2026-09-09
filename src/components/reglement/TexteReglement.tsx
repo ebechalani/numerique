@@ -11,7 +11,7 @@ import type {
   BlocReglement,
   ChapitreReglement,
 } from "@/content/reglement/types";
-import { ancreArticle } from "@/lib/reglement";
+import { ancresDesArticles } from "@/lib/reglement";
 
 function Bloc({ bloc }: { bloc: BlocReglement }) {
   if (bloc.type === "paragraphe") {
@@ -83,16 +83,29 @@ function Bloc({ bloc }: { bloc: BlocReglement }) {
   );
 }
 
-function Article({ article }: { article: ArticleReglement }) {
+function Article({
+  article,
+  ancre,
+  titreRepete = false,
+}: {
+  article: ArticleReglement;
+  ancre: string;
+  /** Le titre reprend celui du chapitre — inutile de l'écrire deux fois. */
+  titreRepete?: boolean;
+}) {
   return (
-    <article id={ancreArticle(article.numero)} className="scroll-mt-24">
-      <h3 className="flex flex-wrap items-baseline gap-x-3 font-serif text-xl leading-snug text-encre">
-        <span className="font-mono text-sm text-accent tabular-nums">
-          {article.numero}
-        </span>
-        <span>{article.titre}</span>
-      </h3>
-      <div className="mt-3 space-y-3">
+    <article id={ancre} className="scroll-mt-24">
+      {titreRepete ? null : (
+        <h3 className="flex flex-wrap items-baseline gap-x-3 font-serif text-xl leading-snug text-encre">
+          {article.numero ? (
+            <span className="font-mono text-sm text-accent tabular-nums">
+              {article.numero}
+            </span>
+          ) : null}
+          <span>{article.titre}</span>
+        </h3>
+      )}
+      <div className={titreRepete ? "space-y-3" : "mt-3 space-y-3"}>
         {article.blocs.map((bloc, rang) => (
           <Bloc key={rang} bloc={bloc} />
         ))}
@@ -106,6 +119,7 @@ export function SommaireReglement({
 }: {
   chapitres: ChapitreReglement[];
 }) {
+  const ancres = ancresDesArticles(chapitres);
   return (
     <nav
       aria-label="Sommaire du règlement"
@@ -115,7 +129,7 @@ export function SommaireReglement({
         Sommaire
       </p>
       <ol className="mt-2 space-y-3">
-        {chapitres.map((chapitre) => (
+        {chapitres.map((chapitre, rangChapitre) => (
           <li key={chapitre.numero}>
             <a
               href={`#chapitre-${chapitre.numero}`}
@@ -125,9 +139,9 @@ export function SommaireReglement({
             </a>
             <ul className="mt-1 space-y-0.5">
               {chapitre.articles.map((article, rang) => (
-                <li key={`${article.numero}-${rang}`}>
+                <li key={ancres[rangChapitre][rang]}>
                   <a
-                    href={`#${ancreArticle(article.numero)}`}
+                    href={`#${ancres[rangChapitre][rang]}`}
                     className="flex gap-2 py-0.5 text-xs text-graphite transition-colors hover:text-accent"
                   >
                     <span className="w-9 shrink-0 font-mono tabular-nums text-estompe">
@@ -152,9 +166,10 @@ export default function TexteReglement({
 }: {
   chapitres: ChapitreReglement[];
 }) {
+  const ancres = ancresDesArticles(chapitres);
   return (
     <div className="space-y-12">
-      {chapitres.map((chapitre) => (
+      {chapitres.map((chapitre, rangChapitre) => (
         <section
           key={chapitre.numero}
           id={`chapitre-${chapitre.numero}`}
@@ -169,7 +184,15 @@ export default function TexteReglement({
           </h2>
           <div className="mt-6 space-y-8">
             {chapitre.articles.map((article, rang) => (
-              <Article key={`${article.numero}-${rang}`} article={article} />
+              <Article
+                key={ancres[rangChapitre][rang]}
+                article={article}
+                ancre={ancres[rangChapitre][rang]}
+                titreRepete={
+                  chapitre.articles.length === 1 &&
+                  article.titre === chapitre.titre
+                }
+              />
             ))}
           </div>
         </section>

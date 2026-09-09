@@ -71,7 +71,31 @@ export function getModele(slug: string): ModeleQuiz | undefined {
 
 /** Ancre d'un article dans la page du règlement : « 4.7.1 » → « art-4-7-1 ». */
 export function ancreArticle(numero: string): string {
-  return `art-${numero.replace(/\./g, "-")}`;
+  const propre = numero.trim();
+  if (!propre) return "preambule";
+  return `art-${propre.replace(/\./g, "-")}`;
+}
+
+/**
+ * Ancres de tous les articles, dans l'ordre du document, garanties uniques.
+ *
+ * Le règlement réutilise trois numéros (« 2.1 », « 2.2 », « 4.2.1 ») : sans
+ * cela, deux éléments de la page porteraient le même identifiant. Le premier
+ * article d'un numéro garde l'ancre canonique — celle que visent les corrigés
+ * — et les suivants reçoivent un suffixe.
+ */
+export function ancresDesArticles(
+  chapitres: { articles: { numero: string }[] }[],
+): string[][] {
+  const comptes = new Map<string, number>();
+  return chapitres.map((chapitre) =>
+    chapitre.articles.map((article) => {
+      const canonique = ancreArticle(article.numero);
+      const rang = (comptes.get(canonique) ?? 0) + 1;
+      comptes.set(canonique, rang);
+      return rang === 1 ? canonique : `${canonique}-${rang}`;
+    }),
+  );
 }
 
 /** Lien profond vers un article, utilisé par les corrigés. */
