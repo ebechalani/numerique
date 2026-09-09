@@ -36,13 +36,36 @@ interface EtatQuiz {
   etape: number;
   /** Le récapitulatif est-il ouvert ? */
   termine: boolean;
+  /**
+   * Moment du corrigé, réglable en cours de route : le questionnaire arrive
+   * avec un défaut, mais l'animateur peut le changer sans repartir de zéro.
+   */
+  mode: MomentCorrection;
+  /** Questions dont on a demandé la réponse sans y avoir répondu. */
+  revelees: Record<string, boolean>;
 }
 
-const ETAT_INITIAL: EtatQuiz = { reponses: {}, etape: 0, termine: false };
+function etatInitial(correction: MomentCorrection): EtatQuiz {
+  return {
+    reponses: {},
+    etape: 0,
+    termine: false,
+    mode: correction,
+    revelees: {},
+  };
+}
 
 /** Le stockage peut contenir n'importe quoi : on reconstruit un état sûr. */
-function etatSur(brut: unknown, total: number): EtatQuiz {
-  const objet = (brut ?? {}) as Partial<EtatQuiz> & { reponses?: unknown };
+function etatSur(
+  brut: unknown,
+  total: number,
+  correction: MomentCorrection,
+): EtatQuiz {
+  const objet = (brut ?? {}) as Partial<EtatQuiz> & {
+    reponses?: unknown;
+    revelees?: unknown;
+  };
+
   const reponses: Record<string, number> = {};
   if (typeof objet.reponses === "object" && objet.reponses !== null) {
     for (const [rang, valeur] of Object.entries(
@@ -53,11 +76,28 @@ function etatSur(brut: unknown, total: number): EtatQuiz {
       }
     }
   }
+
+  const revelees: Record<string, boolean> = {};
+  if (typeof objet.revelees === "object" && objet.revelees !== null) {
+    for (const [rang, valeur] of Object.entries(
+      objet.revelees as Record<string, unknown>,
+    )) {
+      if (valeur === true) revelees[rang] = true;
+    }
+  }
+
   const etape =
     typeof objet.etape === "number" && Number.isInteger(objet.etape)
       ? Math.min(Math.max(objet.etape, 0), Math.max(total - 1, 0))
       : 0;
-  return { reponses, etape, termine: objet.termine === true };
+
+  return {
+    reponses,
+    etape,
+    termine: objet.termine === true,
+    mode: objet.mode === "immediat" || objet.mode === "fin" ? objet.mode : correction,
+    revelees,
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -201,17 +241,26 @@ export default function QuizInteractif({
   const total = questions.length;
   const pret = useHydrate();
 
-  const [brut, setBrut] = useEtatLocal<EtatQuiz>(`quiz-ri:${cle}`, ETAT_INITIAL);
-  const etat = useMemo(() => etatSur(brut, total), [brut, total]);
-  const { reponses, etape, termine } = etat;
+  const valeurInitiale = useMemo(() => etatInitial(correction), [correction]);
+  const [brut, setBrut] = useEtatLocal<EtatQuiz>(
+    `quiz-ri:${cle}`,
+    valeurInitiale,
+  );
+  const etat = useMemo(
+    () => etatSur(brut, total, correction),
+    [brut, correction, total],
+  );
+  const { reponses, etape, termine, mode, revelees } = etat;
 
   const [projection, setProjection] = useState(false);
 
   const modifier = useCallback(
     (transformer: (precedent: EtatQuiz) => EtatQuiz) => {
-      setBrut((precedent) => transformer(etatSur(precedent, total)));
+      setBrut((precedent) =>
+        transformer(etatSur(precedent, total, correction)),
+      );
     },
-    [setBrut, total],
+    [setBrut, correction, total],
   );
 
   const repondre = useCallback(
@@ -246,7 +295,23 @@ export default function QuizInteractif({
   }, [modifier]);
 
   const recommencer = useCallback(() => {
-    modifier(() => ETAT_INITIAL);
+    // Le réglage du corrigé survit : c'est un choix d'animation, pas une réponse.
+    modifier((precedent) => ({ ...etatInitial(correction), mode: precedent.mode }));
+  }, [correction, modifier]);
+
+  const changerMode = useCallback(
+    (suivant: MomentCorrection) => {
+      modifier((precedent) => ({ ...precedent, mode: suivant }));
+    },
+    [modifier],
+  );
+
+  /** Révèle la réponse d'une question sans y avoir répondu. */
+  const reveler = useCallback(() => {
+    modifier((precedent) => ({
+      ...precedent,
+      revelees: { ...precedent.revelees, [String(precedent.etape)]: true },
+    }));
   }, [modifier]);
 
   /* ---------------- Clavier ---------------- */
@@ -322,7 +387,8 @@ export default function QuizInteractif({
   const courante = questions[etape];
   const choix = reponses[String(etape)];
   const repondu = choix !== undefined;
-  const corrigeVisible = correction === "immediat" && repondu;
+  const revele = revelees[String(etape)] === true;
+  const corrigeVisible = (mode === "immediat" && repondu) || revele;
 
   /* ---------------- En-tête ---------------- */
 
@@ -349,6 +415,35 @@ export default function QuizInteractif({
       </div>
 
       <div className="sans-impression flex flex-wrap items-center gap-2">
+        <div
+          role="group"
+          aria-label="Quand afficher le corrigé"
+          className="flex items-center overflow-hidden rounded-lg border border-trait bg-craie"
+        >
+          <span className="px-3 py-1.5 text-xs text-estompe">Corrigé</span>
+          {(
+            [
+              ["immediat", "À chaque question"],
+              ["fin", "À la fin"],
+            ] as const
+          ).map(([valeur, libelle]) => (
+            <button
+              key={valeur}
+              type="button"
+              onClick={() => changerMode(valeur)}
+              aria-pressed={mode === valeur}
+              className={[
+                "border-l border-trait px-3 py-1.5 text-sm transition-colors",
+                mode === valeur
+                  ? "bg-accent-voile font-medium text-accent-fort"
+                  : "text-graphite hover:bg-voile hover:text-encre",
+              ].join(" ")}
+            >
+              {libelle}
+            </button>
+          ))}
+        </div>
+
         <button
           type="button"
           onClick={() => setProjection((actif) => !actif)}
@@ -667,21 +762,29 @@ export default function QuizInteractif({
             role="status"
             className={[
               "mt-6 rounded-lg border p-4",
-              choix === courante.bonne
-                ? "border-vert-trait bg-vert-voile"
-                : "border-rouge-trait bg-rouge-voile",
+              !repondu
+                ? "border-accent bg-accent-voile"
+                : choix === courante.bonne
+                  ? "border-vert-trait bg-vert-voile"
+                  : "border-rouge-trait bg-rouge-voile",
             ].join(" ")}
           >
             <p
               className={[
                 "font-semibold",
-                choix === courante.bonne ? "text-vert" : "text-rouge",
+                !repondu
+                  ? "text-encre"
+                  : choix === courante.bonne
+                    ? "text-vert"
+                    : "text-rouge",
                 projection ? "text-xl" : "text-base",
               ].join(" ")}
             >
-              {choix === courante.bonne
-                ? "Bonne réponse."
-                : `Réponse inexacte — c’était « ${courante.options[courante.bonne]} ».`}
+              {!repondu
+                ? `La bonne réponse est « ${courante.options[courante.bonne]} ».`
+                : choix === courante.bonne
+                  ? "Bonne réponse."
+                  : `Réponse inexacte — c’était « ${courante.options[courante.bonne]} ».`}
             </p>
             {courante.explication ? (
               <p
@@ -723,16 +826,30 @@ export default function QuizInteractif({
           </div>
         ) : null}
 
-        {repondu && !corrigeVisible ? (
-          <p
-            role="status"
-            className={[
-              "mt-6 rounded-lg border border-trait bg-voile px-4 py-3 text-graphite",
-              projection ? "text-lg" : "text-sm",
-            ].join(" ")}
-          >
-            Réponse enregistrée. Le corrigé s’affiche à la fin du questionnaire.
-          </p>
+        {!corrigeVisible ? (
+          <div className="sans-impression mt-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-trait bg-voile px-4 py-3">
+            <p
+              role="status"
+              className={[
+                "min-w-0 text-graphite",
+                projection ? "text-lg" : "text-sm",
+              ].join(" ")}
+            >
+              {repondu
+                ? "Réponse enregistrée. Le corrigé s’affiche à la fin du questionnaire."
+                : "Le corrigé s’affiche à la fin du questionnaire."}
+            </p>
+            <button
+              type="button"
+              onClick={reveler}
+              className={[
+                "shrink-0 rounded-md border border-trait-fort bg-craie px-3 py-1.5 font-medium text-encre transition-colors hover:border-accent hover:text-accent",
+                projection ? "text-base" : "text-sm",
+              ].join(" ")}
+            >
+              Voir la réponse
+            </button>
+          </div>
         ) : null}
       </section>
 
