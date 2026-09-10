@@ -103,22 +103,21 @@ export default function PageReglementInterieur() {
         <ul className="grid gap-5 md:grid-cols-3">
           <li>
             <Link
-              href="/reglement-interieur/creer"
-              className="group flex h-full flex-col rounded-lg border border-accent bg-accent-voile p-6 transition-colors hover:bg-accent hover:text-craie"
+              href="/reglement-interieur/reglement"
+              className="group flex h-full flex-col rounded-lg border border-trait bg-craie p-6 transition-colors hover:border-accent hover:bg-accent-voile"
             >
-              <span className="text-xs font-medium tracking-wide text-accent-fort uppercase group-hover:text-craie">
-                Pour les professeurs
+              <span className="text-xs font-medium tracking-wide text-estompe uppercase">
+                La source
               </span>
-              <span className="mt-2 font-serif text-2xl leading-tight text-encre group-hover:text-craie">
-                Créer un QCM
+              <span className="mt-2 font-serif text-2xl leading-tight text-encre">
+                Lire le règlement
               </span>
-              <span className="mt-3 flex-1 text-sm leading-relaxed text-graphite group-hover:text-craie">
-                Choisissez vos questions dans la banque, ajoutez les vôtres,
-                réglez le moment du corrigé. Vous repartez avec un lien à
-                projeter ou à envoyer.
+              <span className="mt-3 flex-1 text-sm leading-relaxed text-graphite">
+                Le texte complet, chapitre par chapitre, avec un lien direct
+                vers chaque article. C’est lui que citent les corrigés.
               </span>
-              <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent group-hover:text-craie">
-                Composer mon questionnaire
+              <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent">
+                {disponible ? "Ouvrir le texte" : "Voir la section"}
                 <Fleche className="transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
@@ -149,21 +148,22 @@ export default function PageReglementInterieur() {
 
           <li>
             <Link
-              href="/reglement-interieur/reglement"
-              className="group flex h-full flex-col rounded-lg border border-trait bg-craie p-6 transition-colors hover:border-accent hover:bg-accent-voile"
+              href="/reglement-interieur/creer"
+              className="group flex h-full flex-col rounded-lg border border-accent bg-accent-voile p-6 transition-colors hover:bg-accent hover:text-craie"
             >
-              <span className="text-xs font-medium tracking-wide text-estompe uppercase">
-                La source
+              <span className="text-xs font-medium tracking-wide text-accent-fort uppercase group-hover:text-craie">
+                Pour les professeurs
               </span>
-              <span className="mt-2 font-serif text-2xl leading-tight text-encre">
-                Lire le règlement
+              <span className="mt-2 font-serif text-2xl leading-tight text-encre group-hover:text-craie">
+                Créer un QCM
               </span>
-              <span className="mt-3 flex-1 text-sm leading-relaxed text-graphite">
-                Le texte complet, chapitre par chapitre, avec un lien direct
-                vers chaque article. C’est lui que citent les corrigés.
+              <span className="mt-3 flex-1 text-sm leading-relaxed text-graphite group-hover:text-craie">
+                Choisissez vos questions dans la banque, ajoutez les vôtres,
+                réglez le moment du corrigé. Vous repartez avec un lien à
+                projeter ou à envoyer.
               </span>
-              <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent">
-                {disponible ? "Ouvrir le texte" : "Voir la section"}
+              <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent group-hover:text-craie">
+                Composer mon questionnaire
                 <Fleche className="transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
