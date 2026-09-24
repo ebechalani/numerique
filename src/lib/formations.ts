@@ -20,6 +20,8 @@ import type {
 } from "@/content/types";
 
 import { iaUsagesNumeriques } from "@/content/formations/ia-usages-numeriques";
+import { inclusia as inclusiaSaisi } from "@/content/formations/inclusia";
+import { ressourcesInclusia } from "@/content/formations/inclusia/ressources";
 import { ficheOutils } from "@/content/formations/ia-usages-numeriques/ressources/fiche-outils";
 import { questionsFrequentes } from "@/content/formations/ia-usages-numeriques/ressources/questions";
 import {
@@ -27,6 +29,16 @@ import {
   briquesRequete,
 } from "@/content/formations/ia-usages-numeriques/ressources/requetes";
 import { deroule } from "@/content/formations/ia-usages-numeriques/ressources/deroule";
+
+import { typographier } from "./typographie";
+
+/*
+ * Le tutoriel Inclus’IA reçoit les espaces insécables à la lecture. La
+ * formation « IA et usages numériques » garde ses textes tels quels : certaines
+ * réponses d’exercice y sont enregistrées par leur libellé, et les changer
+ * ferait perdre les réponses déjà saisies.
+ */
+const inclusia = typographier(inclusiaSaisi);
 
 /* Réexports : certaines pages ont besoin des données brutes, pas des blocs. */
 export { briquesRequete, questionsFrequentes };
@@ -36,10 +48,23 @@ export { briquesRequete, questionsFrequentes };
 /* ------------------------------------------------------------------ */
 
 /** Toutes les formations publiées, dans l’ordre d’affichage du catalogue. */
-export const formations: Formation[] = [iaUsagesNumeriques];
+export const formations: Formation[] = [iaUsagesNumeriques, inclusia];
 
 export function getFormation(slug: string): Formation | undefined {
   return formations.find((formation) => formation.slug === slug);
+}
+
+/**
+ * Les formations animées en salle. Elles seules ont une session ouverte par
+ * l’animateur, des questionnaires collectés et une trame de restitution ; un
+ * tutoriel suivi en autonomie n’a rien de tout cela.
+ */
+export const formationsAnimees: Formation[] = formations.filter(
+  (formation) => formation.modalite !== "autonomie",
+);
+
+export function getFormationAnimee(slug: string): Formation | undefined {
+  return formationsAnimees.find((formation) => formation.slug === slug);
 }
 
 /* ------------------------------------------------------------------ */
@@ -145,8 +170,8 @@ function blocsQuestions(questions: QuestionFrequente[]): Bloc[] {
   ]);
 }
 
-/** Construit les blocs d’une ressource à partir de son slug. */
-function construireBlocs(ressourceSlug: string): Bloc[] | undefined {
+/** Ressources de la formation « IA et usages numériques ». */
+function blocsRessourceIa(ressourceSlug: string): Bloc[] | undefined {
   switch (ressourceSlug) {
     case "fiche-outils":
       return blocsFicheOutils(ficheOutils);
@@ -160,6 +185,24 @@ function construireBlocs(ressourceSlug: string): Bloc[] | undefined {
       return undefined;
   }
 }
+
+/** Ressources du tutoriel Inclus’IA : des sections, titre puis blocs. */
+function blocsRessourceInclusia(ressourceSlug: string): Bloc[] | undefined {
+  const sections = ressourcesInclusia[ressourceSlug];
+  return sections ? typographier(aplatirSections(sections)) : undefined;
+}
+
+/**
+ * Chaque formation construit ses propres ressources : deux formations peuvent
+ * donc avoir une ressource de même slug sans se marcher dessus.
+ */
+const CONSTRUCTEURS_RESSOURCES: Record<
+  string,
+  (ressourceSlug: string) => Bloc[] | undefined
+> = {
+  [iaUsagesNumeriques.slug]: blocsRessourceIa,
+  [inclusia.slug]: blocsRessourceInclusia,
+};
 
 /**
  * Récupère une ressource et son contenu déjà aplati.
@@ -178,7 +221,7 @@ export function getRessource(
   );
   if (!ressource) return undefined;
 
-  const blocs = construireBlocs(ressourceSlug);
+  const blocs = CONSTRUCTEURS_RESSOURCES[formation.slug]?.(ressourceSlug);
   if (!blocs) return undefined;
 
   return { formation, ressource, blocs };

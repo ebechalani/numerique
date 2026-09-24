@@ -33,7 +33,7 @@ import TableauDeBordAnimateur, {
 } from "@/components/TableauDeBordAnimateur";
 import { animateurAutorise, secretAnimateur } from "@/lib/animateur";
 import { collecteConfiguree } from "@/lib/db";
-import { getFormation } from "@/lib/formations";
+import { getFormationAnimee } from "@/lib/formations";
 
 /*
   La page dépend d’un cookie et de l’état de la base : elle ne peut être ni
@@ -197,7 +197,7 @@ function CodeAbsent() {
 
 export default async function PageAnimateur({ params }: Props) {
   const { formation: slug } = await params;
-  const formation = getFormation(slug);
+  const formation = getFormationAnimee(slug);
 
   if (!formation) notFound();
 

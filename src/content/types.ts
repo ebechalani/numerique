@@ -68,6 +68,17 @@ export interface LigneRequete {
   outil: "notebooklm" | "copilot" | "les-deux";
 }
 
+/**
+ * Un lien vers une page : une autre page du site (chemin commençant par « / »)
+ * ou un outil extérieur (adresse complète, ouverte dans un nouvel onglet).
+ */
+export interface Lien {
+  libelle: string;
+  href: string;
+  /** Une phrase : ce qu’on trouve de l’autre côté. */
+  description?: string;
+}
+
 /** Une question à choix unique, avec son corrigé. */
 export interface QuestionQcm {
   question: string;
@@ -120,12 +131,25 @@ export type Bloc =
   | { type: "citation"; texte: string; source?: string }
   | { type: "tableau"; entetes: string[]; lignes: string[][] }
   | { type: "feu"; colonnes: ColonneFeu[]; regleOr?: string }
+  /** Liens présentés en cartes : pages du site ou outils extérieurs. */
+  | { type: "liens"; titre?: string; liens: Lien[] }
   /** Bloc requête avec bouton « copier ». */
   | { type: "requete"; titre?: string; texte: string; commentaire?: string }
   /* --- blocs interactifs (rendus côté client) --- */
   | { type: "quiz"; id: string; consigne: string; items: ItemQuiz[] }
   | { type: "qcm"; id: string; consigne: string; questions: QuestionQcm[] }
-  | { type: "casPratiques"; id: string; consigne: string; cas: CasPratique[] }
+  | {
+      type: "casPratiques";
+      id: string;
+      consigne: string;
+      cas: CasPratique[];
+      /**
+       * Libellés des trois boutons, quand la question n’est pas celle de la
+       * charte — ex. « Je peux le saisir » / « À reformuler » / « Jamais ».
+       * Chaque verdict garde sa couleur du feu tricolore.
+       */
+      libelles?: Partial<Record<Verdict, string>>;
+    }
   /**
    * Exercice guidé : une manipulation à faire dans l'outil, des champs où
    * consigner ce qu'on obtient, un retour révélé à la validation.
@@ -207,6 +231,12 @@ export interface Ressource {
   icone: string;
 }
 
+/**
+ * « presentiel » : une séance animée en salle, avec un horaire.
+ * « autonomie » : un tutoriel suivi seul, étape par étape, à son rythme.
+ */
+export type ModaliteFormation = "presentiel" | "autonomie";
+
 export interface Formation {
   slug: string;
   titre: string;
@@ -218,6 +248,8 @@ export interface Formation {
   duree: string;
   /** Ex. « Pré-rentrée 2026 ». */
   session: string;
+  /** Présentiel par défaut. Change les libellés propres à la salle. */
+  modalite?: ModaliteFormation;
   formateur: Formateur;
   objectifs: Objectif[];
   /** « Ce que vous emportez ». */

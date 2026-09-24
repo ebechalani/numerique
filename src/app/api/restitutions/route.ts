@@ -29,7 +29,7 @@ import {
   sessionActive,
   type SessionFormation,
 } from "@/lib/db";
-import { getFormation } from "@/lib/formations";
+import { getFormationAnimee } from "@/lib/formations";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -228,7 +228,7 @@ export async function POST(requete: Request): Promise<Response> {
 
   const formation =
     typeof charge.formation === "string" ? charge.formation.trim() : "";
-  if (!getFormation(formation)) {
+  if (!getFormationAnimee(formation)) {
     return refus(404, "formation-inconnue", "Cette formation n’existe pas.");
   }
 

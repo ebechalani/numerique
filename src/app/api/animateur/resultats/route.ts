@@ -46,7 +46,7 @@ import {
   listerSessions,
   type Resultats,
 } from "@/lib/db";
-import { getFormation } from "@/lib/formations";
+import { getFormationAnimee } from "@/lib/formations";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -96,7 +96,7 @@ export async function GET(requete: Request): Promise<Response> {
       400,
     );
   }
-  if (!getFormation(formation)) {
+  if (!getFormationAnimee(formation)) {
     return erreur(
       "formation-inconnue",
       `Aucune formation ne porte l’identifiant « ${formation} ».`,

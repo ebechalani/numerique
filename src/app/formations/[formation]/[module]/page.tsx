@@ -106,6 +106,7 @@ export default async function PageModule({ params }: Props) {
             formationSlug={formation.slug}
             formationTitre={formation.titre}
             formateur={`${formation.formateur.nom}, ${formation.formateur.role.toLowerCase()}`}
+            enAutonomie={formation.modalite === "autonomie"}
             modules={formation.modules}
             ressources={formation.ressources}
             actif={module.slug}

@@ -105,6 +105,7 @@ export default async function PageFormation({ params }: Props) {
 
   const slugsModules = formation.modules.map((module) => module.slug);
   const premierModule = formation.modules[0];
+  const enAutonomie = formation.modalite === "autonomie";
   const lienPremierModule = premierModule
     ? `/formations/${formation.slug}/${premierModule.slug}`
     : null;
@@ -134,7 +135,8 @@ export default async function PageFormation({ params }: Props) {
         </p>
 
         <p className="mt-3 text-sm text-graphite">
-          Animée par {formation.formateur.nom}, {formation.formateur.role}
+          {enAutonomie ? "Conçue par" : "Animée par"} {formation.formateur.nom},{" "}
+          {formation.formateur.role}
           <span aria-hidden="true" className="mx-1.5 text-trait-fort">
             ·
           </span>
@@ -152,7 +154,7 @@ export default async function PageFormation({ params }: Props) {
               href={lienPremierModule}
               className="group inline-flex items-center gap-2.5 rounded-lg bg-accent px-6 py-3.5 text-base font-medium text-craie transition-colors hover:bg-accent-fort"
             >
-              Commencer la formation
+              {enAutonomie ? "Commencer le tutoriel" : "Commencer la formation"}
               <Fleche className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </p>
@@ -167,7 +169,9 @@ export default async function PageFormation({ params }: Props) {
           id="titre-objectifs"
           className="font-serif text-2xl text-encre sm:text-3xl"
         >
-          À la fin de la session, vous saurez…
+          {enAutonomie
+            ? "À la fin du tutoriel, vous saurez…"
+            : "À la fin de la session, vous saurez…"}
         </h2>
 
         <ul className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -222,7 +226,9 @@ export default async function PageFormation({ params }: Props) {
             Avant de commencer
           </h2>
           <p className="mt-2 text-sm text-graphite">
-            À préparer avant d’arriver en salle.
+            {enAutonomie
+              ? "À avoir sous la main avant de commencer."
+              : "À préparer avant d’arriver en salle."}
           </p>
           <ul className="mt-5 divide-y divide-trait rounded-lg border border-trait bg-craie">
             {formation.prerequis.map((prerequis) => (
@@ -256,7 +262,9 @@ export default async function PageFormation({ params }: Props) {
         <div className="mt-5 overflow-x-auto rounded-lg border border-trait bg-craie">
           <table className="w-full min-w-[32rem] border-collapse text-left text-sm">
             <caption className="sr-only">
-              Déroulé horaire de la formation {formation.titre}
+              {enAutonomie
+                ? `Étapes du tutoriel ${formation.titre}`
+                : `Déroulé horaire de la formation ${formation.titre}`}
             </caption>
             <thead>
               <tr className="border-b border-trait bg-voile">
@@ -264,7 +272,7 @@ export default async function PageFormation({ params }: Props) {
                   scope="col"
                   className="px-4 py-3 font-medium tracking-wide text-estompe uppercase"
                 >
-                  Horaire
+                  {enAutonomie ? "Étape" : "Horaire"}
                 </th>
                 <th
                   scope="col"
@@ -426,7 +434,7 @@ export default async function PageFormation({ params }: Props) {
               href={lienPremierModule}
               className="group inline-flex items-center gap-2.5 rounded-lg bg-accent px-6 py-3.5 text-base font-medium text-craie transition-colors hover:bg-accent-fort"
             >
-              Commencer la formation
+              {enAutonomie ? "Commencer le tutoriel" : "Commencer la formation"}
               <Fleche className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>

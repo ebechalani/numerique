@@ -11,7 +11,7 @@ import { notFound, redirect } from "next/navigation";
 
 import DefinirCodeAnimateur from "@/components/DefinirCodeAnimateur";
 import { animateurAutorise, secretAnimateur } from "@/lib/animateur";
-import { getFormation } from "@/lib/formations";
+import { getFormationAnimee } from "@/lib/formations";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default async function PageCodeAnimateur({ params }: Props) {
   const { formation: slug } = await params;
-  const formation = getFormation(slug);
+  const formation = getFormationAnimee(slug);
   if (!formation) notFound();
 
   const lienRetour = `/formations/${formation.slug}/animateur`;

@@ -7,7 +7,7 @@
  * de stockage listées ici — les mêmes que celles des composants interactifs.
  */
 
-import type { Bloc } from "@/content/types";
+import type { Bloc, Verdict } from "@/content/types";
 
 export type TypeExercice =
   | "quiz"
@@ -39,6 +39,14 @@ function pluriel(nombre: number, singulier: string, plurielForme: string) {
   return `${nombre} ${nombre > 1 ? plurielForme : singulier}`;
 }
 
+/** « Autorisé, encadré ou interdit », ou les libellés propres au bloc. */
+function intitulesCas(libelles?: Partial<Record<Verdict, string>>): string {
+  const autorise = libelles?.autorise ?? "Autorisé";
+  const encadre = (libelles?.encadre ?? "Encadré").toLowerCase();
+  const interdit = (libelles?.interdit ?? "Interdit").toLowerCase();
+  return `${autorise}, ${encadre} ou ${interdit}`;
+}
+
 export function exercicesDuModule(blocs: Bloc[]): ItemBilan[] {
   const items: ItemBilan[] = [];
 
@@ -68,7 +76,7 @@ export function exercicesDuModule(blocs: Bloc[]): ItemBilan[] {
         items.push({
           type: "casPratiques",
           cle: `casPratiques:${bloc.id}`,
-          libelle: `Autorisé, encadré ou interdit — ${pluriel(bloc.cas.length, "cas", "cas")}`,
+          libelle: `${intitulesCas(bloc.libelles)} — ${pluriel(bloc.cas.length, "cas", "cas")}`,
           nature: "Cas pratiques",
           total: bloc.cas.length,
           ancre: ancreExercice(bloc.id),
