@@ -20,6 +20,8 @@ import type {
 } from "@/content/types";
 
 import { iaUsagesNumeriques } from "@/content/formations/ia-usages-numeriques";
+import { inclusia } from "@/content/formations/inclusia";
+import { ressourcesInclusia } from "@/content/formations/inclusia/ressources";
 import { ficheOutils } from "@/content/formations/ia-usages-numeriques/ressources/fiche-outils";
 import { questionsFrequentes } from "@/content/formations/ia-usages-numeriques/ressources/questions";
 import {
@@ -36,7 +38,7 @@ export { briquesRequete, questionsFrequentes };
 /* ------------------------------------------------------------------ */
 
 /** Toutes les formations publiées, dans l’ordre d’affichage du catalogue. */
-export const formations: Formation[] = [iaUsagesNumeriques];
+export const formations: Formation[] = [iaUsagesNumeriques, inclusia];
 
 export function getFormation(slug: string): Formation | undefined {
   return formations.find((formation) => formation.slug === slug);
@@ -174,6 +176,12 @@ function blocsRessourceIa(ressourceSlug: string): Bloc[] | undefined {
   }
 }
 
+/** Ressources du tutoriel Inclus’IA : des sections, titre puis blocs. */
+function blocsRessourceInclusia(ressourceSlug: string): Bloc[] | undefined {
+  const sections = ressourcesInclusia[ressourceSlug];
+  return sections ? aplatirSections(sections) : undefined;
+}
+
 /**
  * Chaque formation construit ses propres ressources : deux formations peuvent
  * donc avoir une ressource de même slug sans se marcher dessus.
@@ -183,6 +191,7 @@ const CONSTRUCTEURS_RESSOURCES: Record<
   (ressourceSlug: string) => Bloc[] | undefined
 > = {
   [iaUsagesNumeriques.slug]: blocsRessourceIa,
+  [inclusia.slug]: blocsRessourceInclusia,
 };
 
 /**

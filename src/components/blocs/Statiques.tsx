@@ -6,6 +6,7 @@
  * à l’impression comme au clavier.
  */
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Bloc, TonEncadre, Verdict } from "@/content/types";
 
@@ -23,6 +24,7 @@ type BlocCitation = Extract<Bloc, { type: "citation" }>;
 type BlocTableau = Extract<Bloc, { type: "tableau" }>;
 type BlocFeu = Extract<Bloc, { type: "feu" }>;
 type BlocNotesAnimateur = Extract<Bloc, { type: "notesAnimateur" }>;
+type BlocLiens = Extract<Bloc, { type: "liens" }>;
 
 /* ------------------------------------------------------------------ */
 /* Utilitaires                                                         */
@@ -162,6 +164,75 @@ export function Cartes({ bloc }: { bloc: BlocCartes }) {
         </article>
       ))}
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Liens                                                               */
+/* ------------------------------------------------------------------ */
+
+/** Un lien extérieur commence par un protocole ; un lien interne par « / ». */
+function estExterieur(href: string): boolean {
+  return /^https?:\/\//.test(href);
+}
+
+export function Liens({ bloc }: { bloc: BlocLiens }) {
+  return (
+    <nav aria-label={bloc.titre ?? "Liens"} className="max-w-[70ch]">
+      {bloc.titre ? (
+        <p className="text-xs font-medium tracking-wide text-estompe uppercase">
+          {bloc.titre}
+        </p>
+      ) : null}
+      <ul className={`grid gap-3 sm:grid-cols-2 ${bloc.titre ? "mt-3" : ""}`}>
+        {bloc.liens.map((lien) => {
+          const exterieur = estExterieur(lien.href);
+          const contenu = (
+            <>
+              <span className="flex items-start justify-between gap-3">
+                <span className="font-medium text-encre group-hover:text-accent">
+                  {lien.libelle}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-accent"
+                >
+                  {exterieur ? "↗" : "→"}
+                </span>
+              </span>
+              {lien.description ? (
+                <span className="mt-1 block text-sm leading-relaxed text-graphite">
+                  {lien.description}
+                </span>
+              ) : null}
+              {exterieur ? (
+                <span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
+              ) : null}
+            </>
+          );
+          const classes =
+            "group block h-full rounded-[--radius-carte] border border-trait bg-craie p-4 transition-colors hover:border-accent hover:bg-accent-voile";
+          return (
+            <li key={lien.href}>
+              {exterieur ? (
+                <a
+                  href={lien.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={classes}
+                >
+                  {contenu}
+                </a>
+              ) : (
+                <Link href={lien.href} className={classes}>
+                  {contenu}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }
 

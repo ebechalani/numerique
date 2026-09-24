@@ -16,6 +16,7 @@ import {
   Encadre,
   Etapes,
   Feu,
+  Liens,
   Liste,
   NotesAnimateur,
   Paragraphe,
@@ -54,6 +55,8 @@ function rendreBloc(bloc: Bloc) {
       return <Tableau bloc={bloc} />;
     case "feu":
       return <Feu bloc={bloc} />;
+    case "liens":
+      return <Liens bloc={bloc} />;
     case "requete":
       return <Requete bloc={bloc} />;
 

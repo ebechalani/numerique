@@ -18,7 +18,7 @@ interface MessageAffiche {
 const COURRIEL_REFERENT = "eddy.bachaalany@lycee-montaigne.edu.lb";
 
 const MESSAGE_NON_CONFIGURE =
-  "L’assistant n’est pas configuré sur ce site. Pour une question sur la formation, écrivez au référent numérique : " +
+  "L’assistant n’est pas configuré sur ce site. Pour une question sur les formations, écrivez au référent numérique : " +
   COURRIEL_REFERENT +
   ".";
 
@@ -29,6 +29,7 @@ const QUESTIONS_SUGGEREES = [
   "Un élève de 3e peut-il utiliser une IA pour réviser ?",
   "Quelle différence entre NotebookLM et Copilot ?",
   "Comment écrire une bonne requête ?",
+  "Comment décrire un élève dans Inclus’IA sans l’exposer ?",
 ];
 
 /** Distance au bas de la zone en deçà de laquelle on suit le fil du regard. */
@@ -275,8 +276,8 @@ export default function Assistant() {
         aria-expanded={ouvert}
         aria-label={
           ouvert
-            ? "Fermer l’assistant de la formation"
-            : "Ouvrir l’assistant de la formation"
+            ? "Fermer l’assistant des formations"
+            : "Ouvrir l’assistant des formations"
         }
         className="sans-impression fixed bottom-6 right-6 z-50 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-encre bg-encre text-papier shadow-lg transition-colors duration-150 hover:bg-encre-clair"
       >
@@ -287,13 +288,13 @@ export default function Assistant() {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Assistant de la formation"
+          aria-label="Assistant des formations"
           className="sans-impression fixed inset-0 z-50 flex flex-col border-trait bg-craie shadow-2xl sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[32rem] sm:max-h-[80vh] sm:w-96 sm:rounded-lg sm:border"
         >
           <header className="flex shrink-0 items-start justify-between gap-3 border-b border-trait px-4 py-3">
             <div className="min-w-0">
               <h2 className="font-serif text-base leading-tight text-encre">
-                Assistant de la formation
+                Assistant des formations
               </h2>
               <p className="mt-0.5 text-xs text-estompe">
                 Répond à partir du contenu du site
@@ -321,10 +322,10 @@ export default function Assistant() {
             {vide ? (
               <div className="space-y-4">
                 <p className="text-sm leading-relaxed text-graphite">
-                  Je réponds à vos questions à partir du contenu de cette
-                  formation — les modules, la fiche outils, la charte. Si la
-                  réponse ne s’y trouve pas, je vous le dis plutôt que de
-                  l’inventer.
+                  Je réponds à vos questions à partir du contenu des
+                  formations — l’IA en classe, la charte, le tutoriel
+                  Inclus’IA. Si la réponse ne s’y trouve pas, je vous le dis
+                  plutôt que de l’inventer.
                 </p>
                 <div className="space-y-2">
                   <p className="text-xs font-medium uppercase tracking-wide text-estompe">

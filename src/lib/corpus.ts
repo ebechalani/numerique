@@ -132,6 +132,17 @@ export function blocEnTexte(bloc: Bloc): string {
       ]);
     }
 
+    case "liens":
+      return joindre([
+        bloc.titre ? `Liens — ${bloc.titre}` : "Liens",
+        bloc.liens
+          .map((lien) => {
+            const description = lien.description ? ` : ${lien.description}` : "";
+            return `- ${lien.libelle} (${lien.href})${description}`;
+          })
+          .join("\n"),
+      ]);
+
     case "requete": {
       const titre = bloc.titre ? `Requête — ${bloc.titre}` : "Requête";
       return joindre([
@@ -190,7 +201,10 @@ export function blocEnTexte(bloc: Bloc): string {
     case "casPratiques": {
       const cas = bloc.cas
         .map((unCas) => {
-          const verdict = unCas.verdictLibelle ?? LIBELLE_VERDICT[unCas.verdict];
+          const verdict =
+            unCas.verdictLibelle ??
+            bloc.libelles?.[unCas.verdict] ??
+            LIBELLE_VERDICT[unCas.verdict];
           return `- Situation : ${unCas.situation}\n  Verdict : ${verdict}\n  Pourquoi : ${unCas.pourquoi}`;
         })
         .join("\n\n");

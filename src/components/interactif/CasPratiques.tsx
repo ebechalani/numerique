@@ -123,6 +123,8 @@ function BarreProgression({
 }
 
 export default function CasPratiques({ bloc }: { bloc: BlocCasPratiques }) {
+  /* Les libellés propres au bloc priment sur ceux de la charte. */
+  const libelles: Record<Verdict, string> = { ...LIBELLES, ...bloc.libelles };
   const [choix, setChoix] = useEtatLocal<Choix>(
     `casPratiques:${bloc.id}`,
     AUCUN_CHOIX,
@@ -149,7 +151,7 @@ export default function CasPratiques({ bloc }: { bloc: BlocCasPratiques }) {
 
   return (
     <section
-      aria-label="Cas pratiques : autorisé, encadré ou interdit"
+      aria-label={`Cas pratiques : ${libelles.autorise.toLowerCase()}, ${libelles.encadre.toLowerCase()} ou ${libelles.interdit.toLowerCase()}`}
       className="space-y-4"
     >
       <header className="space-y-3">
@@ -181,7 +183,7 @@ export default function CasPratiques({ bloc }: { bloc: BlocCasPratiques }) {
           const repondu = reponse !== undefined;
           const correspond = reponse === cas.verdict;
           const ton = TONS[cas.verdict];
-          const libelleAttendu = cas.verdictLibelle ?? LIBELLES[cas.verdict];
+          const libelleAttendu = cas.verdictLibelle ?? libelles[cas.verdict];
 
           return (
             <li
@@ -223,7 +225,7 @@ export default function CasPratiques({ bloc }: { bloc: BlocCasPratiques }) {
                           repondu ? "cursor-default" : "cursor-pointer",
                         ].join(" ")}
                       >
-                        {LIBELLES[verdict]}
+                        {libelles[verdict]}
                         {attendu ? <IconeJuste /> : null}
                         {choisiAtort ? <IconeFausse /> : null}
                       </button>
@@ -256,7 +258,7 @@ export default function CasPratiques({ bloc }: { bloc: BlocCasPratiques }) {
                     <p className="mt-2 border-t border-trait pt-2 text-xs text-graphite">
                       {correspond
                         ? "Votre réponse correspond au verdict attendu."
-                        : `Votre réponse — « ${LIBELLES[reponse]} » — ne correspond pas.`}
+                        : `Votre réponse — « ${libelles[reponse]} » — ne correspond pas.`}
                     </p>
                   </div>
                 ) : null}
