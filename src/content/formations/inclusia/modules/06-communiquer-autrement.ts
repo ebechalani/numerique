@@ -90,7 +90,7 @@ export const communiquerAutrement: Module = {
         {
           titre: "L’IA découpe et classe — elle ne dessine rien",
           texte:
-            "Elle sépare les mots, les ramène à leur forme de base et les range par famille grammaticale. Ses instructions lui interdisent de rédiger : elle rend « UNIQUEMENT un tableau JSON valide », c’est-à-dire une liste codée, pas un texte à lire.",
+            "Elle sépare les mots, les ramène à leur forme de base et les range par famille grammaticale. Elle rend « UNIQUEMENT un tableau JSON valide » : une liste codée, pas une fiche rédigée. Seul le Scénario social écrit des phrases, une par vignette, sans aucun commentaire autour.",
         },
         {
           titre: "Les images viennent d’ARASAAC",
@@ -112,17 +112,17 @@ export const communiquerAutrement: Module = {
     {
       type: "paragraphe",
       texte:
-        "Vous n’obtenez donc pas de fiche rédigée à relire : tout le travail de vérification porte sur la planche elle-même, case par case. Trois mises en page au choix : la bande (les cases à la suite, lues de gauche à droite), le séquentiel (une étape par ligne, numérotée, lue de haut en bas) ou les cartes (une par mot, à découper). Les exemples de la page Cas d’usage proposent de plastifier la bande ou la grille, et d’afficher le séquentiel sur le lieu même de l’activité.",
+        "Vous n’obtenez donc pas de fiche à mettre en page : la relecture porte sur la planche elle-même, case par case — et, pour un scénario social, sur chaque phrase écrite par l’IA. Trois mises en page au choix : la bande (les cases à la suite, lues de gauche à droite), le séquentiel (une étape par ligne, numérotée, lue de haut en bas) ou les cartes (une par mot, à découper). Les exemples de la page Cas d’usage proposent de plastifier la bande ou la grille, et d’afficher le séquentiel sur le lieu même de l’activité.",
     },
     {
       type: "encadre",
       ton: "info",
       titre: "Avec une autre IA",
       texte:
-        "Si vous collez les instructions dans une autre IA — Copilot Chat avec le compte du lycée, par exemple —, elle vous rendra cette liste codée, pas des images. Le guide permet de recoller dans le site un résultat obtenu ailleurs, avec « J’ai utilisé une autre IA — coller le résultat » ; il ne précise pas si la planche se construit alors comme avec l’IA intégrée. Vérifiez à l’écran avant de compter dessus.",
+        "Si vous collez les instructions dans une autre IA — Copilot Chat avec le compte du lycée, par exemple —, elles lui demandent de rendre cette liste codée (un tableau JSON), pas des images. Le guide permet de recoller dans le site un résultat obtenu ailleurs, avec « J’ai utilisé une autre IA — coller le résultat » ; il ne précise pas si la planche se construit alors comme avec l’IA intégrée. Vérifiez à l’écran avant de compter dessus. Et le guide le rappelle : avec une IA externe, aucune donnée personnelle identifiant un élève ne doit être saisie — le garde-fou d’Inclus’IA ne vous y suit pas.",
     },
 
-    { type: "titre", texte: "Cinq notions pour lire une planche" },
+    { type: "titre", texte: "Quatre notions pour lire une planche" },
     {
       type: "tableau",
       entetes: ["Notion", "Ce qu’il faut savoir"],
@@ -133,7 +133,7 @@ export const communiquerAutrement: Module = {
         ],
         [
           "Clé de Fitzgerald",
-          "Le code couleur employé en CAA depuis les travaux d’Edith Fitzgerald. Il range chaque mot selon sa fonction : personnes et pronoms, actions, choses, descriptions, formules sociales, mots de liaison. La famille est toujours écrite à côté de la couleur : la couleur ne porte jamais seule l’information.",
+          "Le code couleur « employé en CAA depuis les travaux d’Edith Fitzgerald », dit le guide. Il range chaque mot selon sa fonction : personnes et pronoms, actions, choses, descriptions, formules sociales, mots de liaison. La famille est toujours écrite à côté de la couleur : la couleur ne porte jamais seule l’information.",
         ],
         [
           "Style télégraphique",
@@ -143,10 +143,6 @@ export const communiquerAutrement: Module = {
           "Temps du verbe",
           "L’instruction CAA marque le temps — passé, présent ou futur — sur le verbe seul. Selon elle, ARASAAC ajoute alors une flèche temporelle sur le pictogramme : c’est ce qui distingue « je mange » de « j’ai mangé ».",
         ],
-        [
-          "Négation",
-          "Elle est portée par le verbe, jamais par une case à part. Et ARASAAC ne sait pas la dessiner : le site le signale, c’est à vous d’ajouter une case « non ».",
-        ],
       ],
     },
     {
@@ -154,14 +150,14 @@ export const communiquerAutrement: Module = {
       ton: "attention",
       titre: "La négation, le piège numéro un",
       texte:
-        "Le guide prévient qu’une bande sans case « non » ajoutée « peut dire exactement le contraire de ce qu’on voulait ». Dans l’exemple de la page Cas d’usage, « Je n’ai pas compris la consigne » donne trois cases : je · compris · consigne. Sans case « non », l’élève montre « j’ai compris la consigne ». Dès que la phrase contient ne… pas, jamais, rien ou aucun, vérifiez la case « non » avant d’imprimer.",
+        "Dans la liste que rend l’IA, la négation n’a pas de case : l’instruction CAA la note comme une marque sur le verbe. Or ARASAAC ne sait pas la dessiner, et le guide prévient qu’une bande sans case « non » ajoutée « peut dire exactement le contraire de ce qu’on voulait ». Dans l’exemple de la page Cas d’usage, « Je n’ai pas compris la consigne » donne trois cases : je · compris · consigne — soit « j’ai compris la consigne ». Le site le signale et propose d’ajouter une case « non » : ajoutez-la. Dès que la phrase est négative — ne… pas, ne… plus, jamais, rien, aucun, personne —, vérifiez cette case avant d’imprimer.",
     },
 
     { type: "titre", texte: "ARASAAC : ce que la banque sait faire, et ce qu’elle ne sait pas" },
     {
       type: "paragraphe",
       texte:
-        "ARASAAC est la banque de pictogrammes du Centre aragonais de la communication augmentative et alternative (Gouvernement d’Aragon) ; les pictogrammes sont de Sergio Palao. Les instructions d’Inclus’IA la présentent comme « la banque de référence en Europe », qui « couvre le vocabulaire du quotidien ». Elles en tirent aussi des limites, qu’il vaut mieux connaître avant de remplir le formulaire :",
+        "ARASAAC est la banque de pictogrammes du Centre aragonais de la communication augmentative et alternative (Gouvernement d’Aragon) ; les pictogrammes sont de Sergio Palao. L’instruction du module CAA la présente comme « la banque de référence en Europe », qui « couvre le vocabulaire du quotidien ». Les quatre instructions en tirent aussi des limites, qu’il vaut mieux connaître avant de remplir le formulaire :",
     },
     {
       type: "liste",
@@ -169,7 +165,7 @@ export const communiquerAutrement: Module = {
         "Elle ne cherche qu’un seul mot à la fois, à sa forme de base et en français courant : ni groupe de mots, ni forme conjuguée, ni pluriel, ni anglicisme (« pull » plutôt que « sweat »).",
         "Elle n’a pas de pictogramme pour un terme abstrait ou savant : préférez des mots du quotidien, concrets et courants.",
         "Les verbes mentaux — réfléchir, penser, se concentrer — n’ont pas de pictogramme qui les représente correctement : préférez des gestes que l’élève peut voir faire.",
-        "Elle ne dessine pas la négation, et aucun pictogramme ne correspond à un prénom : c’est une photo qui le remplace.",
+        "Aucun pictogramme ne correspond à un prénom : c’est une photo qui le remplace.",
       ],
     },
     {
@@ -177,14 +173,14 @@ export const communiquerAutrement: Module = {
       ton: "info",
       titre: "Une licence, pas un libre-service",
       texte:
-        "Les pictogrammes ARASAAC sont publiés sous licence CC BY-NC-SA : on peut les réutiliser à des fins non commerciales, à condition de citer leur source et de partager ses adaptations sous la même licence. Gardez la mention « Sergio Palao, ARASAAC, Gouvernement d’Aragon, CC BY-NC-SA » sur vos planches.",
+        "Les pictogrammes ARASAAC sont publiés sous licence CC BY-NC-SA : on peut les réutiliser à des fins non commerciales, à condition de citer l’auteur, la source et la licence, et de partager ses adaptations sous la même licence. Sur vos planches, indiquez donc l’auteur des pictogrammes (Sergio Palao), leur source (ARASAAC, Gouvernement d’Aragon) et la licence (CC BY-NC-SA). Le guide ne dit pas si la planche imprimée porte déjà cette mention : vérifiez-le, et ajoutez-la si elle manque.",
     },
 
     { type: "titre", texte: "Ce qu’impose chaque instruction" },
     {
       type: "paragraphe",
       texte:
-        "Chaque module a son instruction, consultable dans la bibliothèque d’instructions du site avec son numéro de version — au 24 septembre 2026 : CAA v1.0.0, Tableau de communication v1.0.0, Séquentiel illustré v1.1.0, Scénario social v1.0.0. Vous n’avez pas à les apprendre : elles cadrent l’IA à votre place. Les connaître vous dit quoi écrire dans le formulaire, et quoi vérifier sur la planche.",
+        "Chaque instruction, consultable dans la bibliothèque d’instructions (au 24 septembre 2026 : CAA v1.0.0, Tableau de communication v1.0.0, Séquentiel illustré v1.1.0, Scénario social v1.0.0), cadre l’IA à votre place ; la connaître vous dit quoi écrire, et quoi vérifier sur la planche. Les quatre laissent aussi une place à vos contraintes supplémentaires : par exemple les mots que l’élève connaît déjà, ou ceux à éviter.",
     },
 
     { type: "titre", texte: "CAA : une phrase en pictogrammes" },
@@ -200,7 +196,7 @@ export const communiquerAutrement: Module = {
     {
       type: "paragraphe",
       texte:
-        "Dans l’exemple de la page Cas d’usage (ULIS école), un élève ne s’exprime pas oralement : il désigne, il tire par la manche, il se met en colère quand on ne le comprend pas. La phrase « Je n’ai pas compris la consigne » devient trois cases — je (Personne), compris (Action, passé), consigne (Chose) —, à imprimer et à plastifier, avec la case « non » que le site propose d’ajouter.",
+        "Dans l’exemple de la page Cas d’usage (ULIS école : l’unité localisée pour l’inclusion scolaire, un dispositif qui scolarise en petit groupe, dans une école ordinaire, des élèves en situation de handicap), un élève ne s’exprime pas oralement : il désigne, il tire par la manche, il se met en colère quand on ne le comprend pas. La phrase « Je n’ai pas compris la consigne » devient trois cases — je (Personne), compris (Action, passé), consigne (Chose) —, à imprimer et à plastifier.",
     },
 
     { type: "titre", texte: "Tableau de communication : les mots d’une situation" },
@@ -209,7 +205,8 @@ export const communiquerAutrement: Module = {
       items: [
         "Vous donnez la situation, le niveau de l’élève et son profil de communication.",
         "Le point de vue est celui de l’élève : les mots dont il a besoin pour demander, refuser, choisir, signaler un problème — pas ceux dont l’adulte a besoin pour donner une consigne.",
-        "Le vocabulaire noyau d’abord, sur chaque tableau : « je », « veux », « encore », « fini », « aider », « oui », « non », « ça ne va pas ». Puis les objets, les lieux, les personnes et les actions de la situation.",
+        "Le vocabulaire noyau d’abord — selon l’instruction, une petite centaine de mots très fréquents qui couvrent l’essentiel des échanges quotidiens. Sur chaque tableau : « je », « veux », « encore », « fini », « aider », « oui », « non », « ça ne va pas ». Puis les objets, les lieux, les personnes et les actions de la situation.",
+        "La liste est rangée par famille de la clé de Fitzgerald, les personnes puis les actions : l’ordre dans lequel se construit une phrase.",
         "Des mots pour dire que quelque chose ne va pas : « mal », « trop fort », « trop chaud », « toilettes », « peur », « fatigué ».",
         "Entre 12 et 20 mots : au-delà, l’élève ne retrouve plus la case qu’il cherche ; en deçà, il ne peut pas dire grand-chose.",
       ],
@@ -224,7 +221,7 @@ export const communiquerAutrement: Module = {
     {
       type: "paragraphe",
       texte:
-        "Dans l’exemple de la page Cas d’usage (le repas au self, dans un IME), un classeur de pictogrammes rangé par thèmes, trop lourd pour être emporté, n’est jamais ouvert pendant le repas. Il laisse la place à une grille pour cette seule situation : je · vouloir · encore · fini · aider, puis eau · pain · plateau · chaud · trop. « Un tableau de communication n’est pas un imagier. »",
+        "Dans l’exemple de la page Cas d’usage (le repas au self, dans un IME — institut médico-éducatif), un classeur de pictogrammes rangé par thèmes, trop lourd pour être emporté, n’est jamais ouvert pendant le repas. Il laisse la place à une grille pour cette seule situation : je · vouloir · encore · fini · aider, puis eau · pain · plateau · chaud · trop. « Un tableau de communication n’est pas un imagier. »",
     },
 
     { type: "titre", texte: "Séquentiel illustré : une routine, étape par étape" },
@@ -248,7 +245,7 @@ export const communiquerAutrement: Module = {
       ton: "astuce",
       titre: "Un étayage fait pour disparaître",
       texte:
-        "La page Cas d’usage le rappelle : « L’étayage est fait pour être estompé : on retire les étapes une à une à mesure qu’elles sont acquises. » Dès l’affichage, décidez quelle étape vous retirerez en premier.",
+        "La page Cas d’usage le rappelle : « L’étayage est fait pour être estompé : on retire les étapes une à une à mesure qu’elles sont acquises. » Dès l’affichage, notez à quoi vous verrez qu’une étape est acquise — l’élève l’enchaîne sans regarder le support ni attendre de rappel : c’est la première que vous retirerez.",
     },
 
     { type: "titre", texte: "Scénario social : raconter ce qui va se passer" },
@@ -266,12 +263,12 @@ export const communiquerAutrement: Module = {
     {
       type: "paragraphe",
       texte:
-        "L’instruction interdit à l’IA d’inventer un élément qu’on ne lui a pas donné — un nom, un horaire, un lieu précis : « un détail faux décrédibilise tout le scénario ». C’est donc à vous de décrire la situation réelle : le moment, le trajet, ce qui peut gêner l’élève, la solution de repli prévue.",
+        "L’instruction interdit à l’IA d’inventer un élément qu’on ne lui a pas donné — un nom, un horaire, un lieu précis : « un détail faux décrédibilise tout le scénario ». C’est donc à vous de décrire la situation réelle : le moment, le trajet, ce qui peut gêner l’élève, la solution de repli prévue — sans nom de personne, adulte compris, et sans détail qui permettrait de reconnaître l’élève. Les noms et les photos s’ajoutent à la main sur la planche imprimée.",
     },
     {
       type: "paragraphe",
       texte:
-        "Dans l’exemple de la page Cas d’usage (6e, une sortie au musée), « Demain on va au musée, ça va bien se passer, ne t’inquiète pas » devient un récit en vignettes, à lire plusieurs fois avant le jour J : « Jeudi matin, je monte dans le bus avec ma classe. » « Au musée, il y a beaucoup de monde et c’est parfois bruyant. » « Le bruit peut me fatiguer. » « Je peux demander à sortir quelques minutes avec un adulte. »",
+        "Dans l’exemple de la page Cas d’usage (6e, une sortie au musée), « Demain on va au musée, ça va bien se passer, ne t’inquiète pas » devient un récit en vignettes, à lire plusieurs fois avant le jour J. La page en montre un extrait : « Jeudi matin, je monte dans le bus avec ma classe. » « Au musée, il y a beaucoup de monde et c’est parfois bruyant. » « Le bruit peut me fatiguer. » « Je peux demander à sortir quelques minutes avec un adulte. »",
     },
 
     { type: "titre", texte: "Pas de prénom, même dans une phrase" },
@@ -283,7 +280,7 @@ export const communiquerAutrement: Module = {
     {
       type: "citation",
       texte:
-        "Ne saisissez jamais de nom, prénom ou information permettant d’identifier un élève.",
+        "Ne saisissez jamais de nom, prénom ou information permettant d’identifier un élève/étudiant.",
       source: "Inclus’IA, Guide d’utilisation",
     },
     {
