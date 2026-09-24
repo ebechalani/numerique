@@ -24,7 +24,7 @@ import {
   sondageEntree,
 } from "@/content/formations/ia-usages-numeriques/ressources/questionnaires";
 import type { Formation, Questionnaire } from "@/content/types";
-import { formations, getFormation } from "@/lib/formations";
+import { formationsAnimees, getFormationAnimee } from "@/lib/formations";
 
 interface Props {
   params: Promise<{ formation: string; questionnaire: string }>;
@@ -51,7 +51,7 @@ function situer(
   formationSlug: string,
   questionnaireSlug: string,
 ): QuestionnaireSitue | undefined {
-  const formation = getFormation(formationSlug);
+  const formation = getFormationAnimee(formationSlug);
   if (!formation) return undefined;
 
   const questionnaire = QUESTIONNAIRES[questionnaireSlug];
@@ -65,7 +65,7 @@ function situer(
 /* ------------------------------------------------------------------ */
 
 export function generateStaticParams() {
-  return formations.flatMap((formation) =>
+  return formationsAnimees.flatMap((formation) =>
     Object.keys(QUESTIONNAIRES).map((questionnaire) => ({
       formation: formation.slug,
       questionnaire,

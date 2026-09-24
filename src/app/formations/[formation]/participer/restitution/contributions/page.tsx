@@ -21,7 +21,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { chargerResultats, collecteConfiguree, type Restitution } from "@/lib/db";
-import { getFormation } from "@/lib/formations";
+import { getFormationAnimee } from "@/lib/formations";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +35,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { formation: formationSlug } = await params;
-  const formation = getFormation(formationSlug);
+  const formation = getFormationAnimee(formationSlug);
 
   if (!formation) return { title: "Formation introuvable" };
 
@@ -174,7 +174,7 @@ function CarteContribution({ restitution }: { restitution: Restitution }) {
 
 export default async function PageContributions({ params }: Props) {
   const { formation: formationSlug } = await params;
-  const formation = getFormation(formationSlug);
+  const formation = getFormationAnimee(formationSlug);
 
   if (!formation) notFound();
 

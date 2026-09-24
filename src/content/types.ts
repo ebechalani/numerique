@@ -207,6 +207,12 @@ export interface Ressource {
   icone: string;
 }
 
+/**
+ * « presentiel » : une séance animée en salle, avec un horaire.
+ * « autonomie » : un tutoriel suivi seul, étape par étape, à son rythme.
+ */
+export type ModaliteFormation = "presentiel" | "autonomie";
+
 export interface Formation {
   slug: string;
   titre: string;
@@ -218,6 +224,8 @@ export interface Formation {
   duree: string;
   /** Ex. « Pré-rentrée 2026 ». */
   session: string;
+  /** Présentiel par défaut. Change les libellés propres à la salle. */
+  modalite?: ModaliteFormation;
   formateur: Formateur;
   objectifs: Objectif[];
   /** « Ce que vous emportez ». */

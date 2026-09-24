@@ -21,7 +21,7 @@ import { notFound } from "next/navigation";
 import EtatCollecte from "@/components/EtatCollecte";
 import FormulaireRestitution from "@/components/formulaires/FormulaireRestitution";
 import { champsRestitution } from "@/content/formations/ia-usages-numeriques/ressources/questionnaires";
-import { formations, getFormation } from "@/lib/formations";
+import { formationsAnimees, getFormationAnimee } from "@/lib/formations";
 
 interface Props {
   params: Promise<{ formation: string }>;
@@ -54,12 +54,12 @@ const ETAPES: { duree: string; titre: string; texte: string }[] = [
 /* ------------------------------------------------------------------ */
 
 export function generateStaticParams() {
-  return formations.map((formation) => ({ formation: formation.slug }));
+  return formationsAnimees.map((formation) => ({ formation: formation.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { formation: formationSlug } = await params;
-  const formation = getFormation(formationSlug);
+  const formation = getFormationAnimee(formationSlug);
 
   if (!formation) return { title: "Formation introuvable" };
 
@@ -75,7 +75,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PageRestitution({ params }: Props) {
   const { formation: formationSlug } = await params;
-  const formation = getFormation(formationSlug);
+  const formation = getFormationAnimee(formationSlug);
 
   if (!formation) notFound();
 

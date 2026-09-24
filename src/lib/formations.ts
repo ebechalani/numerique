@@ -42,6 +42,19 @@ export function getFormation(slug: string): Formation | undefined {
   return formations.find((formation) => formation.slug === slug);
 }
 
+/**
+ * Les formations animées en salle. Elles seules ont une session ouverte par
+ * l’animateur, des questionnaires collectés et une trame de restitution ; un
+ * tutoriel suivi en autonomie n’a rien de tout cela.
+ */
+export const formationsAnimees: Formation[] = formations.filter(
+  (formation) => formation.modalite !== "autonomie",
+);
+
+export function getFormationAnimee(slug: string): Formation | undefined {
+  return formationsAnimees.find((formation) => formation.slug === slug);
+}
+
 /* ------------------------------------------------------------------ */
 /* Modules                                                             */
 /* ------------------------------------------------------------------ */
@@ -145,8 +158,8 @@ function blocsQuestions(questions: QuestionFrequente[]): Bloc[] {
   ]);
 }
 
-/** Construit les blocs d’une ressource à partir de son slug. */
-function construireBlocs(ressourceSlug: string): Bloc[] | undefined {
+/** Ressources de la formation « IA et usages numériques ». */
+function blocsRessourceIa(ressourceSlug: string): Bloc[] | undefined {
   switch (ressourceSlug) {
     case "fiche-outils":
       return blocsFicheOutils(ficheOutils);
@@ -160,6 +173,17 @@ function construireBlocs(ressourceSlug: string): Bloc[] | undefined {
       return undefined;
   }
 }
+
+/**
+ * Chaque formation construit ses propres ressources : deux formations peuvent
+ * donc avoir une ressource de même slug sans se marcher dessus.
+ */
+const CONSTRUCTEURS_RESSOURCES: Record<
+  string,
+  (ressourceSlug: string) => Bloc[] | undefined
+> = {
+  [iaUsagesNumeriques.slug]: blocsRessourceIa,
+};
 
 /**
  * Récupère une ressource et son contenu déjà aplati.
@@ -178,7 +202,7 @@ export function getRessource(
   );
   if (!ressource) return undefined;
 
-  const blocs = construireBlocs(ressourceSlug);
+  const blocs = CONSTRUCTEURS_RESSOURCES[formation.slug]?.(ressourceSlug);
   if (!blocs) return undefined;
 
   return { formation, ressource, blocs };

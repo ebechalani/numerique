@@ -38,7 +38,7 @@ import {
   listerSessions,
   type SessionFormation,
 } from "@/lib/db";
-import { getFormation } from "@/lib/formations";
+import { getFormationAnimee } from "@/lib/formations";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -164,7 +164,7 @@ function lire(charge: unknown): Lecture {
       ),
     };
   }
-  if (!getFormation(formation)) {
+  if (!getFormationAnimee(formation)) {
     return {
       erreur: erreur(
         "formation-inconnue",
