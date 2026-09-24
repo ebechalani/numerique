@@ -26,6 +26,8 @@ interface Props {
   formationTitre: string;
   /** « Eddy Bachaalany, référent numérique » — affiché sous le titre. */
   formateur?: string;
+  /** Un tutoriel suivi seul est « conçu », une séance en salle « animée ». */
+  enAutonomie?: boolean;
   modules: EntreeModule[];
   ressources: EntreeRessource[];
   /** Slug du module ou de la ressource affichée. */
@@ -165,6 +167,7 @@ export default function NavModules({
   formationSlug,
   formationTitre,
   formateur,
+  enAutonomie = false,
   modules,
   ressources,
   actif,
@@ -188,7 +191,9 @@ export default function NavModules({
         {formationTitre}
       </Link>
       {formateur ? (
-        <p className="mt-1 text-xs text-estompe">Animée par {formateur}</p>
+        <p className="mt-1 text-xs text-estompe">
+          {enAutonomie ? "Conçue par" : "Animée par"} {formateur}
+        </p>
       ) : null}
 
       <div className="mt-3">

@@ -290,12 +290,12 @@ export const communiquerAutrement: Module = {
         {
           titre: "Dans le formulaire",
           texte:
-            "Écrivez « mon camarade », « l’adulte », « je ». Pour le profil, ce que vous observez — « ne s’exprime pas oralement, désigne du doigt » —, jamais un nom ni un diagnostic.",
+            "Écrivez « mon camarade », « l’adulte », « mon professeur », « je » — pas plus le nom d’un adulte que celui d’un élève. Pour le profil, ce que vous observez — « ne s’exprime pas oralement, désigne du doigt » —, jamais un nom ni un diagnostic.",
         },
         {
           titre: "Sur la planche imprimée",
           texte:
-            "La photo de la personne, collée à la main, et son prénom écrit au stylo s’il le faut. Rien de cela ne passe par l’outil : ni photo déposée, ni prénom tapé sous une case.",
+            "La photo de la personne, collée à la main, et son prénom écrit au stylo s’il le faut. Rien de cela ne passe par l’outil : ni photo déposée, ni prénom tapé sous une case. Une photo — d’un camarade comme d’un adulte — ne s’utilise que dans le respect des règles de l’établissement sur le droit à l’image : l’équipe de direction vous les indique.",
         },
       ],
     },
@@ -315,7 +315,7 @@ export const communiquerAutrement: Module = {
         {
           titre: "La négation",
           texte:
-            "Si la phrase contient ne… pas, jamais, rien ou aucun, la case « non » est ajoutée.",
+            "Si la phrase est négative — ne… pas, ne… plus, jamais, rien, aucun, personne —, la case « non » est ajoutée.",
         },
         {
           titre: "L’ordre",
@@ -325,7 +325,12 @@ export const communiquerAutrement: Module = {
         {
           titre: "Chaque case",
           texte:
-            "Chaque pictogramme dit bien ce que vous voulez dire, et le mot écrit dessous est celui que l’élève doit lire ; sinon, changez l’un ou l’autre.",
+            "Chaque pictogramme dit bien ce que vous voulez dire, et le mot écrit dessous est celui que l’élève doit lire ; sinon, changez l’un ou l’autre. Regardez surtout deux cas : dans un séquentiel, un verbe trop général est illustré par l’objet — « mettre du savon » par « savon » ; dans un scénario social, chaque phrase n’a qu’un pictogramme, tiré de son mot-clé.",
+        },
+        {
+          titre: "Les phrases du scénario social",
+          texte:
+            "À la première personne, une idée par phrase, sans « je dois » ni promesse, au moins deux phrases qui décrivent pour une qui dit quoi faire, et une solution de repli réelle.",
         },
         {
           titre: "Rien d’inventé",
@@ -333,14 +338,28 @@ export const communiquerAutrement: Module = {
             "Aucun mot ajouté à la phrase, aucune étape que la routine ne comporte pas, aucun détail que vous n’aviez pas donné.",
         },
         {
-          titre: "Aucun prénom dans l’outil",
-          texte: "Photos et prénoms s’ajoutent sur papier, après l’impression.",
+          titre: "Aucun nom dans l’outil",
+          texte:
+            "Ni prénom d’élève, ni nom d’adulte : photos et prénoms s’ajoutent sur papier, après l’impression.",
         },
         {
           titre: "La source des images",
           texte:
             "La mention ARASAAC (Sergio Palao, Gouvernement d’Aragon, CC BY-NC-SA) figure sur la planche — sinon, ajoutez-la.",
         },
+      ],
+    },
+
+    { type: "titre", texte: "Après l’impression : faire vivre la planche" },
+    {
+      type: "liste",
+      ordonnee: true,
+      items: [
+        "Si l’élève utilise déjà un outil de communication (classeur, tablette, gestes), partez de lui : mêmes mots, pictogrammes aussi proches que possible. Parlez-en avec ceux qui l’accompagnent — famille, professionnels qui le suivent, équipe inclusive —, selon l’organisation du lycée.",
+        "Présentez la planche en montrant vous-même les cases quand vous parlez : l’élève voit ainsi à quoi elle sert.",
+        "Laissez-la à portée de main au moment de la situation : dans l’exemple de la page Cas d’usage, le classeur trop lourd n’était jamais ouvert pendant le repas.",
+        "Tous les adultes qui accompagnent l’élève s’en servent de la même façon (module 8).",
+        "Après quelques jours, observez et ajustez : chaque case reste modifiable, et le guide invite à recommencer en ajustant vos réponses.",
       ],
     },
 
@@ -368,7 +387,7 @@ export const communiquerAutrement: Module = {
             "Mise en pictogrammes, la phrase « Je n’ai pas compris la consigne » peut dire le contraire de ce que l’élève veut dire.",
           reponse: true,
           explication:
-            "Vrai. ARASAAC ne sait pas dessiner la négation : sans case « non » ajoutée, la bande je · compris · consigne dit « j’ai compris la consigne ». Le site le signale ; c’est à vous d’ajouter la case.",
+            "Vrai. ARASAAC ne sait pas dessiner la négation : sans case « non » ajoutée, la bande je · compris · consigne dit « j’ai compris la consigne ». Le site le signale et propose d’ajouter une case « non » : à vous de la valider.",
         },
         {
           affirmation:
@@ -386,7 +405,7 @@ export const communiquerAutrement: Module = {
         },
         {
           affirmation:
-            "Un scénario social compte plus de phrases qui décrivent la situation que de phrases qui disent quoi faire.",
+            "Dans un scénario social, il faut au moins deux phrases qui décrivent — la situation, ce que ressentent les autres, une évidence rassurante — pour une seule phrase qui dit quoi faire.",
           reponse: true,
           explication:
             "Vrai. L’instruction reprend la règle de Carol Gray : au moins deux phrases descriptives, de perspective ou d’affirmation pour une seule phrase directive. Sinon, ce n’est plus un scénario social, c’est un règlement.",
@@ -396,14 +415,14 @@ export const communiquerAutrement: Module = {
             "Un scénario social peut se terminer par « tout se passera bien » pour rassurer l’élève.",
           reponse: false,
           explication:
-            "Faux. L’instruction interdit les promesses que l’adulte ne peut pas tenir. Le scénario se termine par une phrase rassurante ou une solution de repli concrète, comme dans l’exemple de la page Cas d’usage : « Je peux demander à sortir quelques minutes avec un adulte. »",
+            "Faux. L’instruction interdit les promesses que l’adulte ne peut pas tenir. Elle demande de terminer par une phrase rassurante ou une solution de repli concrète, comme « Je peux demander à sortir quelques minutes avec un adulte » dans l’exemple de la page Cas d’usage.",
         },
         {
           affirmation:
             "L’instruction du module CAA prévoit le cas d’un prénom : vous pouvez donc écrire celui d’un camarade dans la phrase.",
           reponse: false,
           explication:
-            "Faux. L’instruction prévoit bien le cas — le prénom n’a pas de pictogramme et sera remplacé par une photo —, mais la règle d’or d’Inclus’IA passe avant : « Ne saisissez jamais de nom, prénom ou information permettant d’identifier un élève. » Écrivez « mon camarade », et ajoutez la photo sur la planche imprimée.",
+            "Faux. L’instruction prévoit bien le cas — le prénom n’a pas de pictogramme et sera remplacé par une photo —, mais la règle d’or d’Inclus’IA passe avant : « Ne saisissez jamais de nom, prénom ou information permettant d’identifier un élève/étudiant. » Écrivez « mon camarade », et ajoutez la photo sur la planche imprimée.",
         },
       ],
     },
@@ -412,7 +431,7 @@ export const communiquerAutrement: Module = {
     {
       type: "paragraphe",
       texte:
-        "Partez d’une situation réelle où un élève aurait besoin d’un support visuel : la file du self, une sortie en bus, un exercice d’évacuation, un changement de salle ou d’emploi du temps, le lavage des mains en maternelle… Décrivez ce qui se passe vraiment : l’outil ne connaît pas l’établissement, et l’IA ne doit rien inventer.",
+        "Partez d’une situation réelle où un élève aurait besoin d’un support visuel : la file du self, une sortie en bus, un exercice d’évacuation, un changement de salle ou d’emploi du temps, un devoir surveillé dans une salle inconnue, l’arrivée d’un professeur remplaçant, la première journée de stage… Décrivez ce qui se passe vraiment : l’outil ne connaît pas l’établissement, et l’IA ne doit rien inventer. Pour un collégien ou un lycéen, indiquez son niveau réel et relisez le ton : aucun mot, aucune formulation, aucun pictogramme ne doit l’infantiliser — remplacez la case qui ne convient pas à son âge.",
     },
     {
       type: "requete",
@@ -420,7 +439,7 @@ export const communiquerAutrement: Module = {
       texte:
         "Situation — Un exercice d’évacuation est prévu cette semaine. Une alarme très forte sonne sans prévenir. La classe sort avec le professeur et rejoint le point de rassemblement. On attend qu’un adulte dise que l’on peut rentrer. Cela dure quelques minutes.\n\nProfil — Se bouche les oreilles quand un bruit est fort. S’inquiète quand le programme de la journée change. Se calme quand un adulte qu’il connaît reste près de lui. Lit des phrases courtes.",
       commentaire:
-        "Pour un élève de 6e, par exemple. Remplacez chaque détail par ce qui se passe réellement chez vous et répartissez le texte dans les champs du formulaire. Aucun prénom, aucun diagnostic : ce que vous observez suffit.",
+        "Pour un élève de 6e, par exemple. Remplacez chaque détail par ce qui se passe réellement chez vous et répartissez le texte dans les champs du formulaire. Pour un exercice de sécurité, reprenez les consignes telles que l’établissement les fixe, sans les inventer, et prévoyez une solution de repli compatible avec elles — rester près de l’adulte, se boucher les oreilles, jamais sortir ou s’éloigner du groupe ; en cas de doute, l’équipe de direction vous oriente. Aucun prénom, aucun diagnostic, ni nom d’établissement, ni nom de classe, ni date : « cette semaine », « ma classe » suffisent.",
     },
     {
       type: "exercice",
@@ -430,9 +449,9 @@ export const communiquerAutrement: Module = {
         "Choisissez le module qui correspond à votre situation, décrivez-la sans nommer personne, générez la planche et vérifiez-la avant de l’imprimer. Notez ensuite ce que vous avez obtenu.",
       duree: "10 min",
       etapes: [
-        "Sur la page d’accueil d’Inclus’IA, choisissez la tuile : CAA pour une phrase, Tableau de communication pour les mots d’une situation, Séquentiel illustré pour une routine, Scénario social pour une situation à préparer.",
+        "Sur la page d’accueil d’Inclus’IA, choisissez la tuile : CAA pour une phrase, Tableau de communication pour les mots d’une situation, Séquentiel illustré pour une routine, Scénario social pour une situation à préparer. Une même situation peut appeler les deux derniers : le séquentiel dit quoi faire et dans quel ordre, affiché sur place, à chaque fois ; le scénario social aide à comprendre à l’avance une situation nouvelle ou rare, et se lit plusieurs fois avant.",
         "Si vous hésitez sur ce qu’on attend, cliquez d’abord sur « Remplir avec un exemple ».",
-        "Décrivez le niveau, le profil de l’élève (ce que vous observez) et la phrase, la situation ou la routine — sans prénom : « mon camarade », « l’adulte ».",
+        "Décrivez le niveau, le profil de l’élève (ce que vous observez) et la phrase, la situation ou la routine — sans aucun nom : « mon camarade », « l’adulte ».",
         "Générez les instructions (Ctrl+Entrée), parcourez-les, puis envoyez-les à l’IA intégrée.",
         "Sur la planche, repérez ce que le site signale — la négation surtout —, puis changez un pictogramme, un mot ou une case si besoin.",
         "Choisissez la mise en page (bande, séquentiel ou cartes) et le format de téléchargement.",
@@ -460,7 +479,7 @@ export const communiquerAutrement: Module = {
           id: "corrections",
           type: "texte-long",
           libelle: "Ce que vous avez corrigé sur la planche avant d’imprimer",
-          aide: "Une case « non » ajoutée, un pictogramme remplacé, un mot changé, une étape retirée… ou « rien ».",
+          aide: "Une case « non » ajoutée, un pictogramme remplacé, un mot changé, une étape retirée… ou « rien ». Sans nom d’élève ni d’adulte.",
           lignes: 3,
         },
         {
@@ -481,7 +500,7 @@ export const communiquerAutrement: Module = {
           "Un tableau commence par le vocabulaire noyau, permet de dire que ça ne va pas et compte de 12 à 20 mots.",
           "Un séquentiel compte de 4 à 8 étapes à l’infinitif, se termine par l’étape qui signe la fin et sera affiché sur place.",
           "Un scénario social compte de 5 à 8 phrases à la première personne, sans « je dois » ni promesse, avec une solution de repli.",
-          "Aucun prénom n’est passé par l’outil : les photos s’ajoutent sur la planche imprimée.",
+          "Aucun nom — d’élève ou d’adulte — n’est passé par l’outil : photos et prénoms s’ajoutent sur la planche imprimée.",
         ],
       },
       suite: {
@@ -505,6 +524,18 @@ export const communiquerAutrement: Module = {
           href: "/formations/inclusia/travailler-en-equipe",
           description:
             "Professeur, AESH, vie scolaire : qui observe, qui relit, qui fait vivre la planche.",
+        },
+        {
+          libelle: "Décrire sans étiqueter",
+          href: "/formations/inclusia/ressources/observables",
+          description:
+            "Des formulations pour décrire la façon de communiquer d’un élève, ou sa réaction à l’imprévu, sans diagnostic.",
+        },
+        {
+          libelle: "La charte IA du lycée",
+          href: "/formations/ia-usages-numeriques/la-charte-ia",
+          description:
+            "Aucune donnée personnelle d’élève — nom, photo, santé — dans un outil d’IA.",
         },
         {
           libelle: "Glossaire",

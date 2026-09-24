@@ -48,7 +48,7 @@ export const ficheMemo: SectionDeroule[] = [
             titre: "Se saisit",
             precision: "ce qui sert l’adaptation",
             items: [
-              "Discipline, niveau, objectif, contraintes, la classe — exemple du guide : « CM1, 25 élèves dont 3 avec PAP », pas « classe ordinaire ».",
+              "Discipline, niveau, objectif, contraintes, la classe — exemple du guide : « CM1, 25 élèves/étudiants dont 3 avec PAP », pas « classe ordinaire ».",
               "Ce que vous observez : situation, fréquence, durée, ce qui suit.",
               "Le support de cours, sans nom ni annotation d’élève.",
             ],

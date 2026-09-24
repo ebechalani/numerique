@@ -169,7 +169,9 @@ export default async function PageFormation({ params }: Props) {
           id="titre-objectifs"
           className="font-serif text-2xl text-encre sm:text-3xl"
         >
-          À la fin de la session, vous saurez…
+          {enAutonomie
+            ? "À la fin du tutoriel, vous saurez…"
+            : "À la fin de la session, vous saurez…"}
         </h2>
 
         <ul className="mt-6 grid gap-5 sm:grid-cols-2">

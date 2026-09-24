@@ -20,7 +20,7 @@ import type {
 } from "@/content/types";
 
 import { iaUsagesNumeriques } from "@/content/formations/ia-usages-numeriques";
-import { inclusia } from "@/content/formations/inclusia";
+import { inclusia as inclusiaSaisi } from "@/content/formations/inclusia";
 import { ressourcesInclusia } from "@/content/formations/inclusia/ressources";
 import { ficheOutils } from "@/content/formations/ia-usages-numeriques/ressources/fiche-outils";
 import { questionsFrequentes } from "@/content/formations/ia-usages-numeriques/ressources/questions";
@@ -29,6 +29,16 @@ import {
   briquesRequete,
 } from "@/content/formations/ia-usages-numeriques/ressources/requetes";
 import { deroule } from "@/content/formations/ia-usages-numeriques/ressources/deroule";
+
+import { typographier } from "./typographie";
+
+/*
+ * Le tutoriel Inclus’IA reçoit les espaces insécables à la lecture. La
+ * formation « IA et usages numériques » garde ses textes tels quels : certaines
+ * réponses d’exercice y sont enregistrées par leur libellé, et les changer
+ * ferait perdre les réponses déjà saisies.
+ */
+const inclusia = typographier(inclusiaSaisi);
 
 /* Réexports : certaines pages ont besoin des données brutes, pas des blocs. */
 export { briquesRequete, questionsFrequentes };
@@ -179,7 +189,7 @@ function blocsRessourceIa(ressourceSlug: string): Bloc[] | undefined {
 /** Ressources du tutoriel Inclus’IA : des sections, titre puis blocs. */
 function blocsRessourceInclusia(ressourceSlug: string): Bloc[] | undefined {
   const sections = ressourcesInclusia[ressourceSlug];
-  return sections ? aplatirSections(sections) : undefined;
+  return sections ? typographier(aplatirSections(sections)) : undefined;
 }
 
 /**
