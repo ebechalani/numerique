@@ -30,6 +30,7 @@ const QUESTIONS_SUGGEREES = [
   "Quelle différence entre NotebookLM et Copilot ?",
   "Comment écrire une bonne requête ?",
   "Comment décrire un élève dans Inclus’IA sans l’exposer ?",
+  "Comment créer un devoir noté dans Pronote ?",
 ];
 
 /** Distance au bas de la zone en deçà de laquelle on suit le fil du regard. */
@@ -323,9 +324,9 @@ export default function Assistant() {
               <div className="space-y-4">
                 <p className="text-sm leading-relaxed text-graphite">
                   Je réponds à vos questions à partir du contenu des
-                  formations — l’IA en classe, la charte, le tutoriel
-                  Inclus’IA. Si la réponse ne s’y trouve pas, je vous le dis
-                  plutôt que de l’inventer.
+                  formations — l’IA en classe, la charte, Inclus’IA — et des
+                  tutoriels Pronote. Si la réponse ne s’y trouve pas, je vous
+                  le dis plutôt que de l’inventer.
                 </p>
                 <div className="space-y-2">
                   <p className="text-xs font-medium uppercase tracking-wide text-estompe">

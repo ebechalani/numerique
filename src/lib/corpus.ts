@@ -14,6 +14,7 @@
 
 import type { Bloc, Formation, Verdict } from "@/content/types";
 import { briquesRequete, formations, getRessource } from "./formations";
+import { LIBELLES_APPLICATION, LIBELLES_PUBLIC, tutoriels } from "./pronote";
 
 /* ------------------------------------------------------------------ */
 /* Utilitaires de mise en forme                                        */
@@ -345,8 +346,35 @@ function formationEnTexte(formation: Formation): string {
  * Sérialise l’intégralité du contenu publié en Markdown lisible.
  * Appelée une fois au chargement du module ; le résultat est figé dans CORPUS.
  */
+/** Les tutoriels Pronote, étape par étape. */
+function pronoteEnTexte(): string {
+  const parties = tutoriels.map((t) =>
+    joindre([
+      `## Tutoriel Pronote — ${t.titre} (slug: ${t.slug})`,
+      t.resume,
+      `Pour : ${t.public.map((p) => LIBELLES_PUBLIC[p]).join(", ")} · ${LIBELLES_APPLICATION[t.application]}`,
+      t.prerequis?.length ? `Avant de commencer : ${t.prerequis.join(" ; ")}` : null,
+      ...t.sections.map((section) =>
+        joindre([
+          section.titre ? `### ${section.titre}` : null,
+          section.intro,
+          section.etapes
+            .map((e, i) => {
+              const detail = e.detail ? ` (${e.detail})` : "";
+              const liste = e.liste ? e.liste.map((x) => `\n   - ${x}`).join("") : "";
+              return `${i + 1}. ${e.texte}${detail}${liste}`;
+            })
+            .join("\n"),
+        ]),
+      ),
+      t.astuces?.length ? t.astuces.map((a) => `- ${a.texte}`).join("\n") : null,
+    ]),
+  );
+  return joindre(["# Tutoriels Pronote du lycée (section /pronote)", ...parties]);
+}
+
 export function construireCorpus(): string {
-  return formations.map(formationEnTexte).join("\n\n---\n\n");
+  return [...formations.map(formationEnTexte), pronoteEnTexte()].join("\n\n---\n\n");
 }
 
 /** Base de connaissance de l’assistant, calculée une seule fois. */
