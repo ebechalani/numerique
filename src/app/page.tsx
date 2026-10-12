@@ -3,6 +3,9 @@ import Link from "next/link";
 
 import { REFERENT, SIGNATURE } from "@/content/site";
 import { formations } from "@/lib/formations";
+import { tutoriels } from "@/lib/pronote";
+
+const nombreTutoriels = tutoriels.length;
 
 export const metadata: Metadata = {
   description: `Le catalogue des formations d’${SIGNATURE} du Lycée Montaigne — Beit Chabab, Liban.`,
@@ -193,6 +196,44 @@ export default function Accueil() {
                 </span>
                 <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent">
                   Ouvrir le rédacteur
+                  <Fleche className="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </span>
+            </Link>
+          </li>
+
+          <li className="mt-4">
+            <Link
+              href="/pronote"
+              className="group flex items-start gap-5 rounded-lg border border-trait bg-craie p-6 transition-colors hover:border-accent hover:bg-accent-voile"
+            >
+              <span
+                aria-hidden="true"
+                className="hidden shrink-0 items-center gap-1 sm:flex"
+              >
+                {["1", "2", "3", "✓"].map((repere) => (
+                  <span
+                    key={repere}
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-encre font-mono text-xs text-papier"
+                  >
+                    {repere}
+                  </span>
+                ))}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="text-sm text-accent">
+                  {nombreTutoriels} tutoriels pas à pas
+                </span>
+                <span className="mt-1 block font-serif text-2xl leading-tight text-encre">
+                  Pronote
+                </span>
+                <span className="mt-2 block max-w-3xl leading-relaxed text-graphite">
+                  L’appel, le cahier de textes, les devoirs et les compétences,
+                  les messages aux familles — et les tutoriels de l’Espace
+                  Parents, à transmettre aux familles.
+                </span>
+                <span className="mt-4 flex items-center gap-2 text-sm font-medium text-accent">
+                  Ouvrir les tutoriels
                   <Fleche className="transition-transform group-hover:translate-x-0.5" />
                 </span>
               </span>

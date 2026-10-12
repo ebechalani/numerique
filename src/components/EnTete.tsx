@@ -58,6 +58,12 @@ export default function EnTete() {
             Les formations
           </Link>
           <Link
+            href="/pronote"
+            className="text-graphite transition-colors hover:text-accent"
+          >
+            Pronote
+          </Link>
+          <Link
             href="/formations/inclusia"
             className="text-graphite transition-colors hover:text-accent"
           >
@@ -138,6 +144,15 @@ export default function EnTete() {
             className="border-b border-trait py-3 text-encre transition-colors hover:text-accent"
           >
             Les formations
+          </Link>
+          <Link
+            href="/pronote"
+            className="border-b border-trait py-3 text-encre transition-colors hover:text-accent"
+          >
+            Pronote{" "}
+            <span className="block text-xs text-estompe">
+              Les tutoriels pas à pas
+            </span>
           </Link>
           <Link
             href="/formations/inclusia"
